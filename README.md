@@ -12,7 +12,7 @@ To use the plugin, include the header, declare an effect using the
 Configure your own colors for groups of keys inside setup():
 
 ```c++
-// Automatically sets key's LED on active layer based on the functional of the key
+// Automatically sets key's LED on active layer based on the function of the key
 #include <Kaleidoscope-LEDEffect-FunctionalColor.h>
 
 kaleidoscope::LEDFunctionalColor FunColor;
@@ -22,7 +22,7 @@ void setup() {
 
   Kaleidoscope.setup(
 
-	  // Optionally Make things more huuman readable by naming your colors
+	  // Optionally Make things more human readable by naming your colors
 	  cRGB antiquewhite = CRGB(250, 235, 215);
 	  cRGB blue = CRGB(0, 0, 255);
 	  cRGB cyan = CRGB(0, 255, 255);
