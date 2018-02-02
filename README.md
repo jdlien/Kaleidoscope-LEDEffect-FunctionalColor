@@ -49,40 +49,40 @@ void setup() {
 	  // You can optionally specify a brightness value, 0-255 to dim your lights.
 
 	  // Set this first to provide a "default" color for all keys, then override with the other settings.
-	  FunColor.setAll(CRGB(250, 235, 215));
+	  FunColor.all(CRGB(250, 235, 215));
 	  
 	  // Set this second to change all modifiers (non-alphabet/numeric/punctuation keys)
-	  FunColor.setModifiers(CRGB(250, 235, 215));
+	  FunColor.allModifiers(CRGB(250, 235, 215));
 	  
 	  //Set individual groups of colors. You may delete any lines you don't need.
-	  FunColor.setEscape(red, 170);
-	  FunColor.setNumbers(white, 160);
-	  FunColor.setLetters(antiquewhite, 100);
-	  FunColor.setPunctuation(antiquewhite, 170);
-	  FunColor.setBrackets(antiquewhite, 200);
-	  FunColor.setBackslash(antiquewhite, 170);
-	  FunColor.setPipe(antiquewhite, 170);
-	  FunColor.setTab(white, 170);
-	  FunColor.setBackspace(red, 170);
-	  FunColor.setDelete(red, 170);
-	  FunColor.setEnter(white, 170);
-	  FunColor.setArrows(white, 170);
-	  FunColor.setNav(yellow, 170);
-	  FunColor.setInsert(yellow, 170);
-	  FunColor.setShift(palegreen, 170);
-	  FunColor.setCtrl(skyblue, 170);
-	  FunColor.setAlt(green, 170);
-	  FunColor.setCmd(CRGB(250, 235, 215));
-	  FunColor.setApp(CRGB(250, 235, 215));
-	  FunColor.setPrintscreen(CRGB(250, 235, 215));
-	  FunColor.setPause(CRGB(250, 235, 215));
-	  FunColor.setScrolllock(CRGB(250, 235, 215));
-	  FunColor.setCapslock(CRGB(250, 235, 215));
-	  FunColor.setFkeys(red, 170);
-	  FunColor.setFn(CRGB(250, 235, 215));
-	  FunColor.setMedia(CRGB(250, 235, 215));
-	  FunColor.setLed(blue, 190);
-	  FunColor.setMouse(cyan, 170);
+	  FunColor.escape(red, 170);
+	  FunColor.numbers(white, 160);
+	  FunColor.letters(antiquewhite, 100);
+	  FunColor.punctuation(antiquewhite, 170);
+	  FunColor.brackets(antiquewhite, 200);
+	  FunColor.backslash(antiquewhite, 170);
+	  FunColor.pipe(antiquewhite, 170);
+	  FunColor.tab(white, 170);
+	  FunColor.backspace(red, 170);
+	  FunColor.del(red, 170);
+	  FunColor.enter(white, 170);
+	  FunColor.arrows(white, 170);
+	  FunColor.nav(yellow, 170);
+	  FunColor.insert(yellow, 170);
+	  FunColor.shift(palegreen, 170);
+	  FunColor.ctrl(skyblue, 170);
+	  FunColor.alt(green, 170);
+	  FunColor.cmd(CRGB(250, 235, 215));
+	  FunColor.app(CRGB(250, 235, 215));
+	  FunColor.printscreen(CRGB(250, 235, 215));
+	  FunColor.pause(CRGB(250, 235, 215));
+	  FunColor.scrolllock(CRGB(250, 235, 215));
+	  FunColor.capslock(CRGB(250, 235, 215));
+	  FunColor.fkeys(red, 170);
+	  FunColor.fn(CRGB(250, 235, 215));
+	  FunColor.media(CRGB(250, 235, 215));
+	  FunColor.led(blue, 190);
+	  FunColor.mouse(cyan, 170);
 
   );
 }

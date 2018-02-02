@@ -10,7 +10,7 @@ LEDFunctionalColor::LEDFunctionalColor(void) {
 }
 
 // Sets all the colors to the same thing
-void LEDFunctionalColor::setAll(cRGB color){
+void LEDFunctionalColor::all(cRGB color){
   color_escape = color;
   color_numbers = color;
   color_letters = color;
@@ -43,7 +43,7 @@ void LEDFunctionalColor::setAll(cRGB color){
 }
 
 // Color keys that aren't letters, numbers, or punctuation
-void LEDFunctionalColor::setModifiers(cRGB color) {
+void LEDFunctionalColor::allModifiers(cRGB color) {
   color_escape = color;
   color_backspace = color;
   color_delete = color;
@@ -64,121 +64,121 @@ void LEDFunctionalColor::setModifiers(cRGB color) {
   color_fn = color;
 }
 
-void LEDFunctionalColor::setEscape(cRGB color) {
+void LEDFunctionalColor::escape(cRGB color) {
   color_escape = color;
 }
 
-void LEDFunctionalColor::setNumbers(cRGB color){
+void LEDFunctionalColor::numbers(cRGB color){
   color_numbers = color;
 }
 
-void LEDFunctionalColor::setLetters(cRGB color){
+void LEDFunctionalColor::letters(cRGB color){
   color_letters = color;
 }
 
-void LEDFunctionalColor::setPunctuation(cRGB color){
+void LEDFunctionalColor::punctuation(cRGB color){
   color_punctuation = color;
 }
 
-void LEDFunctionalColor::setBrackets(cRGB color){
+void LEDFunctionalColor::brackets(cRGB color){
   color_brackets = color;
 }
 
-void LEDFunctionalColor::setBackslash(cRGB color){
+void LEDFunctionalColor::backslash(cRGB color){
   color_backslash = color;
 }
 
-void LEDFunctionalColor::setPipe(cRGB color){
+void LEDFunctionalColor::pipe(cRGB color){
   color_pipe = color;
 }
 
-void LEDFunctionalColor::setTab(cRGB color){
+void LEDFunctionalColor::tab(cRGB color){
   color_tab = color;
 }
 
-void LEDFunctionalColor::setBackspace(cRGB color){
+void LEDFunctionalColor::backspace(cRGB color){
   color_backspace = color;
 }
 
-void LEDFunctionalColor::setDelete(cRGB color){
+void LEDFunctionalColor::del(cRGB color){
   color_delete = color;
 }
 
-void LEDFunctionalColor::setEnter(cRGB color){
+void LEDFunctionalColor::enter(cRGB color){
   color_enter = color;
 }
 
-void LEDFunctionalColor::setArrows(cRGB color){
+void LEDFunctionalColor::arrows(cRGB color){
   color_arrows = color;
 }
 
-void LEDFunctionalColor::setNav(cRGB color){
+void LEDFunctionalColor::nav(cRGB color){
   color_nav = color;
 }
 
-void LEDFunctionalColor::setInsert(cRGB color){
+void LEDFunctionalColor::insert(cRGB color){
   color_insert = color;
 }
 
-void LEDFunctionalColor::setShift(cRGB color){
+void LEDFunctionalColor::shift(cRGB color){
   color_shift = color;
 }
 
-void LEDFunctionalColor::setCtrl(cRGB color){
+void LEDFunctionalColor::ctrl(cRGB color){
   color_ctrl = color;
 }
 
-void LEDFunctionalColor::setAlt(cRGB color){
+void LEDFunctionalColor::alt(cRGB color){
   color_alt = color;
 }
 
-void LEDFunctionalColor::setCmd(cRGB color){
+void LEDFunctionalColor::cmd(cRGB color){
   color_cmd = color;
 }
 
-void LEDFunctionalColor::setApp(cRGB color){
+void LEDFunctionalColor::app(cRGB color){
   color_app = color;
 }
 
-void LEDFunctionalColor::setPrintscreen(cRGB color){
+void LEDFunctionalColor::printscreen(cRGB color){
   color_printscreen = color;
 }
 
-void LEDFunctionalColor::setPause(cRGB color){
+void LEDFunctionalColor::pause(cRGB color){
   color_pause = color;
 }
 
-void LEDFunctionalColor::setScrolllock(cRGB color){
+void LEDFunctionalColor::scrolllock(cRGB color){
   color_scrolllock = color;
 }
 
-void LEDFunctionalColor::setCapslock(cRGB color){
+void LEDFunctionalColor::capslock(cRGB color){
   color_capslock = color;
 }
 
-void LEDFunctionalColor::setFkeys(cRGB color){
+void LEDFunctionalColor::fkeys(cRGB color){
   color_fkeys = color;
 }
 
-void LEDFunctionalColor::setFn(cRGB color){
+void LEDFunctionalColor::fn(cRGB color){
   color_fn = color;
 }
 
-void LEDFunctionalColor::setMedia(cRGB color){
+void LEDFunctionalColor::media(cRGB color){
   color_media = color;
 }
 
-void LEDFunctionalColor::setLed(cRGB color){
+void LEDFunctionalColor::led(cRGB color){
   color_led = color;
 }
 
-void LEDFunctionalColor::setMouse(cRGB color){
+void LEDFunctionalColor::mouse(cRGB color){
   color_mouse = color;
 }
 
 
 // Sets all the colors to the same thing
-void LEDFunctionalColor::setAll(cRGB color, byte brightness){
+void LEDFunctionalColor::all(cRGB color, byte brightness){
   color_escape = dim(color, brightness);
   color_numbers = dim(color, brightness);
   color_letters = dim(color, brightness);
@@ -211,7 +211,7 @@ void LEDFunctionalColor::setAll(cRGB color, byte brightness){
 }
 
 // Color keys that aren't letters, numbers, or punctuation
-void LEDFunctionalColor::setModifiers(cRGB color, byte brightness) {
+void LEDFunctionalColor::allModifiers(cRGB color, byte brightness) {
   color_escape = dim(color, brightness);
   color_backspace = dim(color, brightness);
   color_delete = dim(color, brightness);
@@ -232,115 +232,115 @@ void LEDFunctionalColor::setModifiers(cRGB color, byte brightness) {
   color_fn = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setEscape(cRGB color, byte brightness) {
+void LEDFunctionalColor::escape(cRGB color, byte brightness) {
   color_escape = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setNumbers(cRGB color, byte brightness){
+void LEDFunctionalColor::numbers(cRGB color, byte brightness){
   color_numbers = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setLetters(cRGB color, byte brightness){
+void LEDFunctionalColor::letters(cRGB color, byte brightness){
   color_letters = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setPunctuation(cRGB color, byte brightness){
+void LEDFunctionalColor::punctuation(cRGB color, byte brightness){
   color_punctuation = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setBrackets(cRGB color, byte brightness){
+void LEDFunctionalColor::brackets(cRGB color, byte brightness){
   color_brackets = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setBackslash(cRGB color, byte brightness){
+void LEDFunctionalColor::backslash(cRGB color, byte brightness){
   color_backslash = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setPipe(cRGB color, byte brightness){
+void LEDFunctionalColor::pipe(cRGB color, byte brightness){
   color_pipe = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setTab(cRGB color, byte brightness){
+void LEDFunctionalColor::tab(cRGB color, byte brightness){
   color_tab = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setBackspace(cRGB color, byte brightness){
+void LEDFunctionalColor::backspace(cRGB color, byte brightness){
   color_backspace = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setDelete(cRGB color, byte brightness){
+void LEDFunctionalColor::del(cRGB color, byte brightness){
   color_delete = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setEnter(cRGB color, byte brightness){
+void LEDFunctionalColor::enter(cRGB color, byte brightness){
   color_enter = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setArrows(cRGB color, byte brightness){
+void LEDFunctionalColor::arrows(cRGB color, byte brightness){
   color_arrows = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setNav(cRGB color, byte brightness){
+void LEDFunctionalColor::nav(cRGB color, byte brightness){
   color_nav = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setInsert(cRGB color, byte brightness){
+void LEDFunctionalColor::insert(cRGB color, byte brightness){
   color_insert = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setShift(cRGB color, byte brightness){
+void LEDFunctionalColor::shift(cRGB color, byte brightness){
   color_shift = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setCtrl(cRGB color, byte brightness){
+void LEDFunctionalColor::ctrl(cRGB color, byte brightness){
   color_ctrl = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setAlt(cRGB color, byte brightness){
+void LEDFunctionalColor::alt(cRGB color, byte brightness){
   color_alt = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setCmd(cRGB color, byte brightness){
+void LEDFunctionalColor::cmd(cRGB color, byte brightness){
   color_cmd = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setApp(cRGB color, byte brightness){
+void LEDFunctionalColor::app(cRGB color, byte brightness){
   color_app = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setPrintscreen(cRGB color, byte brightness){
+void LEDFunctionalColor::printscreen(cRGB color, byte brightness){
   color_printscreen = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setPause(cRGB color, byte brightness){
+void LEDFunctionalColor::pause(cRGB color, byte brightness){
   color_pause = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setScrolllock(cRGB color, byte brightness){
+void LEDFunctionalColor::scrolllock(cRGB color, byte brightness){
   color_scrolllock = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setCapslock(cRGB color, byte brightness){
+void LEDFunctionalColor::capslock(cRGB color, byte brightness){
   color_capslock = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setFkeys(cRGB color, byte brightness){
+void LEDFunctionalColor::fkeys(cRGB color, byte brightness){
   color_fkeys = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setFn(cRGB color, byte brightness){
+void LEDFunctionalColor::fn(cRGB color, byte brightness){
   color_fn = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setMedia(cRGB color, byte brightness){
+void LEDFunctionalColor::media(cRGB color, byte brightness){
   color_media = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setLed(cRGB color, byte brightness){
+void LEDFunctionalColor::led(cRGB color, byte brightness){
   color_led = dim(color, brightness);
 }
 
-void LEDFunctionalColor::setMouse(cRGB color, byte brightness){
+void LEDFunctionalColor::mouse(cRGB color, byte brightness){
   color_mouse = dim(color, brightness);
 }
 
