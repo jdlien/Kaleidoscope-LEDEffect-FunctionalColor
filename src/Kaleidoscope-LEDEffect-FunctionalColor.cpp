@@ -498,7 +498,7 @@ void LEDFunctionalColor::setKeyLed(uint8_t r, uint8_t c) {
 
 // dims the specified color from 0 (off) to 255 (full)
 cRGB LEDFunctionalColor::dim(cRGB color, byte brightness) {
-  return CRGB(color.r*brightness/255, color.g*brightness/255, color.b*brightness/255);;
+  return CRGB(color.r*brightness/255, color.g*brightness/255, color.b*brightness/255);
 }
 
 

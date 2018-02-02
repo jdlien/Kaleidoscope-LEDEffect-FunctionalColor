@@ -45,7 +45,7 @@ void setup() {
 	  // If your FUNCTION layer is not the default, you must set it here
 	  FunColor.functionLayer = FUNCTION;
 
-	  // Here we can set custom colors for FunctionalColor.
+	  // Here we can set custom colors for your FunctionalColor instance.
 	  // You can optionally specify a brightness value, 0-255 to dim your lights.
 
 	  // Set this first to provide a "default" color for all keys, then override with the other settings.
