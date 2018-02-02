@@ -51,7 +51,7 @@ void setup() {
 	  // Set this first to provide a "default" color for all keys, then override with the other settings.
 	  FunColor.setAll(CRGB(250, 235, 215));
 	  
-	  // This this second to change all modifiers (non-alphabet/numeric/punctuation keys)
+	  // Set this second to change all modifiers (non-alphabet/numeric/punctuation keys)
 	  FunColor.setModifiers(CRGB(250, 235, 215));
 	  
 	  //Set individual groups of colors. You may delete any lines you don't need.
