@@ -10,10 +10,13 @@ class LEDFunctionalColor : public LEDMode {
   LEDFunctionalColor(void);
   uint8_t functionLayer = 2;
 
+  // dims the brightness of all colors from 0-255
+  void brightness(byte brightness);
 
   // functions to set colors
   void all(cRGB color);
   void allModifiers(cRGB color);
+  void allMouse(cRGB color);
   void escape(cRGB color);
   void numbers(cRGB color);
   void letters(cRGB color);
@@ -41,11 +44,16 @@ class LEDFunctionalColor : public LEDMode {
   void fn(cRGB color);
   void media(cRGB color);
   void led(cRGB color);
-  void mouse(cRGB color);
+  void mousemove(cRGB color);
+  void mousebuttons(cRGB color);
+  void mousewarp(cRGB color);
+  void mousescroll(cRGB color);
+
 
   // functions to set colors with brightness
   void all(cRGB color, byte brightness);
   void allModifiers(cRGB color, byte brightness);
+  void allMouse(cRGB color, byte brightness);
   void escape(cRGB color, byte brightness);
   void numbers(cRGB color, byte brightness);
   void letters(cRGB color, byte brightness);
@@ -73,7 +81,11 @@ class LEDFunctionalColor : public LEDMode {
   void fn(cRGB color, byte brightness);
   void media(cRGB color, byte brightness);
   void led(cRGB color, byte brightness);
-  void mouse(cRGB color, byte brightness);  
+  void mousemove(cRGB color, byte brightness);
+  void mousebuttons(cRGB color, byte brightness);
+  void mousewarp(cRGB color, byte brightness);
+  void mousescroll(cRGB color, byte brightness);
+
 
   private:
   uint16_t current_key = 0;
@@ -115,7 +127,12 @@ class LEDFunctionalColor : public LEDMode {
   cRGB color_fn = dim(CRGB(255, 255, 255), 140);
   cRGB color_media = dim(CRGB(238, 130, 238), 250);
   cRGB color_led = dim(CRGB(0, 0, 255), 250);
-  cRGB color_mouse = dim(CRGB(0, 255, 255), 250);
+  cRGB color_mousemove = dim(CRGB(0, 255, 255), 200);
+  cRGB color_mousebuttons = dim(CRGB(128, 255, 255), 250);
+  cRGB color_mousewarp = dim(CRGB(0, 255, 255), 150);
+  cRGB color_mousescroll = dim(CRGB(0, 255, 255), 150);
+
+
 
 
   protected:

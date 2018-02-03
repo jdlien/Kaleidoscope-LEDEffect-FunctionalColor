@@ -1,0 +1,8 @@
+FunctionalColor Notes
+
+Alright. Here's the stuff that I need to do:
+
+- I need to be able to split up all the mouse keys into different groups:
+	- buttons, movement, warps
+
+- I want the means to dim the entire set of variables...

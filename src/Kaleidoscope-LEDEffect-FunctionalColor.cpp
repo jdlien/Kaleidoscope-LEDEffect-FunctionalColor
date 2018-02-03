@@ -9,6 +9,42 @@ LEDFunctionalColor::LEDFunctionalColor(uint8_t fLayer) {
 LEDFunctionalColor::LEDFunctionalColor(void) {
 }
 
+
+void LEDFunctionalColor::brightness(byte brightness) {
+  color_escape = dim(color_escape, brightness);
+  color_numbers = dim(color_numbers, brightness);
+  color_letters = dim(color_letters, brightness);
+  color_punctuation = dim(color_punctuation, brightness);
+  color_brackets = dim(color_brackets, brightness);
+  color_backslash = dim(color_backslash, brightness);
+  color_pipe = dim(color_pipe, brightness);
+  color_space = dim(color_space, brightness);
+  color_tab = dim(color_tab, brightness);
+  color_backspace = dim(color_backspace, brightness);
+  color_delete = dim(color_delete, brightness);
+  color_enter = dim(color_enter, brightness);
+  color_arrows = dim(color_arrows, brightness);
+  color_nav = dim(color_nav, brightness);
+  color_insert = dim(color_insert, brightness);
+  color_shift = dim(color_shift, brightness);
+  color_ctrl = dim(color_ctrl, brightness);
+  color_alt = dim(color_alt, brightness);
+  color_cmd = dim(color_cmd, brightness);
+  color_app = dim(color_app, brightness);
+  color_printscreen = dim(color_printscreen, brightness);
+  color_pause = dim(color_pause, brightness);
+  color_scrolllock = dim(color_scrolllock, brightness);
+  color_capslock = dim(color_capslock, brightness);
+  color_fkeys = dim(color_fkeys, brightness);
+  color_fn = dim(color_fn, brightness);
+  color_media = dim(color_media, brightness);
+  color_led = dim(color_led, brightness);
+  color_mousemove = dim(color_mousemove, brightness);
+  color_mousebuttons = dim(color_mousebuttons, brightness);
+  color_mousewarp = dim(color_mousewarp, brightness);
+  color_mousescroll = dim(color_mousescroll, brightness);
+}
+
 // Sets all the colors to the same thing
 void LEDFunctionalColor::all(cRGB color){
   color_escape = color;
@@ -39,7 +75,10 @@ void LEDFunctionalColor::all(cRGB color){
   color_fn = color;
   color_media = color;
   color_led = color;
-  color_mouse = color;
+  color_mousemove = color;
+  color_mousebuttons = color;
+  color_mousewarp = color;
+  color_mousescroll = color;
 }
 
 // Color keys that aren't letters, numbers, or punctuation
@@ -62,6 +101,13 @@ void LEDFunctionalColor::allModifiers(cRGB color) {
   color_capslock = color;
   color_fkeys = color;
   color_fn = color;
+}
+
+void LEDFunctionalColor::allMouse(cRGB color){
+  color_mousemove = color;
+  color_mousebuttons = color;
+  color_mousewarp = color;
+  color_mousescroll = color;
 }
 
 void LEDFunctionalColor::escape(cRGB color) {
@@ -172,8 +218,20 @@ void LEDFunctionalColor::led(cRGB color){
   color_led = color;
 }
 
-void LEDFunctionalColor::mouse(cRGB color){
-  color_mouse = color;
+void LEDFunctionalColor::mousemove(cRGB color){
+  color_mousemove = color;
+}
+
+void LEDFunctionalColor::mousebuttons(cRGB color){
+  color_mousebuttons = color;
+}
+
+void LEDFunctionalColor::mousewarp(cRGB color){
+  color_mousewarp = color;
+}
+
+void LEDFunctionalColor::mousescroll(cRGB color){
+  color_mousescroll = color;
 }
 
 
@@ -207,7 +265,10 @@ void LEDFunctionalColor::all(cRGB color, byte brightness){
   color_fn = dim(color, brightness);
   color_media = dim(color, brightness);
   color_led = dim(color, brightness);
-  color_mouse = dim(color, brightness);
+  color_mousemove = dim(color, brightness);
+  color_mousebuttons = dim(color, brightness);
+  color_mousewarp = dim(color, brightness);
+  color_mousescroll = dim(color, brightness);
 }
 
 // Color keys that aren't letters, numbers, or punctuation
@@ -230,6 +291,13 @@ void LEDFunctionalColor::allModifiers(cRGB color, byte brightness) {
   color_capslock = dim(color, brightness);
   color_fkeys = dim(color, brightness);
   color_fn = dim(color, brightness);
+}
+
+void LEDFunctionalColor::allMouse(cRGB color, byte brightness){
+  color_mousemove = dim(color, brightness);
+  color_mousebuttons = dim(color, brightness);
+  color_mousewarp = dim(color, brightness);
+  color_mousescroll = dim(color, brightness);
 }
 
 void LEDFunctionalColor::escape(cRGB color, byte brightness) {
@@ -340,10 +408,21 @@ void LEDFunctionalColor::led(cRGB color, byte brightness){
   color_led = dim(color, brightness);
 }
 
-void LEDFunctionalColor::mouse(cRGB color, byte brightness){
-  color_mouse = dim(color, brightness);
+void LEDFunctionalColor::mousemove(cRGB color, byte brightness){
+  color_mousemove = dim(color, brightness);
 }
 
+void LEDFunctionalColor::mousebuttons(cRGB color, byte brightness){
+  color_mousebuttons = dim(color, brightness);
+}
+
+void LEDFunctionalColor::mousewarp(cRGB color, byte brightness){
+  color_mousewarp = dim(color, brightness);
+}
+
+void LEDFunctionalColor::mousescroll(cRGB color, byte brightness){
+  color_mousescroll = dim(color, brightness);
+}
 
 /*
  * setKeyLed accepts a Key position and sets it to the appropriate color
@@ -480,18 +559,22 @@ void LEDFunctionalColor::setKeyLed(uint8_t r, uint8_t c) {
   else if (k == Consumer_Mute) {::LEDControl.setCrgbAt(r, c, color_media); return;}
 
   // mouse keys
-  else if (k == Key_mouseL) {::LEDControl.setCrgbAt(r, c, color_mouse); return;}
-  else if (k == Key_mouseR) {::LEDControl.setCrgbAt(r, c, color_mouse); return;}
-  else if (k == Key_mouseUp) {::LEDControl.setCrgbAt(r, c, color_mouse); return;}
-  else if (k == Key_mouseDn) {::LEDControl.setCrgbAt(r, c, color_mouse); return;}
-  else if (k == Key_mouseBtnR) {::LEDControl.setCrgbAt(r, c, color_mouse); return;}
-  else if (k == Key_mouseBtnL) {::LEDControl.setCrgbAt(r, c, color_mouse); return;}
-  else if (k == Key_mouseBtnM) {::LEDControl.setCrgbAt(r, c, color_mouse); return;}
-  else if (k == Key_mouseWarpEnd) {::LEDControl.setCrgbAt(r, c, color_mouse); return;}
-  else if (k == Key_mouseWarpNW) {::LEDControl.setCrgbAt(r, c, color_mouse); return;}
-  else if (k == Key_mouseWarpSW) {::LEDControl.setCrgbAt(r, c, color_mouse); return;}
-  else if (k == Key_mouseWarpNE) {::LEDControl.setCrgbAt(r, c, color_mouse); return;}
-  else if (k == Key_mouseWarpSW) {::LEDControl.setCrgbAt(r, c, color_mouse); return;}
+  else if (k == Key_mouseL) {::LEDControl.setCrgbAt(r, c, color_mousemove); return;}
+  else if (k == Key_mouseR) {::LEDControl.setCrgbAt(r, c, color_mousemove); return;}
+  else if (k == Key_mouseUp) {::LEDControl.setCrgbAt(r, c, color_mousemove); return;}
+  else if (k == Key_mouseDn) {::LEDControl.setCrgbAt(r, c, color_mousemove); return;}
+  else if (k == Key_mouseBtnR) {::LEDControl.setCrgbAt(r, c, color_mousebuttons); return;}
+  else if (k == Key_mouseBtnL) {::LEDControl.setCrgbAt(r, c, color_mousebuttons); return;}
+  else if (k == Key_mouseBtnM) {::LEDControl.setCrgbAt(r, c, color_mousebuttons); return;}
+  else if (k == Key_mouseWarpEnd) {::LEDControl.setCrgbAt(r, c, color_mousewarp); return;}
+  else if (k == Key_mouseWarpNW) {::LEDControl.setCrgbAt(r, c, color_mousewarp); return;}
+  else if (k == Key_mouseWarpSW) {::LEDControl.setCrgbAt(r, c, color_mousewarp); return;}
+  else if (k == Key_mouseWarpNE) {::LEDControl.setCrgbAt(r, c, color_mousewarp); return;}
+  else if (k == Key_mouseWarpSW) {::LEDControl.setCrgbAt(r, c, color_mousewarp); return;}
+  // mouse scroll
+  else if (k == Key_mouseScrollUp) {::LEDControl.setCrgbAt(r, c, color_mousescroll); return;}
+  else if (k == Key_mouseScrollDn) {::LEDControl.setCrgbAt(r, c, color_mousescroll); return;}
+
 
 }// end setKeyLed
 
