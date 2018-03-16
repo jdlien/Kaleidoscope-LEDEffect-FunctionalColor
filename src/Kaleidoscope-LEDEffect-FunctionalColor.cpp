@@ -9,6 +9,12 @@ LEDFunctionalColor::LEDFunctionalColor(uint8_t fLayer) {
 LEDFunctionalColor::LEDFunctionalColor(void) {
 }
 
+// Allow changing palette colors
+void LEDFunctionalColor::changePalette(uint8_t colorIndex, cRGB newColor) {
+  if (colorIndex > 15 || colorIndex < 0) {return;}
+  palette[colorIndex] = newColor;
+}
+
 // Just reduce brighness of everything without changing color
 void LEDFunctionalColor::brightness(uint8_t brightness) {
   color_escape = dim(color_escape, brightness);

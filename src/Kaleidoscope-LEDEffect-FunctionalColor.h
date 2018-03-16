@@ -15,7 +15,7 @@ class LEDFunctionalColor : public LEDMode {
   // Establish a palette of 16 colors. This is a rainbow of 14 vivid colors and two whites
   cRGB palette [16] = {
     CRGB(255,255,255), //white
-    CRGB(255, 235, 215), //warm white aka antiquewhite
+    CRGB(255,235,215), //warm white aka antiquewhite
     CRGB(255,0,0), //red
     hsvToRgb(16,255,255), //red-orange
     hsvToRgb(32,255,255), //orange
@@ -24,13 +24,16 @@ class LEDFunctionalColor : public LEDMode {
     CRGB(0,255,0), //green aka lime
     hsvToRgb(112,255,255), //turquoise
     hsvToRgb(128,255,255), //cyan
-    hsvToRgb(144,255,255), //deep sky blue
-    CRGB(0,0,255), //blue
+    hsvToRgb(144,200,255), //royal blue
+    CRGB(0,0,255),  //blue
     hsvToRgb(192,255,255), //purple
     hsvToRgb(208,255,255), //fuchsia
     hsvToRgb(224,255,255), //magenta
     hsvToRgb(240,255,255), //neon red
   };
+
+//enumerate color names
+enum{WHITE, WARMWHITE, RED, REDORANGE, ORANGE, YELLOW, GREENYELLOW, GREEN, TURQUOISE, CYAN, ROYALBLUE, BLUE, PURPLE, FUCHSIA, MAGENTA, NEONRED};
 
 /*
    // An alternate set of 7 vivid colors with pale complements
@@ -58,6 +61,9 @@ class LEDFunctionalColor : public LEDMode {
   };
 */
    
+  // changePalette allows you to change colors in the palette
+  // Specify the color index (0-15) and the new color as a CRGB object
+  void changePalette(uint8_t colorIndex, cRGB newColor);
 
   // dims the brightness of all colors from 0-16 
   void brightness(byte brightness);
@@ -332,48 +338,48 @@ class LEDFunctionalColor : public LEDMode {
   // 14 - 1110 1111 = 239 magenta
   // 15 - 1111 1111 = 255 neon red
 
-  byte color_escape = (2 << 4) + 7; //red at half brightness
-  byte color_numbers = 0 + 13; //white at high brightness
-  byte color_number_1 = 13;
-  byte color_number_2 = 13;
-  byte color_number_3 = 13;
-  byte color_number_4 = 13;
-  byte color_number_5 = 13;
-  byte color_number_6 = 13;
-  byte color_number_7 = 13;
-  byte color_number_8 = 13;
-  byte color_number_9 = 13;
-  byte color_number_0 = 13;
-  byte color_number_minus = 13;
-  byte color_number_equals = 13;
+  byte color_escape = (RED << 4) + 7; //red at half brightness
+  byte color_numbers = WHITE + 13; //white at high brightness
+  byte color_number_1 = WHITE + 13;
+  byte color_number_2 = WHITE + 13;
+  byte color_number_3 = WHITE + 13;
+  byte color_number_4 = WHITE + 13;
+  byte color_number_5 = WHITE + 13;
+  byte color_number_6 = WHITE + 13;
+  byte color_number_7 = WHITE + 13;
+  byte color_number_8 = WHITE + 13;
+  byte color_number_9 = WHITE + 13;
+  byte color_number_0 = WHITE + 13;
+  byte color_number_minus = WHITE + 13;
+  byte color_number_equals = WHITE + 13;
 
-  byte color_letters = (1 << 4) + 8; //warm white at medium brightness
-  byte color_letter_a = (1 << 4) + 8;
-  byte color_letter_b = (1 << 4) + 8;
-  byte color_letter_c = (1 << 4) + 8;
-  byte color_letter_d = (1 << 4) + 8;
-  byte color_letter_e = (1 << 4) + 8;
-  byte color_letter_f = (1 << 4) + 8;
-  byte color_letter_g = (1 << 4) + 8;
-  byte color_letter_h = (1 << 4) + 8;
-  byte color_letter_i = (1 << 4) + 8;
-  byte color_letter_j = (1 << 4) + 8;
-  byte color_letter_k = (1 << 4) + 8;
-  byte color_letter_l = (1 << 4) + 8;
-  byte color_letter_m = (1 << 4) + 8;
-  byte color_letter_n = (1 << 4) + 8;
-  byte color_letter_o = (1 << 4) + 8;
-  byte color_letter_p = (1 << 4) + 8;
-  byte color_letter_q = (1 << 4) + 8;
-  byte color_letter_r = (1 << 4) + 8;
-  byte color_letter_s = (1 << 4) + 8;
-  byte color_letter_t = (1 << 4) + 8;
-  byte color_letter_u = (1 << 4) + 8;
-  byte color_letter_v = (1 << 4) + 8;
-  byte color_letter_w = (1 << 4) + 8;
-  byte color_letter_x = (1 << 4) + 8;
-  byte color_letter_y = (1 << 4) + 8;
-  byte color_letter_z  = (1 << 4) + 8; 
+  byte color_letters = (1 << 4) + 7; //warm white at medium brightness
+  byte color_letter_a = (1 << 4) + 7;
+  byte color_letter_b = (1 << 4) + 7;
+  byte color_letter_c = (1 << 4) + 7;
+  byte color_letter_d = (1 << 4) + 7;
+  byte color_letter_e = (1 << 4) + 7;
+  byte color_letter_f = (1 << 4) + 7;
+  byte color_letter_g = (1 << 4) + 7;
+  byte color_letter_h = (1 << 4) + 7;
+  byte color_letter_i = (1 << 4) + 7;
+  byte color_letter_j = (1 << 4) + 7;
+  byte color_letter_k = (1 << 4) + 7;
+  byte color_letter_l = (1 << 4) + 7;
+  byte color_letter_m = (1 << 4) + 7;
+  byte color_letter_n = (1 << 4) + 7;
+  byte color_letter_o = (1 << 4) + 7;
+  byte color_letter_p = (1 << 4) + 7;
+  byte color_letter_q = (1 << 4) + 7;
+  byte color_letter_r = (1 << 4) + 7;
+  byte color_letter_s = (1 << 4) + 7;
+  byte color_letter_t = (1 << 4) + 7;
+  byte color_letter_u = (1 << 4) + 7;
+  byte color_letter_v = (1 << 4) + 7;
+  byte color_letter_w = (1 << 4) + 7;
+  byte color_letter_x = (1 << 4) + 7;
+  byte color_letter_y = (1 << 4) + 7;
+  byte color_letter_z = (1 << 4) + 7;
 
   byte color_punctuation = (1 << 4) + 13;
   byte color_punctuation_backtick = (1 << 4) + 13;
@@ -391,7 +397,7 @@ class LEDFunctionalColor : public LEDMode {
 
   byte color_backslash = (1 << 4) + 13;
   byte color_pipe = (1 << 4) + 13;
-  byte color_space = 12;
+  byte color_space = 11;
   byte color_tab = 12;
   byte color_backspace = (2 << 4) + 9;
   byte color_delete = (2 << 4) + 15;
@@ -422,26 +428,26 @@ class LEDFunctionalColor : public LEDMode {
   byte color_scrolllock = (3 << 4) + 8;
   byte color_capslock = (3 << 4) + 8;
   
-  byte color_fkeys = (2 << 4) + 13;
-  byte color_fkey_f1 = (2 << 4) + 13;
-  byte color_fkey_f2 = (2 << 4) + 13;
-  byte color_fkey_f3 = (2 << 4) + 13;
-  byte color_fkey_f4 = (2 << 4) + 13;
-  byte color_fkey_f5 = (2 << 4) + 13;
-  byte color_fkey_f6 = (2 << 4) + 13;
-  byte color_fkey_f7 = (2 << 4) + 13;
-  byte color_fkey_f8 = (2 << 4) + 13;
-  byte color_fkey_f9 = (2 << 4) + 13;
-  byte color_fkey_f10 = (2 << 4) + 13;
-  byte color_fkey_f11 = (2 << 4) + 13;
-  byte color_fkey_f12 = (2 << 4) + 13;
-  byte color_fkey_f13 = (2 << 4) + 13;
-  byte color_fkey_f14 = (2 << 4) + 13;
-  byte color_fkey_f15 = (2 << 4) + 13;
-  byte color_fkey_f16 = (2 << 4) + 13;
-  byte color_fkey_f17 = (2 << 4) + 13;
-  byte color_fkey_f18 = (2 << 4) + 13;
-  byte color_fkey_f19 = (2 << 4) + 13;
+  byte color_fkeys = (15 << 4) + 13;
+  byte color_fkey_f1 = (15 << 4) + 13;
+  byte color_fkey_f2 = (15 << 4) + 13;
+  byte color_fkey_f3 = (15 << 4) + 13;
+  byte color_fkey_f4 = (15 << 4) + 13;
+  byte color_fkey_f5 = (15 << 4) + 13;
+  byte color_fkey_f6 = (15 << 4) + 13;
+  byte color_fkey_f7 = (15 << 4) + 13;
+  byte color_fkey_f8 = (15 << 4) + 13;
+  byte color_fkey_f9 = (15 << 4) + 13;
+  byte color_fkey_f10 = (15 << 4) + 13;
+  byte color_fkey_f11 = (15 << 4) + 13;
+  byte color_fkey_f12 = (15 << 4) + 13;
+  byte color_fkey_f13 = (15 << 4) + 13;
+  byte color_fkey_f14 = (15 << 4) + 13;
+  byte color_fkey_f15 = (15 << 4) + 13;
+  byte color_fkey_f16 = (15 << 4) + 13;
+  byte color_fkey_f17 = (15 << 4) + 13;
+  byte color_fkey_f18 = (15 << 4) + 13;
+  byte color_fkey_f19 = (15 << 4) + 13;
 
   byte color_fn = 8;
   byte color_media = (13 << 4) + 14;
