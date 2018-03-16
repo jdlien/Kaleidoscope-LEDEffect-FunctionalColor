@@ -10,7 +10,7 @@ LEDFunctionalColor::LEDFunctionalColor(void) {
 }
 
 // Just reduce brighness of everything without changing color
-void LEDFunctionalColor::brightness(byte brightness) {
+void LEDFunctionalColor::brightness(uint8_t brightness) {
   color_escape = dim(color_escape, brightness);
   color_numbers = dim(color_numbers, brightness);
   color_number_1 = dim(color_number_1, brightness);
@@ -68,6 +68,7 @@ void LEDFunctionalColor::brightness(byte brightness) {
   color_pipe = dim(color_pipe, brightness);
   color_tab = dim(color_tab, brightness);
   color_backspace = dim(color_backspace, brightness);
+  color_space = dim(color_space, brightness);
   color_delete = dim(color_delete, brightness);
   color_enter = dim(color_enter, brightness);
   color_arrows = dim(color_arrows, brightness);
@@ -126,245 +127,257 @@ void LEDFunctionalColor::brightness(byte brightness) {
   color_mousescroll = dim(color_mousescroll, brightness);
 }
 
-// Sets all the colors to the same thing
-void LEDFunctionalColor::all(cRGB color){
-  color_escape = color;
-  color_numbers = color;
-  color_number_1 = color;
-  color_number_2 = color;
-  color_number_3 = color;
-  color_number_4 = color;
-  color_number_5 = color;
-  color_number_6 = color;
-  color_number_7 = color;
-  color_number_8 = color;
-  color_number_9 = color;
-  color_number_0 = color;
-  color_number_minus = color;
-  color_number_equals = color;
-  color_letters = color;
-  color_letter_a = color;
-  color_letter_b = color;
-  color_letter_c = color;
-  color_letter_d = color;
-  color_letter_e = color;
-  color_letter_f = color;
-  color_letter_g = color;
-  color_letter_h = color;
-  color_letter_i = color;
-  color_letter_j = color;
-  color_letter_k = color;
-  color_letter_l = color;
-  color_letter_m = color;
-  color_letter_n = color;
-  color_letter_o = color;
-  color_letter_p = color;
-  color_letter_q = color;
-  color_letter_r = color;
-  color_letter_s = color;
-  color_letter_t = color;
-  color_letter_u = color;
-  color_letter_v = color;
-  color_letter_w = color;
-  color_letter_x = color;
-  color_letter_y = color;
-  color_letter_z = color;
-  color_punctuation = color;
-  color_punctuation_backtick = color;
-  color_punctuation_period = color;
-  color_punctuation_comma = color;
-  color_punctuation_semicolon = color;
-  color_punctuation_quote = color;
-  color_punctuation_slash = color;
-  color_brackets = color;
-  color_bracket_leftbracket = color;
-  color_bracket_rightbracket = color;
-  color_bracket_leftcurlybracket = color;
-  color_bracket_rightcurlybracket = color;
-  color_backslash = color;
-  color_pipe = color;
-  color_tab = color;
-  color_backspace = color;
-  color_delete = color;
-  color_enter = color;
-  color_arrows = color;
-  color_arrow_left = color;
-  color_arrow_up = color;
-  color_arrow_down = color;
-  color_arrow_right = color;
-  color_nav = color;
-  color_nav_home = color;
-  color_nav_end = color;
-  color_nav_pageup = color;
-  color_nav_pagedown = color;
-  color_insert = color;
-  color_shift = color;
-  color_ctrl = color;
-  color_alt = color;
-  color_cmd = color;
-  color_app = color;
-  color_printscreen = color;
-  color_pause = color;
-  color_scrolllock = color;
-  color_capslock = color;
-  color_fkeys = color;
-  color_fkey_f1 = color;
-  color_fkey_f2 = color;
-  color_fkey_f3 = color;
-  color_fkey_f4 = color;
-  color_fkey_f5 = color;
-  color_fkey_f6 = color;
-  color_fkey_f7 = color;
-  color_fkey_f8 = color;
-  color_fkey_f9 = color;
-  color_fkey_f10 = color;
-  color_fkey_f11 = color;
-  color_fkey_f12 = color;
-  color_fkey_f13 = color;
-  color_fkey_f14 = color;
-  color_fkey_f15 = color;
-  color_fkey_f16 = color;
-  color_fkey_f17 = color;
-  color_fkey_f18 = color;
-  color_fkey_f19 = color;
-  color_fn = color;
-  color_media = color;
-  color_media_play = color;
-  color_media_prev = color;
-  color_media_next = color;
-  color_media_stop = color;
-  color_media_volup = color;
-  color_media_voldown = color;
-  color_media_mute = color;
-  color_led = color;
-  color_mousemove = color;
-  color_mousebuttons = color;
-  color_mousewarp = color;
-  color_mousescroll = color;
+// Sets all the colors to a color index without brightness
+void LEDFunctionalColor::all(uint8_t color){
+  byte colorbrightness = (color << 4) + 15;
+  color_escape = colorbrightness;
+  color_numbers = colorbrightness;
+  color_number_1 = colorbrightness;
+  color_number_2 = colorbrightness;
+  color_number_3 = colorbrightness;
+  color_number_4 = colorbrightness;
+  color_number_5 = colorbrightness;
+  color_number_6 = colorbrightness;
+  color_number_7 = colorbrightness;
+  color_number_8 = colorbrightness;
+  color_number_9 = colorbrightness;
+  color_number_0 = colorbrightness;
+  color_number_minus = colorbrightness;
+  color_number_equals = colorbrightness;
+  color_letters = colorbrightness;
+  color_letter_a = colorbrightness;
+  color_letter_b = colorbrightness;
+  color_letter_c = colorbrightness;
+  color_letter_d = colorbrightness;
+  color_letter_e = colorbrightness;
+  color_letter_f = colorbrightness;
+  color_letter_g = colorbrightness;
+  color_letter_h = colorbrightness;
+  color_letter_i = colorbrightness;
+  color_letter_j = colorbrightness;
+  color_letter_k = colorbrightness;
+  color_letter_l = colorbrightness;
+  color_letter_m = colorbrightness;
+  color_letter_n = colorbrightness;
+  color_letter_o = colorbrightness;
+  color_letter_p = colorbrightness;
+  color_letter_q = colorbrightness;
+  color_letter_r = colorbrightness;
+  color_letter_s = colorbrightness;
+  color_letter_t = colorbrightness;
+  color_letter_u = colorbrightness;
+  color_letter_v = colorbrightness;
+  color_letter_w = colorbrightness;
+  color_letter_x = colorbrightness;
+  color_letter_y = colorbrightness;
+  color_letter_z = colorbrightness;
+  color_punctuation = colorbrightness;
+  color_punctuation_backtick = colorbrightness;
+  color_punctuation_period = colorbrightness;
+  color_punctuation_comma = colorbrightness;
+  color_punctuation_semicolon = colorbrightness;
+  color_punctuation_quote = colorbrightness;
+  color_punctuation_slash = colorbrightness;
+  color_brackets = colorbrightness;
+  color_bracket_leftbracket = colorbrightness;
+  color_bracket_rightbracket = colorbrightness;
+  color_bracket_leftcurlybracket = colorbrightness;
+  color_bracket_rightcurlybracket = colorbrightness;
+  color_backslash = colorbrightness;
+  color_pipe = colorbrightness;
+  color_tab = colorbrightness;
+  color_backspace = colorbrightness;
+  color_space = colorbrightness;
+  color_delete = colorbrightness;
+  color_enter = colorbrightness;
+  color_arrows = colorbrightness;
+  color_arrow_left = colorbrightness;
+  color_arrow_up = colorbrightness;
+  color_arrow_down = colorbrightness;
+  color_arrow_right = colorbrightness;
+  color_nav = colorbrightness;
+  color_nav_home = colorbrightness;
+  color_nav_end = colorbrightness;
+  color_nav_pageup = colorbrightness;
+  color_nav_pagedown = colorbrightness;
+  color_insert = colorbrightness;
+  color_shift = colorbrightness;
+  color_ctrl = colorbrightness;
+  color_alt = colorbrightness;
+  color_cmd = colorbrightness;
+  color_app = colorbrightness;
+  color_printscreen = colorbrightness;
+  color_pause = colorbrightness;
+  color_scrolllock = colorbrightness;
+  color_capslock = colorbrightness;
+  color_fkeys = colorbrightness;
+  color_fkey_f1 = colorbrightness;
+  color_fkey_f2 = colorbrightness;
+  color_fkey_f3 = colorbrightness;
+  color_fkey_f4 = colorbrightness;
+  color_fkey_f5 = colorbrightness;
+  color_fkey_f6 = colorbrightness;
+  color_fkey_f7 = colorbrightness;
+  color_fkey_f8 = colorbrightness;
+  color_fkey_f9 = colorbrightness;
+  color_fkey_f10 = colorbrightness;
+  color_fkey_f11 = colorbrightness;
+  color_fkey_f12 = colorbrightness;
+  color_fkey_f13 = colorbrightness;
+  color_fkey_f14 = colorbrightness;
+  color_fkey_f15 = colorbrightness;
+  color_fkey_f16 = colorbrightness;
+  color_fkey_f17 = colorbrightness;
+  color_fkey_f18 = colorbrightness;
+  color_fkey_f19 = colorbrightness;
+  color_fn = colorbrightness;
+  color_media = colorbrightness;
+  color_media_play = colorbrightness;
+  color_media_prev = colorbrightness;
+  color_media_next = colorbrightness;
+  color_media_stop = colorbrightness;
+  color_media_volup = colorbrightness;
+  color_media_voldown = colorbrightness;
+  color_media_mute = colorbrightness;
+  color_led = colorbrightness;
+  color_mousemove = colorbrightness;
+  color_mousebuttons = colorbrightness;
+  color_mousewarp = colorbrightness;
+  color_mousescroll = colorbrightness;
 }
 
 // Color keys that aren't letters, numbers, or punctuation
-void LEDFunctionalColor::allModifiers(cRGB color) {
-  color_escape = color;
-  color_backspace = color;
-  color_delete = color;
-  color_enter = color;
-  color_arrows = color;
-  color_nav = color;
-  color_insert = color;
-  color_shift = color;
-  color_ctrl = color;
-  color_alt = color;
-  color_cmd = color;
-  color_app = color;
-  color_printscreen = color;
-  color_pause = color;
-  color_scrolllock = color;
-  color_capslock = color;
-  color_fkeys = color;
-  color_fn = color;
+void LEDFunctionalColor::allModifiers(uint8_t color) {
+  byte colorbrightness = (color << 4) + 15;
+  color_escape = colorbrightness;
+  color_backspace = colorbrightness;
+  color_delete = colorbrightness;
+  color_enter = colorbrightness;
+  color_arrows = colorbrightness;
+  color_nav = colorbrightness;
+  color_insert = colorbrightness;
+  color_shift = colorbrightness;
+  color_ctrl = colorbrightness;
+  color_alt = colorbrightness;
+  color_cmd = colorbrightness;
+  color_app = colorbrightness;
+  color_printscreen = colorbrightness;
+  color_pause = colorbrightness;
+  color_scrolllock = colorbrightness;
+  color_capslock = colorbrightness;
+  color_fkeys = colorbrightness;
+  color_fn = colorbrightness;
 }
 
-void LEDFunctionalColor::allMouse(cRGB color){
-  color_mousemove = color;
-  color_mousebuttons = color;
-  color_mousewarp = color;
-  color_mousescroll = color;
+void LEDFunctionalColor::allMouse(uint8_t color){
+  byte colorbrightness = (color << 4) + 15;
+  color_mousemove = colorbrightness;
+  color_mousebuttons = colorbrightness;
+  color_mousewarp = colorbrightness;
+  color_mousescroll = colorbrightness;
 }
 
-void LEDFunctionalColor::escape(cRGB color) {
-  color_escape = color;
+void LEDFunctionalColor::escape(uint8_t color) {
+  color_escape = (color << 4) + 15;
 }
 
-void LEDFunctionalColor::numbers(cRGB color){
-  color_numbers = color;
-  color_number_1 = color;
-  color_number_2 = color;
-  color_number_3 = color;
-  color_number_4 = color;
-  color_number_5 = color;
-  color_number_6 = color;
-  color_number_7 = color;
-  color_number_8 = color;
-  color_number_9 = color;
-  color_number_0 = color;
-  color_number_minus = color;
-  color_number_equals = color;
+void LEDFunctionalColor::numbers(uint8_t color){
+  byte colorbrightness = (color << 4) + 15;
+  color_numbers = colorbrightness;
+  color_number_1 = colorbrightness;
+  color_number_2 = colorbrightness;
+  color_number_3 = colorbrightness;
+  color_number_4 = colorbrightness;
+  color_number_5 = colorbrightness;
+  color_number_6 = colorbrightness;
+  color_number_7 = colorbrightness;
+  color_number_8 = colorbrightness;
+  color_number_9 = colorbrightness;
+  color_number_0 = colorbrightness;
+  color_number_minus = colorbrightness;
+  color_number_equals = colorbrightness;
 }
 
-void LEDFunctionalColor::letters(cRGB color){
-  color_letters = color;
-  color_letter_a = color;
-  color_letter_b = color;
-  color_letter_c = color;
-  color_letter_d = color;
-  color_letter_e = color;
-  color_letter_f = color;
-  color_letter_g = color;
-  color_letter_h = color;
-  color_letter_i = color;
-  color_letter_j = color;
-  color_letter_k = color;
-  color_letter_l = color;
-  color_letter_m = color;
-  color_letter_n = color;
-  color_letter_o = color;
-  color_letter_p = color;
-  color_letter_q = color;
-  color_letter_r = color;
-  color_letter_s = color;
-  color_letter_t = color;
-  color_letter_u = color;
-  color_letter_v = color;
-  color_letter_w = color;
-  color_letter_x = color;
-  color_letter_y = color;
-  color_letter_z = color;
+void LEDFunctionalColor::letters(uint8_t color){
+  byte colorbrightness = (color << 4) + 15;
+  color_letters = colorbrightness;
+  color_letter_a = colorbrightness;
+  color_letter_b = colorbrightness;
+  color_letter_c = colorbrightness;
+  color_letter_d = colorbrightness;
+  color_letter_e = colorbrightness;
+  color_letter_f = colorbrightness;
+  color_letter_g = colorbrightness;
+  color_letter_h = colorbrightness;
+  color_letter_i = colorbrightness;
+  color_letter_j = colorbrightness;
+  color_letter_k = colorbrightness;
+  color_letter_l = colorbrightness;
+  color_letter_m = colorbrightness;
+  color_letter_n = colorbrightness;
+  color_letter_o = colorbrightness;
+  color_letter_p = colorbrightness;
+  color_letter_q = colorbrightness;
+  color_letter_r = colorbrightness;
+  color_letter_s = colorbrightness;
+  color_letter_t = colorbrightness;
+  color_letter_u = colorbrightness;
+  color_letter_v = colorbrightness;
+  color_letter_w = colorbrightness;
+  color_letter_x = colorbrightness;
+  color_letter_y = colorbrightness;
+  color_letter_z = colorbrightness;
 }
 
-void LEDFunctionalColor::punctuation(cRGB color){
-  color_punctuation = color;
-  color_punctuation_backtick = color;
-  color_punctuation_period = color;
-  color_punctuation_comma = color;
-  color_punctuation_semicolon = color;
-  color_punctuation_quote = color;
-  color_punctuation_slash = color;
+void LEDFunctionalColor::punctuation(uint8_t color){
+  byte colorbrightness = (color << 4) + 15;
+  color_punctuation = colorbrightness;
+  color_punctuation_backtick = colorbrightness;
+  color_punctuation_period = colorbrightness;
+  color_punctuation_comma = colorbrightness;
+  color_punctuation_semicolon = colorbrightness;
+  color_punctuation_quote = colorbrightness;
+  color_punctuation_slash = colorbrightness;
 }
 
-void LEDFunctionalColor::brackets(cRGB color){
-  color_brackets = color;
-  color_bracket_leftbracket = color;
-  color_bracket_rightbracket = color;
-  color_bracket_leftcurlybracket = color;
-  color_bracket_rightcurlybracket = color;
+void LEDFunctionalColor::brackets(uint8_t color){
+  byte colorbrightness = (color << 4) + 15;
+  color_brackets = colorbrightness;
+  color_bracket_leftbracket = colorbrightness;
+  color_bracket_rightbracket = colorbrightness;
+  color_bracket_leftcurlybracket = colorbrightness;
+  color_bracket_rightcurlybracket = colorbrightness;
 }
 
-void LEDFunctionalColor::backslash(cRGB color){
-  color_backslash = color;
+void LEDFunctionalColor::backslash(uint8_t color){
+  color_backslash = (color << 4) + 15;
 }
 
-void LEDFunctionalColor::pipe(cRGB color){
-  color_pipe = color;
+void LEDFunctionalColor::pipe(uint8_t color){
+  color_pipe = (color << 4) + 15;
 }
 
-void LEDFunctionalColor::tab(cRGB color){
-  color_tab = color;
+void LEDFunctionalColor::tab(uint8_t color){
+  color_tab = (color << 4) + 15;
 }
 
-void LEDFunctionalColor::backspace(cRGB color){
-  color_backspace = color;
+void LEDFunctionalColor::backspace(uint8_t color){
+  color_backspace = (color << 4) + 15;
 }
 
-void LEDFunctionalColor::del(cRGB color){
-  color_delete = color;
+void LEDFunctionalColor::space(uint8_t color){
+  color_space = (color << 4) + 15;
 }
 
-void LEDFunctionalColor::enter(cRGB color){
-  color_enter = color;
+void LEDFunctionalColor::del(uint8_t color){
+  color_delete = (color << 4) + 15;
 }
 
-void LEDFunctionalColor::arrows(cRGB color){
+void LEDFunctionalColor::enter(uint8_t color){
+  color_enter = (color << 4) + 15;
+}
+
+void LEDFunctionalColor::arrows(uint8_t color){
   color_arrows = color;
   color_arrow_left = color;
   color_arrow_up = color;
@@ -372,196 +385,199 @@ void LEDFunctionalColor::arrows(cRGB color){
   color_arrow_right = color;
 }
 
-void LEDFunctionalColor::nav(cRGB color){
-  color_nav = color;
-  color_nav_home = color;
-  color_nav_end = color;
-  color_nav_pageup = color;
-  color_nav_pagedown = color;
+void LEDFunctionalColor::nav(uint8_t color){
+  byte colorbrightness = (color << 4) + 15;
+  color_nav = colorbrightness;
+  color_nav_home = colorbrightness;
+  color_nav_end = colorbrightness;
+  color_nav_pageup = colorbrightness;
+  color_nav_pagedown = colorbrightness;
 
 }
 
-void LEDFunctionalColor::insert(cRGB color){
-  color_insert = color;
+void LEDFunctionalColor::insert(uint8_t color){
+  color_insert = (color << 4) + 15;
 }
 
-void LEDFunctionalColor::shift(cRGB color){
-  color_shift = color;
+void LEDFunctionalColor::shift(uint8_t color){
+  color_shift = (color << 4) + 15;
 }
 
-void LEDFunctionalColor::ctrl(cRGB color){
-  color_ctrl = color;
+void LEDFunctionalColor::ctrl(uint8_t color){
+  color_ctrl = (color << 4) + 15;
 }
 
-void LEDFunctionalColor::alt(cRGB color){
-  color_alt = color;
+void LEDFunctionalColor::alt(uint8_t color){
+  color_alt = (color << 4) + 15;
 }
 
-void LEDFunctionalColor::cmd(cRGB color){
-  color_cmd = color;
+void LEDFunctionalColor::cmd(uint8_t color){
+  color_cmd = (color << 4) + 15;
 }
 
-void LEDFunctionalColor::app(cRGB color){
-  color_app = color;
+void LEDFunctionalColor::app(uint8_t color){
+  color_app = (color << 4) + 15;
 }
 
-void LEDFunctionalColor::printscreen(cRGB color){
-  color_printscreen = color;
+void LEDFunctionalColor::printscreen(uint8_t color){
+  color_printscreen = (color << 4) + 15;
 }
 
-void LEDFunctionalColor::pause(cRGB color){
-  color_pause = color;
+void LEDFunctionalColor::pause(uint8_t color){
+  color_pause = (color << 4) + 15;
 }
 
-void LEDFunctionalColor::scrolllock(cRGB color){
-  color_scrolllock = color;
+void LEDFunctionalColor::scrolllock(uint8_t color){
+  color_scrolllock = (color << 4) + 15;
 }
 
-void LEDFunctionalColor::capslock(cRGB color){
-  color_capslock = color;
+void LEDFunctionalColor::capslock(uint8_t color){
+  color_capslock = (color << 4) + 15;
 }
 
-void LEDFunctionalColor::fkeys(cRGB color){
-  color_fkeys = color;
-  color_fkey_f1 = color;
-  color_fkey_f2 = color;
-  color_fkey_f3 = color;
-  color_fkey_f4 = color;
-  color_fkey_f5 = color;
-  color_fkey_f6 = color;
-  color_fkey_f7 = color;
-  color_fkey_f8 = color;
-  color_fkey_f9 = color;
-  color_fkey_f10 = color;
-  color_fkey_f11 = color;
-  color_fkey_f12 = color;
-  color_fkey_f13 = color;
-  color_fkey_f14 = color;
-  color_fkey_f15 = color;
-  color_fkey_f16 = color;
-  color_fkey_f17 = color;
-  color_fkey_f18 = color;
-  color_fkey_f19 = color;
+void LEDFunctionalColor::fkeys(uint8_t color){
+  byte colorbrightness = (color << 4) + 15;
+  color_fkeys = colorbrightness;
+  color_fkey_f1 = colorbrightness;
+  color_fkey_f2 = colorbrightness;
+  color_fkey_f3 = colorbrightness;
+  color_fkey_f4 = colorbrightness;
+  color_fkey_f5 = colorbrightness;
+  color_fkey_f6 = colorbrightness;
+  color_fkey_f7 = colorbrightness;
+  color_fkey_f8 = colorbrightness;
+  color_fkey_f9 = colorbrightness;
+  color_fkey_f10 = colorbrightness;
+  color_fkey_f11 = colorbrightness;
+  color_fkey_f12 = colorbrightness;
+  color_fkey_f13 = colorbrightness;
+  color_fkey_f14 = colorbrightness;
+  color_fkey_f15 = colorbrightness;
+  color_fkey_f16 = colorbrightness;
+  color_fkey_f17 = colorbrightness;
+  color_fkey_f18 = colorbrightness;
+  color_fkey_f19 = colorbrightness;
 }
 
-void LEDFunctionalColor::fn(cRGB color){
-  color_fn = color;
+void LEDFunctionalColor::fn(uint8_t color){
+  color_fn = (color << 4) + 15;
 }
 
-void LEDFunctionalColor::media(cRGB color){
-  color_media = color;
-  color_media_play = color;
-  color_media_prev = color;
-  color_media_next = color;
-  color_media_stop = color;
-  color_media_volup = color;
-  color_media_voldown = color;
-  color_media_mute = color;
+void LEDFunctionalColor::media(uint8_t color){
+  byte colorbrightness = (color << 4) + 15;
+  color_media = colorbrightness;
+  color_media_play = colorbrightness;
+  color_media_prev = colorbrightness;
+  color_media_next = colorbrightness;
+  color_media_stop = colorbrightness;
+  color_media_volup = colorbrightness;
+  color_media_voldown = colorbrightness;
+  color_media_mute = colorbrightness;
 }
 
-void LEDFunctionalColor::led(cRGB color){
-  color_led = color;
+void LEDFunctionalColor::led(uint8_t color){
+  color_led = (color << 4) + 15;
 }
 
-void LEDFunctionalColor::mousemove(cRGB color){
-  color_mousemove = color;
+void LEDFunctionalColor::mousemove(uint8_t color){
+  color_mousemove = (color << 4) + 15;
 }
 
-void LEDFunctionalColor::mousebuttons(cRGB color){
-  color_mousebuttons = color;
+void LEDFunctionalColor::mousebuttons(uint8_t color){
+  color_mousebuttons = (color << 4) + 15;
 }
 
-void LEDFunctionalColor::mousewarp(cRGB color){
-  color_mousewarp = color;
+void LEDFunctionalColor::mousewarp(uint8_t color){
+  color_mousewarp = (color << 4) + 15;
 }
 
-void LEDFunctionalColor::mousescroll(cRGB color){
-  color_mousescroll = color;
+void LEDFunctionalColor::mousescroll(uint8_t color){
+  color_mousescroll = (color << 4) + 15;
 }
 
 // All the new individual key functions
-void LEDFunctionalColor::number_1(cRGB color){color_number_1 = color;}
-void LEDFunctionalColor::number_2(cRGB color){color_number_2 = color;}
-void LEDFunctionalColor::number_3(cRGB color){color_number_3 = color;}
-void LEDFunctionalColor::number_4(cRGB color){color_number_4 = color;}
-void LEDFunctionalColor::number_5(cRGB color){color_number_5 = color;}
-void LEDFunctionalColor::number_6(cRGB color){color_number_6 = color;}
-void LEDFunctionalColor::number_7(cRGB color){color_number_7 = color;}
-void LEDFunctionalColor::number_8(cRGB color){color_number_8 = color;}
-void LEDFunctionalColor::number_9(cRGB color){color_number_9 = color;}
-void LEDFunctionalColor::number_0(cRGB color){color_number_0 = color;}
-void LEDFunctionalColor::number_minus(cRGB color){color_number_minus = color;}
-void LEDFunctionalColor::number_equals(cRGB color){color_number_equals = color;}
-void LEDFunctionalColor::letter_a(cRGB color){color_letter_a = color;}
-void LEDFunctionalColor::letter_b(cRGB color){color_letter_b = color;}
-void LEDFunctionalColor::letter_c(cRGB color){color_letter_c = color;}
-void LEDFunctionalColor::letter_d(cRGB color){color_letter_d = color;}
-void LEDFunctionalColor::letter_e(cRGB color){color_letter_e = color;}
-void LEDFunctionalColor::letter_f(cRGB color){color_letter_f = color;}
-void LEDFunctionalColor::letter_g(cRGB color){color_letter_g = color;}
-void LEDFunctionalColor::letter_h(cRGB color){color_letter_h = color;}
-void LEDFunctionalColor::letter_i(cRGB color){color_letter_i = color;}
-void LEDFunctionalColor::letter_j(cRGB color){color_letter_j = color;}
-void LEDFunctionalColor::letter_k(cRGB color){color_letter_k = color;}
-void LEDFunctionalColor::letter_l(cRGB color){color_letter_l = color;}
-void LEDFunctionalColor::letter_m(cRGB color){color_letter_m = color;}
-void LEDFunctionalColor::letter_n(cRGB color){color_letter_n = color;}
-void LEDFunctionalColor::letter_o(cRGB color){color_letter_o = color;}
-void LEDFunctionalColor::letter_p(cRGB color){color_letter_p = color;}
-void LEDFunctionalColor::letter_q(cRGB color){color_letter_q = color;}
-void LEDFunctionalColor::letter_r(cRGB color){color_letter_r = color;}
-void LEDFunctionalColor::letter_s(cRGB color){color_letter_s = color;}
-void LEDFunctionalColor::letter_t(cRGB color){color_letter_t = color;}
-void LEDFunctionalColor::letter_u(cRGB color){color_letter_u = color;}
-void LEDFunctionalColor::letter_v(cRGB color){color_letter_v = color;}
-void LEDFunctionalColor::letter_w(cRGB color){color_letter_w = color;}
-void LEDFunctionalColor::letter_x(cRGB color){color_letter_x = color;}
-void LEDFunctionalColor::letter_y(cRGB color){color_letter_y = color;}
-void LEDFunctionalColor::letter_z(cRGB color){color_letter_z = color;}
-void LEDFunctionalColor::punctuation_backtick(cRGB color){color_punctuation_backtick = color;}
-void LEDFunctionalColor::punctuation_period(cRGB color){color_punctuation_period = color;}
-void LEDFunctionalColor::punctuation_comma(cRGB color){color_punctuation_comma = color;}
-void LEDFunctionalColor::punctuation_semicolon(cRGB color){color_punctuation_semicolon = color;}
-void LEDFunctionalColor::punctuation_quote(cRGB color){color_punctuation_quote = color;}
-void LEDFunctionalColor::punctuation_slash(cRGB color){color_punctuation_slash = color;}
-void LEDFunctionalColor::bracket_leftbracket(cRGB color){color_bracket_leftbracket = color;}
-void LEDFunctionalColor::bracket_rightbracket(cRGB color){color_bracket_rightbracket = color;}
-void LEDFunctionalColor::bracket_leftcurlybracket(cRGB color){color_bracket_leftcurlybracket = color;}
-void LEDFunctionalColor::bracket_rightcurlybracket(cRGB color){color_bracket_rightcurlybracket = color;}
-void LEDFunctionalColor::arrow_left(cRGB color){color_arrow_left = color;}
-void LEDFunctionalColor::arrow_up(cRGB color){color_arrow_up = color;}
-void LEDFunctionalColor::arrow_down(cRGB color){color_arrow_down = color;}
-void LEDFunctionalColor::arrow_right(cRGB color){color_arrow_right = color;}
-void LEDFunctionalColor::nav_home(cRGB color){color_nav_home = color;}
-void LEDFunctionalColor::nav_end(cRGB color){color_nav_end = color;}
-void LEDFunctionalColor::nav_pageup(cRGB color){color_nav_pageup = color;}
-void LEDFunctionalColor::nav_pagedown(cRGB color){color_nav_pagedown = color;}
-void LEDFunctionalColor::fkey_f1(cRGB color){color_fkey_f1 = color;}
-void LEDFunctionalColor::fkey_f2(cRGB color){color_fkey_f2 = color;}
-void LEDFunctionalColor::fkey_f3(cRGB color){color_fkey_f3 = color;}
-void LEDFunctionalColor::fkey_f4(cRGB color){color_fkey_f4 = color;}
-void LEDFunctionalColor::fkey_f5(cRGB color){color_fkey_f5 = color;}
-void LEDFunctionalColor::fkey_f6(cRGB color){color_fkey_f6 = color;}
-void LEDFunctionalColor::fkey_f7(cRGB color){color_fkey_f7 = color;}
-void LEDFunctionalColor::fkey_f8(cRGB color){color_fkey_f8 = color;}
-void LEDFunctionalColor::fkey_f9(cRGB color){color_fkey_f9 = color;}
-void LEDFunctionalColor::fkey_f10(cRGB color){color_fkey_f10 = color;}
-void LEDFunctionalColor::fkey_f11(cRGB color){color_fkey_f11 = color;}
-void LEDFunctionalColor::fkey_f12(cRGB color){color_fkey_f12 = color;}
-void LEDFunctionalColor::fkey_f13(cRGB color){color_fkey_f13 = color;}
-void LEDFunctionalColor::fkey_f14(cRGB color){color_fkey_f14 = color;}
-void LEDFunctionalColor::fkey_f15(cRGB color){color_fkey_f15 = color;}
-void LEDFunctionalColor::fkey_f16(cRGB color){color_fkey_f16 = color;}
-void LEDFunctionalColor::fkey_f17(cRGB color){color_fkey_f17 = color;}
-void LEDFunctionalColor::fkey_f18(cRGB color){color_fkey_f18 = color;}
-void LEDFunctionalColor::fkey_f19(cRGB color){color_fkey_f19 = color;}
-void LEDFunctionalColor::media_play(cRGB color){color_media_play = color;}
-void LEDFunctionalColor::media_prev(cRGB color){color_media_prev = color;}
-void LEDFunctionalColor::media_next(cRGB color){color_media_next = color;}
-void LEDFunctionalColor::media_stop(cRGB color){color_media_stop = color;}
-void LEDFunctionalColor::media_volup(cRGB color){color_media_volup = color;}
-void LEDFunctionalColor::media_voldown(cRGB color){color_media_voldown = color;}
-void LEDFunctionalColor::media_mute(cRGB color){color_media_mute = color;}
+void LEDFunctionalColor::number_1(uint8_t color){color_number_1 = (color << 4) + 15;}
+void LEDFunctionalColor::number_2(uint8_t color){color_number_2 = (color << 4) + 15;}
+void LEDFunctionalColor::number_3(uint8_t color){color_number_3 = (color << 4) + 15;}
+void LEDFunctionalColor::number_4(uint8_t color){color_number_4 = (color << 4) + 15;}
+void LEDFunctionalColor::number_5(uint8_t color){color_number_5 = (color << 4) + 15;}
+void LEDFunctionalColor::number_6(uint8_t color){color_number_6 = (color << 4) + 15;}
+void LEDFunctionalColor::number_7(uint8_t color){color_number_7 = (color << 4) + 15;}
+void LEDFunctionalColor::number_8(uint8_t color){color_number_8 = (color << 4) + 15;}
+void LEDFunctionalColor::number_9(uint8_t color){color_number_9 = (color << 4) + 15;}
+void LEDFunctionalColor::number_0(uint8_t color){color_number_0 = (color << 4) + 15;}
+void LEDFunctionalColor::number_minus(uint8_t color){color_number_minus = (color << 4) + 15;}
+void LEDFunctionalColor::number_equals(uint8_t color){color_number_equals = (color << 4) + 15;}
+void LEDFunctionalColor::letter_a(uint8_t color){color_letter_a = (color << 4) + 15;}
+void LEDFunctionalColor::letter_b(uint8_t color){color_letter_b = (color << 4) + 15;}
+void LEDFunctionalColor::letter_c(uint8_t color){color_letter_c = (color << 4) + 15;}
+void LEDFunctionalColor::letter_d(uint8_t color){color_letter_d = (color << 4) + 15;}
+void LEDFunctionalColor::letter_e(uint8_t color){color_letter_e = (color << 4) + 15;}
+void LEDFunctionalColor::letter_f(uint8_t color){color_letter_f = (color << 4) + 15;}
+void LEDFunctionalColor::letter_g(uint8_t color){color_letter_g = (color << 4) + 15;}
+void LEDFunctionalColor::letter_h(uint8_t color){color_letter_h = (color << 4) + 15;}
+void LEDFunctionalColor::letter_i(uint8_t color){color_letter_i = (color << 4) + 15;}
+void LEDFunctionalColor::letter_j(uint8_t color){color_letter_j = (color << 4) + 15;}
+void LEDFunctionalColor::letter_k(uint8_t color){color_letter_k = (color << 4) + 15;}
+void LEDFunctionalColor::letter_l(uint8_t color){color_letter_l = (color << 4) + 15;}
+void LEDFunctionalColor::letter_m(uint8_t color){color_letter_m = (color << 4) + 15;}
+void LEDFunctionalColor::letter_n(uint8_t color){color_letter_n = (color << 4) + 15;}
+void LEDFunctionalColor::letter_o(uint8_t color){color_letter_o = (color << 4) + 15;}
+void LEDFunctionalColor::letter_p(uint8_t color){color_letter_p = (color << 4) + 15;}
+void LEDFunctionalColor::letter_q(uint8_t color){color_letter_q = (color << 4) + 15;}
+void LEDFunctionalColor::letter_r(uint8_t color){color_letter_r = (color << 4) + 15;}
+void LEDFunctionalColor::letter_s(uint8_t color){color_letter_s = (color << 4) + 15;}
+void LEDFunctionalColor::letter_t(uint8_t color){color_letter_t = (color << 4) + 15;}
+void LEDFunctionalColor::letter_u(uint8_t color){color_letter_u = (color << 4) + 15;}
+void LEDFunctionalColor::letter_v(uint8_t color){color_letter_v = (color << 4) + 15;}
+void LEDFunctionalColor::letter_w(uint8_t color){color_letter_w = (color << 4) + 15;}
+void LEDFunctionalColor::letter_x(uint8_t color){color_letter_x = (color << 4) + 15;}
+void LEDFunctionalColor::letter_y(uint8_t color){color_letter_y = (color << 4) + 15;}
+void LEDFunctionalColor::letter_z(uint8_t color){color_letter_z = (color << 4) + 15;}
+void LEDFunctionalColor::punctuation_backtick(uint8_t color){color_punctuation_backtick = (color << 4) + 15;}
+void LEDFunctionalColor::punctuation_period(uint8_t color){color_punctuation_period = (color << 4) + 15;}
+void LEDFunctionalColor::punctuation_comma(uint8_t color){color_punctuation_comma = (color << 4) + 15;}
+void LEDFunctionalColor::punctuation_semicolon(uint8_t color){color_punctuation_semicolon = (color << 4) + 15;}
+void LEDFunctionalColor::punctuation_quote(uint8_t color){color_punctuation_quote = (color << 4) + 15;}
+void LEDFunctionalColor::punctuation_slash(uint8_t color){color_punctuation_slash = (color << 4) + 15;}
+void LEDFunctionalColor::bracket_leftbracket(uint8_t color){color_bracket_leftbracket = (color << 4) + 15;}
+void LEDFunctionalColor::bracket_rightbracket(uint8_t color){color_bracket_rightbracket = (color << 4) + 15;}
+void LEDFunctionalColor::bracket_leftcurlybracket(uint8_t color){color_bracket_leftcurlybracket = (color << 4) + 15;}
+void LEDFunctionalColor::bracket_rightcurlybracket(uint8_t color){color_bracket_rightcurlybracket = (color << 4) + 15;}
+void LEDFunctionalColor::arrow_left(uint8_t color){color_arrow_left = (color << 4) + 15;}
+void LEDFunctionalColor::arrow_up(uint8_t color){color_arrow_up = (color << 4) + 15;}
+void LEDFunctionalColor::arrow_down(uint8_t color){color_arrow_down = (color << 4) + 15;}
+void LEDFunctionalColor::arrow_right(uint8_t color){color_arrow_right = (color << 4) + 15;}
+void LEDFunctionalColor::nav_home(uint8_t color){color_nav_home = (color << 4) + 15;}
+void LEDFunctionalColor::nav_end(uint8_t color){color_nav_end = (color << 4) + 15;}
+void LEDFunctionalColor::nav_pageup(uint8_t color){color_nav_pageup = (color << 4) + 15;}
+void LEDFunctionalColor::nav_pagedown(uint8_t color){color_nav_pagedown = (color << 4) + 15;}
+void LEDFunctionalColor::fkey_f1(uint8_t color){color_fkey_f1 = (color << 4) + 15;}
+void LEDFunctionalColor::fkey_f2(uint8_t color){color_fkey_f2 = (color << 4) + 15;}
+void LEDFunctionalColor::fkey_f3(uint8_t color){color_fkey_f3 = (color << 4) + 15;}
+void LEDFunctionalColor::fkey_f4(uint8_t color){color_fkey_f4 = (color << 4) + 15;}
+void LEDFunctionalColor::fkey_f5(uint8_t color){color_fkey_f5 = (color << 4) + 15;}
+void LEDFunctionalColor::fkey_f6(uint8_t color){color_fkey_f6 = (color << 4) + 15;}
+void LEDFunctionalColor::fkey_f7(uint8_t color){color_fkey_f7 = (color << 4) + 15;}
+void LEDFunctionalColor::fkey_f8(uint8_t color){color_fkey_f8 = (color << 4) + 15;}
+void LEDFunctionalColor::fkey_f9(uint8_t color){color_fkey_f9 = (color << 4) + 15;}
+void LEDFunctionalColor::fkey_f10(uint8_t color){color_fkey_f10 = (color << 4) + 15;}
+void LEDFunctionalColor::fkey_f11(uint8_t color){color_fkey_f11 = (color << 4) + 15;}
+void LEDFunctionalColor::fkey_f12(uint8_t color){color_fkey_f12 = (color << 4) + 15;}
+void LEDFunctionalColor::fkey_f13(uint8_t color){color_fkey_f13 = (color << 4) + 15;}
+void LEDFunctionalColor::fkey_f14(uint8_t color){color_fkey_f14 = (color << 4) + 15;}
+void LEDFunctionalColor::fkey_f15(uint8_t color){color_fkey_f15 = (color << 4) + 15;}
+void LEDFunctionalColor::fkey_f16(uint8_t color){color_fkey_f16 = (color << 4) + 15;}
+void LEDFunctionalColor::fkey_f17(uint8_t color){color_fkey_f17 = (color << 4) + 15;}
+void LEDFunctionalColor::fkey_f18(uint8_t color){color_fkey_f18 = (color << 4) + 15;}
+void LEDFunctionalColor::fkey_f19(uint8_t color){color_fkey_f19 = (color << 4) + 15;}
+void LEDFunctionalColor::media_play(uint8_t color){color_media_play = (color << 4) + 15;}
+void LEDFunctionalColor::media_prev(uint8_t color){color_media_prev = (color << 4) + 15;}
+void LEDFunctionalColor::media_next(uint8_t color){color_media_next = (color << 4) + 15;}
+void LEDFunctionalColor::media_stop(uint8_t color){color_media_stop = (color << 4) + 15;}
+void LEDFunctionalColor::media_volup(uint8_t color){color_media_volup = (color << 4) + 15;}
+void LEDFunctionalColor::media_voldown(uint8_t color){color_media_voldown = (color << 4) + 15;}
+void LEDFunctionalColor::media_mute(uint8_t color){color_media_mute = (color << 4) + 15;}
 
 
 
@@ -570,599 +586,627 @@ void LEDFunctionalColor::media_mute(cRGB color){color_media_mute = color;}
 // Now all the versions that set brightness
 
 // Sets all the colors to the same thing
-void LEDFunctionalColor::all(cRGB color, byte brightness){
-  color_escape = dim(color, brightness);
-  color_numbers = dim(color, brightness);
-  color_number_1 = dim(color, brightness);
-  color_number_2 = dim(color, brightness);
-  color_number_3 = dim(color, brightness);
-  color_number_4 = dim(color, brightness);
-  color_number_5 = dim(color, brightness);
-  color_number_6 = dim(color, brightness);
-  color_number_7 = dim(color, brightness);
-  color_number_8 = dim(color, brightness);
-  color_number_9 = dim(color, brightness);
-  color_number_0 = dim(color, brightness);
-  color_number_minus = dim(color, brightness);
-  color_number_equals = dim(color, brightness);
-  color_letters = dim(color, brightness);
-  color_letter_a = dim(color, brightness);
-  color_letter_b = dim(color, brightness);
-  color_letter_c = dim(color, brightness);
-  color_letter_d = dim(color, brightness);
-  color_letter_e = dim(color, brightness);
-  color_letter_f = dim(color, brightness);
-  color_letter_g = dim(color, brightness);
-  color_letter_h = dim(color, brightness);
-  color_letter_i = dim(color, brightness);
-  color_letter_j = dim(color, brightness);
-  color_letter_k = dim(color, brightness);
-  color_letter_l = dim(color, brightness);
-  color_letter_m = dim(color, brightness);
-  color_letter_n = dim(color, brightness);
-  color_letter_o = dim(color, brightness);
-  color_letter_p = dim(color, brightness);
-  color_letter_q = dim(color, brightness);
-  color_letter_r = dim(color, brightness);
-  color_letter_s = dim(color, brightness);
-  color_letter_t = dim(color, brightness);
-  color_letter_u = dim(color, brightness);
-  color_letter_v = dim(color, brightness);
-  color_letter_w = dim(color, brightness);
-  color_letter_x = dim(color, brightness);
-  color_letter_y = dim(color, brightness);
-  color_letter_z = dim(color, brightness);
-  color_punctuation = dim(color, brightness);
-  color_punctuation_backtick = dim(color, brightness);
-  color_punctuation_period = dim(color, brightness);
-  color_punctuation_comma = dim(color, brightness);
-  color_punctuation_semicolon = dim(color, brightness);
-  color_punctuation_quote = dim(color, brightness);
-  color_punctuation_slash = dim(color, brightness);
-  color_brackets = dim(color, brightness);
-  color_bracket_leftbracket = dim(color, brightness);
-  color_bracket_rightbracket = dim(color, brightness);
-  color_bracket_leftcurlybracket = dim(color, brightness);
-  color_bracket_rightcurlybracket = dim(color, brightness);
-  color_backslash = dim(color, brightness);
-  color_pipe = dim(color, brightness);
-  color_tab = dim(color, brightness);
-  color_backspace = dim(color, brightness);
-  color_delete = dim(color, brightness);
-  color_enter = dim(color, brightness);
-  color_arrows = dim(color, brightness);
-  color_arrow_left = dim(color, brightness);
-  color_arrow_up = dim(color, brightness);
-  color_arrow_down = dim(color, brightness);
-  color_arrow_right = dim(color, brightness);
-  color_nav = dim(color, brightness);
-  color_nav_home = dim(color, brightness);
-  color_nav_end = dim(color, brightness);
-  color_nav_pageup = dim(color, brightness);
-  color_nav_pagedown = dim(color, brightness);
-  color_insert = dim(color, brightness);
-  color_shift = dim(color, brightness);
-  color_ctrl = dim(color, brightness);
-  color_alt = dim(color, brightness);
-  color_cmd = dim(color, brightness);
-  color_app = dim(color, brightness);
-  color_printscreen = dim(color, brightness);
-  color_pause = dim(color, brightness);
-  color_scrolllock = dim(color, brightness);
-  color_capslock = dim(color, brightness);
-  color_fkeys = dim(color, brightness);
-  color_fkey_f1 = dim(color, brightness);
-  color_fkey_f2 = dim(color, brightness);
-  color_fkey_f3 = dim(color, brightness);
-  color_fkey_f4 = dim(color, brightness);
-  color_fkey_f5 = dim(color, brightness);
-  color_fkey_f6 = dim(color, brightness);
-  color_fkey_f7 = dim(color, brightness);
-  color_fkey_f8 = dim(color, brightness);
-  color_fkey_f9 = dim(color, brightness);
-  color_fkey_f10 = dim(color, brightness);
-  color_fkey_f11 = dim(color, brightness);
-  color_fkey_f12 = dim(color, brightness);
-  color_fkey_f13 = dim(color, brightness);
-  color_fkey_f14 = dim(color, brightness);
-  color_fkey_f15 = dim(color, brightness);
-  color_fkey_f16 = dim(color, brightness);
-  color_fkey_f17 = dim(color, brightness);
-  color_fkey_f18 = dim(color, brightness);
-  color_fkey_f19 = dim(color, brightness);
-  color_fn = dim(color, brightness);
-  color_media = dim(color, brightness);
-  color_media_play = dim(color, brightness);
-  color_media_prev = dim(color, brightness);
-  color_media_next = dim(color, brightness);
-  color_media_stop = dim(color, brightness);
-  color_media_volup = dim(color, brightness);
-  color_media_voldown = dim(color, brightness);
-  color_media_mute = dim(color, brightness);
-  color_led = dim(color, brightness);
-  color_mousemove = dim(color, brightness);
-  color_mousebuttons = dim(color, brightness);
-  color_mousewarp = dim(color, brightness);
-  color_mousescroll = dim(color, brightness);
+void LEDFunctionalColor::all(uint8_t color, uint8_t brightness){
+  byte colorbrightness = (color << 4) + brightness;
+  color_escape = colorbrightness;
+  color_numbers = colorbrightness;
+  color_number_1 = colorbrightness;
+  color_number_2 = colorbrightness;
+  color_number_3 = colorbrightness;
+  color_number_4 = colorbrightness;
+  color_number_5 = colorbrightness;
+  color_number_6 = colorbrightness;
+  color_number_7 = colorbrightness;
+  color_number_8 = colorbrightness;
+  color_number_9 = colorbrightness;
+  color_number_0 = colorbrightness;
+  color_number_minus = colorbrightness;
+  color_number_equals = colorbrightness;
+  color_letters = colorbrightness;
+  color_letter_a = colorbrightness;
+  color_letter_b = colorbrightness;
+  color_letter_c = colorbrightness;
+  color_letter_d = colorbrightness;
+  color_letter_e = colorbrightness;
+  color_letter_f = colorbrightness;
+  color_letter_g = colorbrightness;
+  color_letter_h = colorbrightness;
+  color_letter_i = colorbrightness;
+  color_letter_j = colorbrightness;
+  color_letter_k = colorbrightness;
+  color_letter_l = colorbrightness;
+  color_letter_m = colorbrightness;
+  color_letter_n = colorbrightness;
+  color_letter_o = colorbrightness;
+  color_letter_p = colorbrightness;
+  color_letter_q = colorbrightness;
+  color_letter_r = colorbrightness;
+  color_letter_s = colorbrightness;
+  color_letter_t = colorbrightness;
+  color_letter_u = colorbrightness;
+  color_letter_v = colorbrightness;
+  color_letter_w = colorbrightness;
+  color_letter_x = colorbrightness;
+  color_letter_y = colorbrightness;
+  color_letter_z = colorbrightness;
+  color_punctuation = colorbrightness;
+  color_punctuation_backtick = colorbrightness;
+  color_punctuation_period = colorbrightness;
+  color_punctuation_comma = colorbrightness;
+  color_punctuation_semicolon = colorbrightness;
+  color_punctuation_quote = colorbrightness;
+  color_punctuation_slash = colorbrightness;
+  color_brackets = colorbrightness;
+  color_bracket_leftbracket = colorbrightness;
+  color_bracket_rightbracket = colorbrightness;
+  color_bracket_leftcurlybracket = colorbrightness;
+  color_bracket_rightcurlybracket = colorbrightness;
+  color_backslash = colorbrightness;
+  color_pipe = colorbrightness;
+  color_tab = colorbrightness;
+  color_space = colorbrightness;
+  color_backspace = colorbrightness;
+  color_delete = colorbrightness;
+  color_enter = colorbrightness;
+  color_arrows = colorbrightness;
+  color_arrow_left = colorbrightness;
+  color_arrow_up = colorbrightness;
+  color_arrow_down = colorbrightness;
+  color_arrow_right = colorbrightness;
+  color_nav = colorbrightness;
+  color_nav_home = colorbrightness;
+  color_nav_end = colorbrightness;
+  color_nav_pageup = colorbrightness;
+  color_nav_pagedown = colorbrightness;
+  color_insert = colorbrightness;
+  color_shift = colorbrightness;
+  color_ctrl = colorbrightness;
+  color_alt = colorbrightness;
+  color_cmd = colorbrightness;
+  color_app = colorbrightness;
+  color_printscreen = colorbrightness;
+  color_pause = colorbrightness;
+  color_scrolllock = colorbrightness;
+  color_capslock = colorbrightness;
+  color_fkeys = colorbrightness;
+  color_fkey_f1 = colorbrightness;
+  color_fkey_f2 = colorbrightness;
+  color_fkey_f3 = colorbrightness;
+  color_fkey_f4 = colorbrightness;
+  color_fkey_f5 = colorbrightness;
+  color_fkey_f6 = colorbrightness;
+  color_fkey_f7 = colorbrightness;
+  color_fkey_f8 = colorbrightness;
+  color_fkey_f9 = colorbrightness;
+  color_fkey_f10 = colorbrightness;
+  color_fkey_f11 = colorbrightness;
+  color_fkey_f12 = colorbrightness;
+  color_fkey_f13 = colorbrightness;
+  color_fkey_f14 = colorbrightness;
+  color_fkey_f15 = colorbrightness;
+  color_fkey_f16 = colorbrightness;
+  color_fkey_f17 = colorbrightness;
+  color_fkey_f18 = colorbrightness;
+  color_fkey_f19 = colorbrightness;
+  color_fn = colorbrightness;
+  color_media = colorbrightness;
+  color_media_play = colorbrightness;
+  color_media_prev = colorbrightness;
+  color_media_next = colorbrightness;
+  color_media_stop = colorbrightness;
+  color_media_volup = colorbrightness;
+  color_media_voldown = colorbrightness;
+  color_media_mute = colorbrightness;
+  color_led = colorbrightness;
+  color_mousemove = colorbrightness;
+  color_mousebuttons = colorbrightness;
+  color_mousewarp = colorbrightness;
+  color_mousescroll = colorbrightness;
 }
 
 // Color keys that aren't letters, numbers, or punctuation
-void LEDFunctionalColor::allModifiers(cRGB color, byte brightness) {
-  color_escape = dim(color, brightness);
-  color_backspace = dim(color, brightness);
-  color_delete = dim(color, brightness);
-  color_enter = dim(color, brightness);
-  color_arrows = dim(color, brightness);
-  color_nav = dim(color, brightness);
-  color_insert = dim(color, brightness);
-  color_shift = dim(color, brightness);
-  color_ctrl = dim(color, brightness);
-  color_alt = dim(color, brightness);
-  color_cmd = dim(color, brightness);
-  color_app = dim(color, brightness);
-  color_printscreen = dim(color, brightness);
-  color_pause = dim(color, brightness);
-  color_scrolllock = dim(color, brightness);
-  color_capslock = dim(color, brightness);
-  color_fkeys = dim(color, brightness);
-  color_fn = dim(color, brightness);
+void LEDFunctionalColor::allModifiers(uint8_t color, uint8_t brightness) {
+  byte colorbrightness = (color << 4) + brightness;
+  color_escape = colorbrightness;
+  color_backspace = colorbrightness;
+  color_delete = colorbrightness;
+  color_enter = colorbrightness;
+  color_arrows = colorbrightness;
+  color_nav = colorbrightness;
+  color_insert = colorbrightness;
+  color_shift = colorbrightness;
+  color_ctrl = colorbrightness;
+  color_alt = colorbrightness;
+  color_cmd = colorbrightness;
+  color_app = colorbrightness;
+  color_printscreen = colorbrightness;
+  color_pause = colorbrightness;
+  color_scrolllock = colorbrightness;
+  color_capslock = colorbrightness;
+  color_fkeys = colorbrightness;
+  color_fn = colorbrightness;
 }
 
-void LEDFunctionalColor::allMouse(cRGB color, byte brightness){
-  color_mousemove = dim(color, brightness);
-  color_mousebuttons = dim(color, brightness);
-  color_mousewarp = dim(color, brightness);
-  color_mousescroll = dim(color, brightness);
+void LEDFunctionalColor::allMouse(uint8_t color, uint8_t brightness){
+  byte colorbrightness = (color << 4) + brightness;
+  color_mousemove = colorbrightness;
+  color_mousebuttons = colorbrightness;
+  color_mousewarp = colorbrightness;
+  color_mousescroll = colorbrightness;
 }
 
-void LEDFunctionalColor::escape(cRGB color, byte brightness) {
-  color_escape = dim(color, brightness);
+void LEDFunctionalColor::escape(uint8_t color, uint8_t brightness) {
+  color_escape = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::numbers(cRGB color, byte brightness){
-  color_numbers = dim(color, brightness);
-  color_number_1 = dim(color, brightness);
-  color_number_2 = dim(color, brightness);
-  color_number_3 = dim(color, brightness);
-  color_number_4 = dim(color, brightness);
-  color_number_5 = dim(color, brightness);
-  color_number_6 = dim(color, brightness);
-  color_number_7 = dim(color, brightness);
-  color_number_8 = dim(color, brightness);
-  color_number_9 = dim(color, brightness);
-  color_number_0 = dim(color, brightness);
-  color_number_minus = dim(color, brightness);
-  color_number_equals = dim(color, brightness);
+void LEDFunctionalColor::numbers(uint8_t color, uint8_t brightness){
+  byte colorbrightness = (color << 4) + brightness;
+  color_numbers = colorbrightness;
+  color_number_1 = colorbrightness;
+  color_number_2 = colorbrightness;
+  color_number_3 = colorbrightness;
+  color_number_4 = colorbrightness;
+  color_number_5 = colorbrightness;
+  color_number_6 = colorbrightness;
+  color_number_7 = colorbrightness;
+  color_number_8 = colorbrightness;
+  color_number_9 = colorbrightness;
+  color_number_0 = colorbrightness;
+  color_number_minus = colorbrightness;
+  color_number_equals = colorbrightness;
 }
 
-void LEDFunctionalColor::letters(cRGB color, byte brightness){
-  color_letters = dim(color, brightness);
-  color_letter_a = dim(color, brightness);
-  color_letter_b = dim(color, brightness);
-  color_letter_c = dim(color, brightness);
-  color_letter_d = dim(color, brightness);
-  color_letter_e = dim(color, brightness);
-  color_letter_f = dim(color, brightness);
-  color_letter_g = dim(color, brightness);
-  color_letter_h = dim(color, brightness);
-  color_letter_i = dim(color, brightness);
-  color_letter_j = dim(color, brightness);
-  color_letter_k = dim(color, brightness);
-  color_letter_l = dim(color, brightness);
-  color_letter_m = dim(color, brightness);
-  color_letter_n = dim(color, brightness);
-  color_letter_o = dim(color, brightness);
-  color_letter_p = dim(color, brightness);
-  color_letter_q = dim(color, brightness);
-  color_letter_r = dim(color, brightness);
-  color_letter_s = dim(color, brightness);
-  color_letter_t = dim(color, brightness);
-  color_letter_u = dim(color, brightness);
-  color_letter_v = dim(color, brightness);
-  color_letter_w = dim(color, brightness);
-  color_letter_x = dim(color, brightness);
-  color_letter_y = dim(color, brightness);
-  color_letter_z = dim(color, brightness);
+void LEDFunctionalColor::letters(uint8_t color, uint8_t brightness){
+  byte colorbrightness = (color << 4) + brightness;
+  color_letters = colorbrightness;
+  color_letter_a = colorbrightness;
+  color_letter_b = colorbrightness;
+  color_letter_c = colorbrightness;
+  color_letter_d = colorbrightness;
+  color_letter_e = colorbrightness;
+  color_letter_f = colorbrightness;
+  color_letter_g = colorbrightness;
+  color_letter_h = colorbrightness;
+  color_letter_i = colorbrightness;
+  color_letter_j = colorbrightness;
+  color_letter_k = colorbrightness;
+  color_letter_l = colorbrightness;
+  color_letter_m = colorbrightness;
+  color_letter_n = colorbrightness;
+  color_letter_o = colorbrightness;
+  color_letter_p = colorbrightness;
+  color_letter_q = colorbrightness;
+  color_letter_r = colorbrightness;
+  color_letter_s = colorbrightness;
+  color_letter_t = colorbrightness;
+  color_letter_u = colorbrightness;
+  color_letter_v = colorbrightness;
+  color_letter_w = colorbrightness;
+  color_letter_x = colorbrightness;
+  color_letter_y = colorbrightness;
+  color_letter_z = colorbrightness;
 }
 
-void LEDFunctionalColor::punctuation(cRGB color, byte brightness){
-  color_punctuation = dim(color, brightness);
-  color_punctuation_backtick = dim(color, brightness);
-  color_punctuation_period = dim(color, brightness);
-  color_punctuation_comma = dim(color, brightness);
-  color_punctuation_semicolon = dim(color, brightness);
-  color_punctuation_quote = dim(color, brightness);
-  color_punctuation_slash = dim(color, brightness);
+void LEDFunctionalColor::punctuation(uint8_t color, uint8_t brightness){
+  byte colorbrightness = (color << 4) + brightness;
+  color_punctuation = colorbrightness;
+  color_punctuation_backtick = colorbrightness;
+  color_punctuation_period = colorbrightness;
+  color_punctuation_comma = colorbrightness;
+  color_punctuation_semicolon = colorbrightness;
+  color_punctuation_quote = colorbrightness;
+  color_punctuation_slash = colorbrightness;
 }
 
-void LEDFunctionalColor::brackets(cRGB color, byte brightness){
-  color_brackets = dim(color, brightness);
-  color_bracket_leftbracket = dim(color, brightness);
-  color_bracket_rightbracket = dim(color, brightness);
-  color_bracket_leftcurlybracket = dim(color, brightness);
-  color_bracket_rightcurlybracket = dim(color, brightness);
+void LEDFunctionalColor::brackets(uint8_t color, uint8_t brightness){
+  byte colorbrightness = (color << 4) + brightness;
+  color_brackets = colorbrightness;
+  color_bracket_leftbracket = colorbrightness;
+  color_bracket_rightbracket = colorbrightness;
+  color_bracket_leftcurlybracket = colorbrightness;
+  color_bracket_rightcurlybracket = colorbrightness;
 }
 
-void LEDFunctionalColor::backslash(cRGB color, byte brightness){
-  color_backslash = dim(color, brightness);
+void LEDFunctionalColor::backslash(uint8_t color, uint8_t brightness){
+  color_backslash = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::pipe(cRGB color, byte brightness){
-  color_pipe = dim(color, brightness);
+void LEDFunctionalColor::pipe(uint8_t color, uint8_t brightness){
+  color_pipe = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::tab(cRGB color, byte brightness){
-  color_tab = dim(color, brightness);
+void LEDFunctionalColor::tab(uint8_t color, uint8_t brightness){
+  color_tab = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::backspace(cRGB color, byte brightness){
-  color_backspace = dim(color, brightness);
+void LEDFunctionalColor::backspace(uint8_t color, uint8_t brightness){
+  color_backspace = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::del(cRGB color, byte brightness){
-  color_delete = dim(color, brightness);
+void LEDFunctionalColor::space(uint8_t color, uint8_t brightness){
+  color_space = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::enter(cRGB color, byte brightness){
-  color_enter = dim(color, brightness);
+void LEDFunctionalColor::del(uint8_t color, uint8_t brightness){
+  color_delete = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::arrows(cRGB color, byte brightness){
-  color_arrows = dim(color, brightness);
-  color_arrow_left = dim(color, brightness);
-  color_arrow_up = dim(color, brightness);
-  color_arrow_down = dim(color, brightness);
-  color_arrow_right = dim(color, brightness);
+void LEDFunctionalColor::enter(uint8_t color, uint8_t brightness){
+  color_enter = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::nav(cRGB color, byte brightness){
-  color_nav = dim(color, brightness);
-  color_nav_home = dim(color, brightness);
-  color_nav_end = dim(color, brightness);
-  color_nav_pageup = dim(color, brightness);
-  color_nav_pagedown = dim(color, brightness);
+void LEDFunctionalColor::arrows(uint8_t color, uint8_t brightness){
+  color_arrows = (color << 4) + brightness;
+  color_arrow_left = (color << 4) + brightness;
+  color_arrow_up = (color << 4) + brightness;
+  color_arrow_down = (color << 4) + brightness;
+  color_arrow_right = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::insert(cRGB color, byte brightness){
-  color_insert = dim(color, brightness);
+void LEDFunctionalColor::nav(uint8_t color, uint8_t brightness){
+  color_nav = (color << 4) + brightness;
+  color_nav_home = (color << 4) + brightness;
+  color_nav_end = (color << 4) + brightness;
+  color_nav_pageup = (color << 4) + brightness;
+  color_nav_pagedown = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::shift(cRGB color, byte brightness){
-  color_shift = dim(color, brightness);
+void LEDFunctionalColor::insert(uint8_t color, uint8_t brightness){
+  color_insert = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::ctrl(cRGB color, byte brightness){
-  color_ctrl = dim(color, brightness);
+void LEDFunctionalColor::shift(uint8_t color, uint8_t brightness){
+  color_shift = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::alt(cRGB color, byte brightness){
-  color_alt = dim(color, brightness);
+void LEDFunctionalColor::ctrl(uint8_t color, uint8_t brightness){
+  color_ctrl = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::cmd(cRGB color, byte brightness){
-  color_cmd = dim(color, brightness);
+void LEDFunctionalColor::alt(uint8_t color, uint8_t brightness){
+  color_alt = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::app(cRGB color, byte brightness){
-  color_app = dim(color, brightness);
+void LEDFunctionalColor::cmd(uint8_t color, uint8_t brightness){
+  color_cmd = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::printscreen(cRGB color, byte brightness){
-  color_printscreen = dim(color, brightness);
+void LEDFunctionalColor::app(uint8_t color, uint8_t brightness){
+  color_app = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::pause(cRGB color, byte brightness){
-  color_pause = dim(color, brightness);
+void LEDFunctionalColor::printscreen(uint8_t color, uint8_t brightness){
+  color_printscreen = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::scrolllock(cRGB color, byte brightness){
-  color_scrolllock = dim(color, brightness);
+void LEDFunctionalColor::pause(uint8_t color, uint8_t brightness){
+  color_pause = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::capslock(cRGB color, byte brightness){
-  color_capslock = dim(color, brightness);
+void LEDFunctionalColor::scrolllock(uint8_t color, uint8_t brightness){
+  color_scrolllock = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::fkeys(cRGB color, byte brightness){
-  color_fkeys = dim(color, brightness);
-  color_fkey_f1 = dim(color, brightness);
-  color_fkey_f2 = dim(color, brightness);
-  color_fkey_f3 = dim(color, brightness);
-  color_fkey_f4 = dim(color, brightness);
-  color_fkey_f5 = dim(color, brightness);
-  color_fkey_f6 = dim(color, brightness);
-  color_fkey_f7 = dim(color, brightness);
-  color_fkey_f8 = dim(color, brightness);
-  color_fkey_f9 = dim(color, brightness);
-  color_fkey_f10 = dim(color, brightness);
-  color_fkey_f11 = dim(color, brightness);
-  color_fkey_f12 = dim(color, brightness);
-  color_fkey_f13 = dim(color, brightness);
-  color_fkey_f14 = dim(color, brightness);
-  color_fkey_f15 = dim(color, brightness);
-  color_fkey_f16 = dim(color, brightness);
-  color_fkey_f17 = dim(color, brightness);
-  color_fkey_f18 = dim(color, brightness);
-  color_fkey_f19 = dim(color, brightness);
+void LEDFunctionalColor::capslock(uint8_t color, uint8_t brightness){
+  color_capslock = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::fn(cRGB color, byte brightness){
-  color_fn = dim(color, brightness);
+void LEDFunctionalColor::fkeys(uint8_t color, uint8_t brightness){
+  byte colorbrightness = (color << 4) + brightness;
+  color_fkeys = colorbrightness;
+  color_fkey_f1 = colorbrightness;
+  color_fkey_f2 = colorbrightness;
+  color_fkey_f3 = colorbrightness;
+  color_fkey_f4 = colorbrightness;
+  color_fkey_f5 = colorbrightness;
+  color_fkey_f6 = colorbrightness;
+  color_fkey_f7 = colorbrightness;
+  color_fkey_f8 = colorbrightness;
+  color_fkey_f9 = colorbrightness;
+  color_fkey_f10 = colorbrightness;
+  color_fkey_f11 = colorbrightness;
+  color_fkey_f12 = colorbrightness;
+  color_fkey_f13 = colorbrightness;
+  color_fkey_f14 = colorbrightness;
+  color_fkey_f15 = colorbrightness;
+  color_fkey_f16 = colorbrightness;
+  color_fkey_f17 = colorbrightness;
+  color_fkey_f18 = colorbrightness;
+  color_fkey_f19 = colorbrightness;
 }
 
-void LEDFunctionalColor::media(cRGB color, byte brightness){
-  color_media = dim(color, brightness);
-  color_media_play = dim(color, brightness);
-  color_media_prev = dim(color, brightness);
-  color_media_next = dim(color, brightness);
-  color_media_stop = dim(color, brightness);
-  color_media_volup = dim(color, brightness);
-  color_media_voldown = dim(color, brightness);
-  color_media_mute = dim(color, brightness);
+void LEDFunctionalColor::fn(uint8_t color, uint8_t brightness){
+  color_fn = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::led(cRGB color, byte brightness){
-  color_led = dim(color, brightness);
+void LEDFunctionalColor::media(uint8_t color, uint8_t brightness){
+  byte colorbrightness = (color << 4) + brightness;
+  color_media = colorbrightness;
+  color_media_play = colorbrightness;
+  color_media_prev = colorbrightness;
+  color_media_next = colorbrightness;
+  color_media_stop = colorbrightness;
+  color_media_volup = colorbrightness;
+  color_media_voldown = colorbrightness;
+  color_media_mute = colorbrightness;
 }
 
-void LEDFunctionalColor::mousemove(cRGB color, byte brightness){
-  color_mousemove = dim(color, brightness);
+void LEDFunctionalColor::led(uint8_t color, uint8_t brightness){
+  color_led = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::mousebuttons(cRGB color, byte brightness){
-  color_mousebuttons = dim(color, brightness);
+void LEDFunctionalColor::mousemove(uint8_t color, uint8_t brightness){
+  color_mousemove = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::mousewarp(cRGB color, byte brightness){
-  color_mousewarp = dim(color, brightness);
+void LEDFunctionalColor::mousebuttons(uint8_t color, uint8_t brightness){
+  color_mousebuttons = (color << 4) + brightness;
 }
 
-void LEDFunctionalColor::mousescroll(cRGB color, byte brightness){
-  color_mousescroll = dim(color, brightness);
+void LEDFunctionalColor::mousewarp(uint8_t color, uint8_t brightness){
+  color_mousewarp = (color << 4) + brightness;
+}
+
+void LEDFunctionalColor::mousescroll(uint8_t color, uint8_t brightness){
+  color_mousescroll = (color << 4) + brightness;
 }
 
 // All the new individual key functions with brightness
-void LEDFunctionalColor::number_1(cRGB color, byte brightness){color_number_1 = dim(color, brightness);}
-void LEDFunctionalColor::number_2(cRGB color, byte brightness){color_number_2 = dim(color, brightness);}
-void LEDFunctionalColor::number_3(cRGB color, byte brightness){color_number_3 = dim(color, brightness);}
-void LEDFunctionalColor::number_4(cRGB color, byte brightness){color_number_4 = dim(color, brightness);}
-void LEDFunctionalColor::number_5(cRGB color, byte brightness){color_number_5 = dim(color, brightness);}
-void LEDFunctionalColor::number_6(cRGB color, byte brightness){color_number_6 = dim(color, brightness);}
-void LEDFunctionalColor::number_7(cRGB color, byte brightness){color_number_7 = dim(color, brightness);}
-void LEDFunctionalColor::number_8(cRGB color, byte brightness){color_number_8 = dim(color, brightness);}
-void LEDFunctionalColor::number_9(cRGB color, byte brightness){color_number_9 = dim(color, brightness);}
-void LEDFunctionalColor::number_0(cRGB color, byte brightness){color_number_0 = dim(color, brightness);}
-void LEDFunctionalColor::number_minus(cRGB color, byte brightness){color_number_minus = dim(color, brightness);}
-void LEDFunctionalColor::number_equals(cRGB color, byte brightness){color_number_equals = dim(color, brightness);}
-void LEDFunctionalColor::letter_a(cRGB color, byte brightness){color_letter_a = dim(color, brightness);}
-void LEDFunctionalColor::letter_b(cRGB color, byte brightness){color_letter_b = dim(color, brightness);}
-void LEDFunctionalColor::letter_c(cRGB color, byte brightness){color_letter_c = dim(color, brightness);}
-void LEDFunctionalColor::letter_d(cRGB color, byte brightness){color_letter_d = dim(color, brightness);}
-void LEDFunctionalColor::letter_e(cRGB color, byte brightness){color_letter_e = dim(color, brightness);}
-void LEDFunctionalColor::letter_f(cRGB color, byte brightness){color_letter_f = dim(color, brightness);}
-void LEDFunctionalColor::letter_g(cRGB color, byte brightness){color_letter_g = dim(color, brightness);}
-void LEDFunctionalColor::letter_h(cRGB color, byte brightness){color_letter_h = dim(color, brightness);}
-void LEDFunctionalColor::letter_i(cRGB color, byte brightness){color_letter_i = dim(color, brightness);}
-void LEDFunctionalColor::letter_j(cRGB color, byte brightness){color_letter_j = dim(color, brightness);}
-void LEDFunctionalColor::letter_k(cRGB color, byte brightness){color_letter_k = dim(color, brightness);}
-void LEDFunctionalColor::letter_l(cRGB color, byte brightness){color_letter_l = dim(color, brightness);}
-void LEDFunctionalColor::letter_m(cRGB color, byte brightness){color_letter_m = dim(color, brightness);}
-void LEDFunctionalColor::letter_n(cRGB color, byte brightness){color_letter_n = dim(color, brightness);}
-void LEDFunctionalColor::letter_o(cRGB color, byte brightness){color_letter_o = dim(color, brightness);}
-void LEDFunctionalColor::letter_p(cRGB color, byte brightness){color_letter_p = dim(color, brightness);}
-void LEDFunctionalColor::letter_q(cRGB color, byte brightness){color_letter_q = dim(color, brightness);}
-void LEDFunctionalColor::letter_r(cRGB color, byte brightness){color_letter_r = dim(color, brightness);}
-void LEDFunctionalColor::letter_s(cRGB color, byte brightness){color_letter_s = dim(color, brightness);}
-void LEDFunctionalColor::letter_t(cRGB color, byte brightness){color_letter_t = dim(color, brightness);}
-void LEDFunctionalColor::letter_u(cRGB color, byte brightness){color_letter_u = dim(color, brightness);}
-void LEDFunctionalColor::letter_v(cRGB color, byte brightness){color_letter_v = dim(color, brightness);}
-void LEDFunctionalColor::letter_w(cRGB color, byte brightness){color_letter_w = dim(color, brightness);}
-void LEDFunctionalColor::letter_x(cRGB color, byte brightness){color_letter_x = dim(color, brightness);}
-void LEDFunctionalColor::letter_y(cRGB color, byte brightness){color_letter_y = dim(color, brightness);}
-void LEDFunctionalColor::letter_z(cRGB color, byte brightness){color_letter_z = dim(color, brightness);}
-void LEDFunctionalColor::punctuation_backtick(cRGB color, byte brightness){color_punctuation_backtick = dim(color, brightness);}
-void LEDFunctionalColor::punctuation_period(cRGB color, byte brightness){color_punctuation_period = dim(color, brightness);}
-void LEDFunctionalColor::punctuation_comma(cRGB color, byte brightness){color_punctuation_comma = dim(color, brightness);}
-void LEDFunctionalColor::punctuation_semicolon(cRGB color, byte brightness){color_punctuation_semicolon = dim(color, brightness);}
-void LEDFunctionalColor::punctuation_quote(cRGB color, byte brightness){color_punctuation_quote = dim(color, brightness);}
-void LEDFunctionalColor::punctuation_slash(cRGB color, byte brightness){color_punctuation_slash = dim(color, brightness);}
-void LEDFunctionalColor::bracket_leftbracket(cRGB color, byte brightness){color_bracket_leftbracket = dim(color, brightness);}
-void LEDFunctionalColor::bracket_rightbracket(cRGB color, byte brightness){color_bracket_rightbracket = dim(color, brightness);}
-void LEDFunctionalColor::bracket_leftcurlybracket(cRGB color, byte brightness){color_bracket_leftcurlybracket = dim(color, brightness);}
-void LEDFunctionalColor::bracket_rightcurlybracket(cRGB color, byte brightness){color_bracket_rightcurlybracket = dim(color, brightness);}
-void LEDFunctionalColor::arrow_left(cRGB color, byte brightness){color_arrow_left = dim(color, brightness);}
-void LEDFunctionalColor::arrow_up(cRGB color, byte brightness){color_arrow_up = dim(color, brightness);}
-void LEDFunctionalColor::arrow_down(cRGB color, byte brightness){color_arrow_down = dim(color, brightness);}
-void LEDFunctionalColor::arrow_right(cRGB color, byte brightness){color_arrow_right = dim(color, brightness);}
-void LEDFunctionalColor::nav_home(cRGB color, byte brightness){color_nav_home = dim(color, brightness);}
-void LEDFunctionalColor::nav_end(cRGB color, byte brightness){color_nav_end = dim(color, brightness);}
-void LEDFunctionalColor::nav_pageup(cRGB color, byte brightness){color_nav_pageup = dim(color, brightness);}
-void LEDFunctionalColor::nav_pagedown(cRGB color, byte brightness){color_nav_pagedown = dim(color, brightness);}
-void LEDFunctionalColor::fkey_f1(cRGB color, byte brightness){color_fkey_f1 = dim(color, brightness);}
-void LEDFunctionalColor::fkey_f2(cRGB color, byte brightness){color_fkey_f2 = dim(color, brightness);}
-void LEDFunctionalColor::fkey_f3(cRGB color, byte brightness){color_fkey_f3 = dim(color, brightness);}
-void LEDFunctionalColor::fkey_f4(cRGB color, byte brightness){color_fkey_f4 = dim(color, brightness);}
-void LEDFunctionalColor::fkey_f5(cRGB color, byte brightness){color_fkey_f5 = dim(color, brightness);}
-void LEDFunctionalColor::fkey_f6(cRGB color, byte brightness){color_fkey_f6 = dim(color, brightness);}
-void LEDFunctionalColor::fkey_f7(cRGB color, byte brightness){color_fkey_f7 = dim(color, brightness);}
-void LEDFunctionalColor::fkey_f8(cRGB color, byte brightness){color_fkey_f8 = dim(color, brightness);}
-void LEDFunctionalColor::fkey_f9(cRGB color, byte brightness){color_fkey_f9 = dim(color, brightness);}
-void LEDFunctionalColor::fkey_f10(cRGB color, byte brightness){color_fkey_f10 = dim(color, brightness);}
-void LEDFunctionalColor::fkey_f11(cRGB color, byte brightness){color_fkey_f11 = dim(color, brightness);}
-void LEDFunctionalColor::fkey_f12(cRGB color, byte brightness){color_fkey_f12 = dim(color, brightness);}
-void LEDFunctionalColor::fkey_f13(cRGB color, byte brightness){color_fkey_f13 = dim(color, brightness);}
-void LEDFunctionalColor::fkey_f14(cRGB color, byte brightness){color_fkey_f14 = dim(color, brightness);}
-void LEDFunctionalColor::fkey_f15(cRGB color, byte brightness){color_fkey_f15 = dim(color, brightness);}
-void LEDFunctionalColor::fkey_f16(cRGB color, byte brightness){color_fkey_f16 = dim(color, brightness);}
-void LEDFunctionalColor::fkey_f17(cRGB color, byte brightness){color_fkey_f17 = dim(color, brightness);}
-void LEDFunctionalColor::fkey_f18(cRGB color, byte brightness){color_fkey_f18 = dim(color, brightness);}
-void LEDFunctionalColor::fkey_f19(cRGB color, byte brightness){color_fkey_f19 = dim(color, brightness);}
-void LEDFunctionalColor::media_play(cRGB color, byte brightness){color_media_play = dim(color, brightness);}
-void LEDFunctionalColor::media_prev(cRGB color, byte brightness){color_media_prev = dim(color, brightness);}
-void LEDFunctionalColor::media_next(cRGB color, byte brightness){color_media_next = dim(color, brightness);}
-void LEDFunctionalColor::media_stop(cRGB color, byte brightness){color_media_stop = dim(color, brightness);}
-void LEDFunctionalColor::media_volup(cRGB color, byte brightness){color_media_volup = dim(color, brightness);}
-void LEDFunctionalColor::media_voldown(cRGB color, byte brightness){color_media_voldown = dim(color, brightness);}
-void LEDFunctionalColor::media_mute(cRGB color, byte brightness){color_media_mute = dim(color, brightness);}
+void LEDFunctionalColor::number_1(uint8_t color, uint8_t brightness){color_number_1 = (color << 4) + brightness;}
+void LEDFunctionalColor::number_2(uint8_t color, uint8_t brightness){color_number_2 = (color << 4) + brightness;}
+void LEDFunctionalColor::number_3(uint8_t color, uint8_t brightness){color_number_3 = (color << 4) + brightness;}
+void LEDFunctionalColor::number_4(uint8_t color, uint8_t brightness){color_number_4 = (color << 4) + brightness;}
+void LEDFunctionalColor::number_5(uint8_t color, uint8_t brightness){color_number_5 = (color << 4) + brightness;}
+void LEDFunctionalColor::number_6(uint8_t color, uint8_t brightness){color_number_6 = (color << 4) + brightness;}
+void LEDFunctionalColor::number_7(uint8_t color, uint8_t brightness){color_number_7 = (color << 4) + brightness;}
+void LEDFunctionalColor::number_8(uint8_t color, uint8_t brightness){color_number_8 = (color << 4) + brightness;}
+void LEDFunctionalColor::number_9(uint8_t color, uint8_t brightness){color_number_9 = (color << 4) + brightness;}
+void LEDFunctionalColor::number_0(uint8_t color, uint8_t brightness){color_number_0 = (color << 4) + brightness;}
+void LEDFunctionalColor::number_minus(uint8_t color, uint8_t brightness){color_number_minus = (color << 4) + brightness;}
+void LEDFunctionalColor::number_equals(uint8_t color, uint8_t brightness){color_number_equals = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_a(uint8_t color, uint8_t brightness){color_letter_a = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_b(uint8_t color, uint8_t brightness){color_letter_b = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_c(uint8_t color, uint8_t brightness){color_letter_c = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_d(uint8_t color, uint8_t brightness){color_letter_d = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_e(uint8_t color, uint8_t brightness){color_letter_e = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_f(uint8_t color, uint8_t brightness){color_letter_f = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_g(uint8_t color, uint8_t brightness){color_letter_g = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_h(uint8_t color, uint8_t brightness){color_letter_h = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_i(uint8_t color, uint8_t brightness){color_letter_i = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_j(uint8_t color, uint8_t brightness){color_letter_j = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_k(uint8_t color, uint8_t brightness){color_letter_k = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_l(uint8_t color, uint8_t brightness){color_letter_l = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_m(uint8_t color, uint8_t brightness){color_letter_m = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_n(uint8_t color, uint8_t brightness){color_letter_n = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_o(uint8_t color, uint8_t brightness){color_letter_o = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_p(uint8_t color, uint8_t brightness){color_letter_p = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_q(uint8_t color, uint8_t brightness){color_letter_q = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_r(uint8_t color, uint8_t brightness){color_letter_r = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_s(uint8_t color, uint8_t brightness){color_letter_s = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_t(uint8_t color, uint8_t brightness){color_letter_t = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_u(uint8_t color, uint8_t brightness){color_letter_u = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_v(uint8_t color, uint8_t brightness){color_letter_v = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_w(uint8_t color, uint8_t brightness){color_letter_w = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_x(uint8_t color, uint8_t brightness){color_letter_x = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_y(uint8_t color, uint8_t brightness){color_letter_y = (color << 4) + brightness;}
+void LEDFunctionalColor::letter_z(uint8_t color, uint8_t brightness){color_letter_z = (color << 4) + brightness;}
+void LEDFunctionalColor::punctuation_backtick(uint8_t color, uint8_t brightness){color_punctuation_backtick = (color << 4) + brightness;}
+void LEDFunctionalColor::punctuation_period(uint8_t color, uint8_t brightness){color_punctuation_period = (color << 4) + brightness;}
+void LEDFunctionalColor::punctuation_comma(uint8_t color, uint8_t brightness){color_punctuation_comma = (color << 4) + brightness;}
+void LEDFunctionalColor::punctuation_semicolon(uint8_t color, uint8_t brightness){color_punctuation_semicolon = (color << 4) + brightness;}
+void LEDFunctionalColor::punctuation_quote(uint8_t color, uint8_t brightness){color_punctuation_quote = (color << 4) + brightness;}
+void LEDFunctionalColor::punctuation_slash(uint8_t color, uint8_t brightness){color_punctuation_slash = (color << 4) + brightness;}
+void LEDFunctionalColor::bracket_leftbracket(uint8_t color, uint8_t brightness){color_bracket_leftbracket = (color << 4) + brightness;}
+void LEDFunctionalColor::bracket_rightbracket(uint8_t color, uint8_t brightness){color_bracket_rightbracket = (color << 4) + brightness;}
+void LEDFunctionalColor::bracket_leftcurlybracket(uint8_t color, uint8_t brightness){color_bracket_leftcurlybracket = (color << 4) + brightness;}
+void LEDFunctionalColor::bracket_rightcurlybracket(uint8_t color, uint8_t brightness){color_bracket_rightcurlybracket = (color << 4) + brightness;}
+void LEDFunctionalColor::arrow_left(uint8_t color, uint8_t brightness){color_arrow_left = (color << 4) + brightness;}
+void LEDFunctionalColor::arrow_up(uint8_t color, uint8_t brightness){color_arrow_up = (color << 4) + brightness;}
+void LEDFunctionalColor::arrow_down(uint8_t color, uint8_t brightness){color_arrow_down = (color << 4) + brightness;}
+void LEDFunctionalColor::arrow_right(uint8_t color, uint8_t brightness){color_arrow_right = (color << 4) + brightness;}
+void LEDFunctionalColor::nav_home(uint8_t color, uint8_t brightness){color_nav_home = (color << 4) + brightness;}
+void LEDFunctionalColor::nav_end(uint8_t color, uint8_t brightness){color_nav_end = (color << 4) + brightness;}
+void LEDFunctionalColor::nav_pageup(uint8_t color, uint8_t brightness){color_nav_pageup = (color << 4) + brightness;}
+void LEDFunctionalColor::nav_pagedown(uint8_t color, uint8_t brightness){color_nav_pagedown = (color << 4) + brightness;}
+void LEDFunctionalColor::fkey_f1(uint8_t color, uint8_t brightness){color_fkey_f1 = (color << 4) + brightness;}
+void LEDFunctionalColor::fkey_f2(uint8_t color, uint8_t brightness){color_fkey_f2 = (color << 4) + brightness;}
+void LEDFunctionalColor::fkey_f3(uint8_t color, uint8_t brightness){color_fkey_f3 = (color << 4) + brightness;}
+void LEDFunctionalColor::fkey_f4(uint8_t color, uint8_t brightness){color_fkey_f4 = (color << 4) + brightness;}
+void LEDFunctionalColor::fkey_f5(uint8_t color, uint8_t brightness){color_fkey_f5 = (color << 4) + brightness;}
+void LEDFunctionalColor::fkey_f6(uint8_t color, uint8_t brightness){color_fkey_f6 = (color << 4) + brightness;}
+void LEDFunctionalColor::fkey_f7(uint8_t color, uint8_t brightness){color_fkey_f7 = (color << 4) + brightness;}
+void LEDFunctionalColor::fkey_f8(uint8_t color, uint8_t brightness){color_fkey_f8 = (color << 4) + brightness;}
+void LEDFunctionalColor::fkey_f9(uint8_t color, uint8_t brightness){color_fkey_f9 = (color << 4) + brightness;}
+void LEDFunctionalColor::fkey_f10(uint8_t color, uint8_t brightness){color_fkey_f10 = (color << 4) + brightness;}
+void LEDFunctionalColor::fkey_f11(uint8_t color, uint8_t brightness){color_fkey_f11 = (color << 4) + brightness;}
+void LEDFunctionalColor::fkey_f12(uint8_t color, uint8_t brightness){color_fkey_f12 = (color << 4) + brightness;}
+void LEDFunctionalColor::fkey_f13(uint8_t color, uint8_t brightness){color_fkey_f13 = (color << 4) + brightness;}
+void LEDFunctionalColor::fkey_f14(uint8_t color, uint8_t brightness){color_fkey_f14 = (color << 4) + brightness;}
+void LEDFunctionalColor::fkey_f15(uint8_t color, uint8_t brightness){color_fkey_f15 = (color << 4) + brightness;}
+void LEDFunctionalColor::fkey_f16(uint8_t color, uint8_t brightness){color_fkey_f16 = (color << 4) + brightness;}
+void LEDFunctionalColor::fkey_f17(uint8_t color, uint8_t brightness){color_fkey_f17 = (color << 4) + brightness;}
+void LEDFunctionalColor::fkey_f18(uint8_t color, uint8_t brightness){color_fkey_f18 = (color << 4) + brightness;}
+void LEDFunctionalColor::fkey_f19(uint8_t color, uint8_t brightness){color_fkey_f19 = (color << 4) + brightness;}
+void LEDFunctionalColor::media_play(uint8_t color, uint8_t brightness){color_media_play = (color << 4) + brightness;}
+void LEDFunctionalColor::media_prev(uint8_t color, uint8_t brightness){color_media_prev = (color << 4) + brightness;}
+void LEDFunctionalColor::media_next(uint8_t color, uint8_t brightness){color_media_next = (color << 4) + brightness;}
+void LEDFunctionalColor::media_stop(uint8_t color, uint8_t brightness){color_media_stop = (color << 4) + brightness;}
+void LEDFunctionalColor::media_volup(uint8_t color, uint8_t brightness){color_media_volup = (color << 4) + brightness;}
+void LEDFunctionalColor::media_voldown(uint8_t color, uint8_t brightness){color_media_voldown = (color << 4) + brightness;}
+void LEDFunctionalColor::media_mute(uint8_t color, uint8_t brightness){color_media_mute = (color << 4) + brightness;}
+
 
 /*
  * setKeyLed accepts a Key position and sets it to the appropriate color
  * from the user's definitions a using a series of if/else statements.
+ * This version uses a color from a 16 color palette and applies a brightness to compute the color on demand.
+ * This allows us to free up a lot of memory.
  */
 void LEDFunctionalColor::setKeyLed(uint8_t r, uint8_t c) { 
   Key k = Layer.lookupOnActiveLayer(r, c);
-  if (k == Key_Escape) {::LEDControl.setCrgbAt(r, c, color_escape); return;}
-  else if (k == Key_LEDEffectNext) {::LEDControl.setCrgbAt(r, c, color_led); return;}
+  if (k == Key_Escape) {::LEDControl.setCrgbAt(r, c, getCRGB(color_escape)); return;}
+  else if (k == Key_LEDEffectNext) {::LEDControl.setCrgbAt(r, c, getCRGB(color_led)); return;}
   
   // letters
-  else if (k == Key_1) {::LEDControl.setCrgbAt(r, c, color_number_1); return;}
-  else if (k == Key_2) {::LEDControl.setCrgbAt(r, c, color_number_2); return;}
-  else if (k == Key_3) {::LEDControl.setCrgbAt(r, c, color_number_3); return;}
-  else if (k == Key_4) {::LEDControl.setCrgbAt(r, c, color_number_4); return;}
-  else if (k == Key_5) {::LEDControl.setCrgbAt(r, c, color_number_5); return;}
-  else if (k == Key_6) {::LEDControl.setCrgbAt(r, c, color_number_6); return;}
-  else if (k == Key_7) {::LEDControl.setCrgbAt(r, c, color_number_7); return;}
-  else if (k == Key_8) {::LEDControl.setCrgbAt(r, c, color_number_8); return;}
-  else if (k == Key_9) {::LEDControl.setCrgbAt(r, c, color_number_9); return;}
-  else if (k == Key_0) {::LEDControl.setCrgbAt(r, c, color_number_0); return;}
-  else if (k == Key_Minus) {::LEDControl.setCrgbAt(r, c, color_number_minus); return;}
-  else if (k == Key_Equals) {::LEDControl.setCrgbAt(r, c, color_number_equals); return;}
+  else if (k == Key_1) {::LEDControl.setCrgbAt(r, c, getCRGB(color_number_1)); return;}
+  else if (k == Key_2) {::LEDControl.setCrgbAt(r, c, getCRGB(color_number_2)); return;}
+  else if (k == Key_3) {::LEDControl.setCrgbAt(r, c, getCRGB(color_number_3)); return;}
+  else if (k == Key_4) {::LEDControl.setCrgbAt(r, c, getCRGB(color_number_4)); return;}
+  else if (k == Key_5) {::LEDControl.setCrgbAt(r, c, getCRGB(color_number_5)); return;}
+  else if (k == Key_6) {::LEDControl.setCrgbAt(r, c, getCRGB(color_number_6)); return;}
+  else if (k == Key_7) {::LEDControl.setCrgbAt(r, c, getCRGB(color_number_7)); return;}
+  else if (k == Key_8) {::LEDControl.setCrgbAt(r, c, getCRGB(color_number_8)); return;}
+  else if (k == Key_9) {::LEDControl.setCrgbAt(r, c, getCRGB(color_number_9)); return;}
+  else if (k == Key_0) {::LEDControl.setCrgbAt(r, c, getCRGB(color_number_0)); return;}
+  else if (k == Key_Minus) {::LEDControl.setCrgbAt(r, c, getCRGB(color_number_minus)); return;}
+  else if (k == Key_Equals) {::LEDControl.setCrgbAt(r, c, getCRGB(color_number_equals)); return;}
  
   // letters
-  else if (k == Key_A) {::LEDControl.setCrgbAt(r, c, color_letter_a); return;}
-  else if (k == Key_B) {::LEDControl.setCrgbAt(r, c, color_letter_b); return;}
-  else if (k == Key_C) {::LEDControl.setCrgbAt(r, c, color_letter_c); return;}
-  else if (k == Key_D) {::LEDControl.setCrgbAt(r, c, color_letter_d); return;}
-  else if (k == Key_E) {::LEDControl.setCrgbAt(r, c, color_letter_e); return;}
-  else if (k == Key_F) {::LEDControl.setCrgbAt(r, c, color_letter_f); return;}
-  else if (k == Key_G) {::LEDControl.setCrgbAt(r, c, color_letter_g); return;}
-  else if (k == Key_H) {::LEDControl.setCrgbAt(r, c, color_letter_h); return;}
-  else if (k == Key_I) {::LEDControl.setCrgbAt(r, c, color_letter_i); return;}
-  else if (k == Key_J) {::LEDControl.setCrgbAt(r, c, color_letter_j); return;}
-  else if (k == Key_K) {::LEDControl.setCrgbAt(r, c, color_letter_k); return;}
-  else if (k == Key_L) {::LEDControl.setCrgbAt(r, c, color_letter_l); return;}
-  else if (k == Key_M) {::LEDControl.setCrgbAt(r, c, color_letter_m); return;}
-  else if (k == Key_N) {::LEDControl.setCrgbAt(r, c, color_letter_n); return;}
-  else if (k == Key_O) {::LEDControl.setCrgbAt(r, c, color_letter_o); return;}
-  else if (k == Key_P) {::LEDControl.setCrgbAt(r, c, color_letter_p); return;}
-  else if (k == Key_Q) {::LEDControl.setCrgbAt(r, c, color_letter_q); return;}
-  else if (k == Key_R) {::LEDControl.setCrgbAt(r, c, color_letter_r); return;}
-  else if (k == Key_S) {::LEDControl.setCrgbAt(r, c, color_letter_s); return;}
-  else if (k == Key_T) {::LEDControl.setCrgbAt(r, c, color_letter_t); return;}
-  else if (k == Key_U) {::LEDControl.setCrgbAt(r, c, color_letter_u); return;}
-  else if (k == Key_V) {::LEDControl.setCrgbAt(r, c, color_letter_v); return;}
-  else if (k == Key_W) {::LEDControl.setCrgbAt(r, c, color_letter_w); return;}
-  else if (k == Key_X) {::LEDControl.setCrgbAt(r, c, color_letter_x); return;}
-  else if (k == Key_Y) {::LEDControl.setCrgbAt(r, c, color_letter_y); return;}
-  else if (k == Key_Z) {::LEDControl.setCrgbAt(r, c, color_letter_z); return;}
+  else if (k == Key_A) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_a)); return;}
+  else if (k == Key_B) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_b)); return;}
+  else if (k == Key_C) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_c)); return;}
+  else if (k == Key_D) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_d)); return;}
+  else if (k == Key_E) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_e)); return;}
+  else if (k == Key_F) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_f)); return;}
+  else if (k == Key_G) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_g)); return;}
+  else if (k == Key_H) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_h)); return;}
+  else if (k == Key_I) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_i)); return;}
+  else if (k == Key_J) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_j)); return;}
+  else if (k == Key_K) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_k)); return;}
+  else if (k == Key_L) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_l)); return;}
+  else if (k == Key_M) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_m)); return;}
+  else if (k == Key_N) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_n)); return;}
+  else if (k == Key_O) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_o)); return;}
+  else if (k == Key_P) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_p)); return;}
+  else if (k == Key_Q) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_q)); return;}
+  else if (k == Key_R) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_r)); return;}
+  else if (k == Key_S) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_s)); return;}
+  else if (k == Key_T) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_t)); return;}
+  else if (k == Key_U) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_u)); return;}
+  else if (k == Key_V) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_v)); return;}
+  else if (k == Key_W) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_w)); return;}
+  else if (k == Key_X) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_x)); return;}
+  else if (k == Key_Y) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_y)); return;}
+  else if (k == Key_Z) {::LEDControl.setCrgbAt(r, c, getCRGB(color_letter_z)); return;}
 
   // punctuation
-  else if (k == Key_Backtick)  {::LEDControl.setCrgbAt(r, c, color_punctuation_backtick); return;}
-  else if (k == Key_Period)    {::LEDControl.setCrgbAt(r, c, color_punctuation_period); return;}
-  else if (k == Key_Comma)     {::LEDControl.setCrgbAt(r, c, color_punctuation_comma); return;}
-  else if (k == Key_Semicolon) {::LEDControl.setCrgbAt(r, c, color_punctuation_semicolon); return;}
-  else if (k == Key_Quote)     {::LEDControl.setCrgbAt(r, c, color_punctuation_quote); return;}
-  else if (k == Key_Slash)     {::LEDControl.setCrgbAt(r, c, color_punctuation_slash); return;}
+  else if (k == Key_Backtick)  {::LEDControl.setCrgbAt(r, c, getCRGB(color_punctuation_backtick)); return;}
+  else if (k == Key_Period)    {::LEDControl.setCrgbAt(r, c, getCRGB(color_punctuation_period)); return;}
+  else if (k == Key_Comma)     {::LEDControl.setCrgbAt(r, c, getCRGB(color_punctuation_comma)); return;}
+  else if (k == Key_Semicolon) {::LEDControl.setCrgbAt(r, c, getCRGB(color_punctuation_semicolon)); return;}
+  else if (k == Key_Quote)     {::LEDControl.setCrgbAt(r, c, getCRGB(color_punctuation_quote)); return;}
+  else if (k == Key_Slash)     {::LEDControl.setCrgbAt(r, c, getCRGB(color_punctuation_slash)); return;}
 
-  else if (k == Key_LeftBracket)       {::LEDControl.setCrgbAt(r, c, color_bracket_leftbracket); return;}
-  else if (k == Key_RightBracket)      {::LEDControl.setCrgbAt(r, c, color_bracket_rightbracket); return;}
-  else if (k == Key_LeftCurlyBracket)  {::LEDControl.setCrgbAt(r, c, color_bracket_leftcurlybracket); return;}
-  else if (k == Key_RightCurlyBracket) {::LEDControl.setCrgbAt(r, c, color_bracket_rightcurlybracket); return;}
+  else if (k == Key_LeftBracket)       {::LEDControl.setCrgbAt(r, c, getCRGB(color_bracket_leftbracket)); return;}
+  else if (k == Key_RightBracket)      {::LEDControl.setCrgbAt(r, c, getCRGB(color_bracket_rightbracket)); return;}
+  else if (k == Key_LeftCurlyBracket)  {::LEDControl.setCrgbAt(r, c, getCRGB(color_bracket_leftcurlybracket)); return;}
+  else if (k == Key_RightCurlyBracket) {::LEDControl.setCrgbAt(r, c, getCRGB(color_bracket_rightcurlybracket)); return;}
 
-  else if (k == Key_Backslash) {::LEDControl.setCrgbAt(r, c, color_backslash); return;}
-  else if (k == Key_Pipe)      {::LEDControl.setCrgbAt(r, c, color_pipe); return;}
+  else if (k == Key_Backslash) {::LEDControl.setCrgbAt(r, c, getCRGB(color_backslash)); return;}
+  else if (k == Key_Pipe)      {::LEDControl.setCrgbAt(r, c, getCRGB(color_pipe)); return;}
   
-  else if (k == Key_Space)     {::LEDControl.setCrgbAt(r, c, color_space); return;}
-  else if (k == Key_Enter)     {::LEDControl.setCrgbAt(r, c, color_enter); return;}
-  else if (k == Key_Tab)       {::LEDControl.setCrgbAt(r, c, color_tab); return;}
-  else if (k == Key_Backspace) {::LEDControl.setCrgbAt(r, c, color_backspace); return;}
-  else if (k == Key_Delete)    {::LEDControl.setCrgbAt(r, c, color_delete); return;}
-  else if (k == Key_Insert)    {::LEDControl.setCrgbAt(r, c, color_insert); return;}
+  else if (k == Key_Space)     {::LEDControl.setCrgbAt(r, c, getCRGB(color_space)); return;}
+  else if (k == Key_Enter)     {::LEDControl.setCrgbAt(r, c, getCRGB(color_enter)); return;}
+  else if (k == Key_Tab)       {::LEDControl.setCrgbAt(r, c, getCRGB(color_tab)); return;}
+  else if (k == Key_Backspace) {::LEDControl.setCrgbAt(r, c, getCRGB(color_backspace)); return;}
+  else if (k == Key_Delete)    {::LEDControl.setCrgbAt(r, c, getCRGB(color_delete)); return;}
+  else if (k == Key_Insert)    {::LEDControl.setCrgbAt(r, c, getCRGB(color_insert)); return;}
 
   // nav keys
-  else if (k == Key_Home) {::LEDControl.setCrgbAt(r, c, color_nav_home); return;}
-  else if (k == Key_End) {::LEDControl.setCrgbAt(r, c, color_nav_end); return;}
-  else if (k == Key_PageUp) {::LEDControl.setCrgbAt(r, c, color_nav_pageup); return;}
-  else if (k == Key_PageDown) {::LEDControl.setCrgbAt(r, c, color_nav_pagedown); return;}
+  else if (k == Key_Home) {::LEDControl.setCrgbAt(r, c, getCRGB(color_nav_home)); return;}
+  else if (k == Key_End) {::LEDControl.setCrgbAt(r, c, getCRGB(color_nav_end)); return;}
+  else if (k == Key_PageUp) {::LEDControl.setCrgbAt(r, c, getCRGB(color_nav_pageup)); return;}
+  else if (k == Key_PageDown) {::LEDControl.setCrgbAt(r, c, getCRGB(color_nav_pagedown)); return;}
 
   // arrow keys
-  else if (k == Key_LeftArrow) {::LEDControl.setCrgbAt(r, c, color_arrow_left); return;}
-  else if (k == Key_UpArrow) {::LEDControl.setCrgbAt(r, c, color_arrow_up); return;}
-  else if (k == Key_DownArrow) {::LEDControl.setCrgbAt(r, c, color_arrow_down); return;}
-  else if (k == Key_RightArrow) {::LEDControl.setCrgbAt(r, c, color_arrow_right); return;}
+  else if (k == Key_LeftArrow) {::LEDControl.setCrgbAt(r, c, getCRGB(color_arrow_left)); return;}
+  else if (k == Key_UpArrow) {::LEDControl.setCrgbAt(r, c, getCRGB(color_arrow_up)); return;}
+  else if (k == Key_DownArrow) {::LEDControl.setCrgbAt(r, c, getCRGB(color_arrow_down)); return;}
+  else if (k == Key_RightArrow) {::LEDControl.setCrgbAt(r, c, getCRGB(color_arrow_right)); return;}
   
   // modifiers
-  else if (k == Key_LeftShift) {::LEDControl.setCrgbAt(r, c, color_shift); return;}
-  else if (k == Key_RightShift) {::LEDControl.setCrgbAt(r, c, color_shift); return;}
-  else if (k == Key_LeftControl) {::LEDControl.setCrgbAt(r, c, color_ctrl); return;}
-  else if (k == Key_RightControl) {::LEDControl.setCrgbAt(r, c, color_ctrl); return;}
-  else if (k == Key_LeftAlt) {::LEDControl.setCrgbAt(r, c, color_alt); return;}
-  else if (k == Key_RightAlt) {::LEDControl.setCrgbAt(r, c, color_alt); return;}
-  else if (k == Key_LeftGui) {::LEDControl.setCrgbAt(r, c, color_cmd); return;}
-  else if (k == Key_RightGui) {::LEDControl.setCrgbAt(r, c, color_cmd); return;}
+  else if (k == Key_LeftShift) {::LEDControl.setCrgbAt(r, c, getCRGB(color_shift)); return;}
+  else if (k == Key_RightShift) {::LEDControl.setCrgbAt(r, c, getCRGB(color_shift)); return;}
+  else if (k == Key_LeftControl) {::LEDControl.setCrgbAt(r, c, getCRGB(color_ctrl)); return;}
+  else if (k == Key_RightControl) {::LEDControl.setCrgbAt(r, c, getCRGB(color_ctrl)); return;}
+  else if (k == Key_LeftAlt) {::LEDControl.setCrgbAt(r, c, getCRGB(color_alt)); return;}
+  else if (k == Key_RightAlt) {::LEDControl.setCrgbAt(r, c, getCRGB(color_alt)); return;}
+  else if (k == Key_LeftGui) {::LEDControl.setCrgbAt(r, c, getCRGB(color_cmd)); return;}
+  else if (k == Key_RightGui) {::LEDControl.setCrgbAt(r, c, getCRGB(color_cmd)); return;}
   // context menu key
-  else if (k == Key_PcApplication) {::LEDControl.setCrgbAt(r, c, color_app); return;}
+  else if (k == Key_PcApplication) {::LEDControl.setCrgbAt(r, c, getCRGB(color_app)); return;}
   
   // function keys
-  else if (k == Key_F1)  {::LEDControl.setCrgbAt(r, c, color_fkey_f1); return;}
-  else if (k == Key_F2)  {::LEDControl.setCrgbAt(r, c, color_fkey_f2); return;}
-  else if (k == Key_F3)  {::LEDControl.setCrgbAt(r, c, color_fkey_f3); return;}
-  else if (k == Key_F4)  {::LEDControl.setCrgbAt(r, c, color_fkey_f4); return;}
-  else if (k == Key_F5)  {::LEDControl.setCrgbAt(r, c, color_fkey_f5); return;}
-  else if (k == Key_F6)  {::LEDControl.setCrgbAt(r, c, color_fkey_f6); return;}
-  else if (k == Key_F7)  {::LEDControl.setCrgbAt(r, c, color_fkey_f7); return;}
-  else if (k == Key_F8)  {::LEDControl.setCrgbAt(r, c, color_fkey_f8); return;}
-  else if (k == Key_F9)  {::LEDControl.setCrgbAt(r, c, color_fkey_f9); return;}
-  else if (k == Key_F10) {::LEDControl.setCrgbAt(r, c, color_fkey_f10); return;}
-  else if (k == Key_F11) {::LEDControl.setCrgbAt(r, c, color_fkey_f11); return;}
-  else if (k == Key_F12) {::LEDControl.setCrgbAt(r, c, color_fkey_f12); return;}
-  else if (k == Key_F13) {::LEDControl.setCrgbAt(r, c, color_fkey_f13); return;}
-  else if (k == Key_F14) {::LEDControl.setCrgbAt(r, c, color_fkey_f14); return;}
-  else if (k == Key_F15) {::LEDControl.setCrgbAt(r, c, color_fkey_f15); return;}
-  else if (k == Key_F16) {::LEDControl.setCrgbAt(r, c, color_fkey_f16); return;}
-  else if (k == Key_F17) {::LEDControl.setCrgbAt(r, c, color_fkey_f17); return;}
-  else if (k == Key_F18) {::LEDControl.setCrgbAt(r, c, color_fkey_f18); return;}
-  else if (k == Key_F19) {::LEDControl.setCrgbAt(r, c, color_fkey_f19); return;}
+  else if (k == Key_F1)  {::LEDControl.setCrgbAt(r, c, getCRGB(color_fkey_f1)); return;}
+  else if (k == Key_F2)  {::LEDControl.setCrgbAt(r, c, getCRGB(color_fkey_f2)); return;}
+  else if (k == Key_F3)  {::LEDControl.setCrgbAt(r, c, getCRGB(color_fkey_f3)); return;}
+  else if (k == Key_F4)  {::LEDControl.setCrgbAt(r, c, getCRGB(color_fkey_f4)); return;}
+  else if (k == Key_F5)  {::LEDControl.setCrgbAt(r, c, getCRGB(color_fkey_f5)); return;}
+  else if (k == Key_F6)  {::LEDControl.setCrgbAt(r, c, getCRGB(color_fkey_f6)); return;}
+  else if (k == Key_F7)  {::LEDControl.setCrgbAt(r, c, getCRGB(color_fkey_f7)); return;}
+  else if (k == Key_F8)  {::LEDControl.setCrgbAt(r, c, getCRGB(color_fkey_f8)); return;}
+  else if (k == Key_F9)  {::LEDControl.setCrgbAt(r, c, getCRGB(color_fkey_f9)); return;}
+  else if (k == Key_F10) {::LEDControl.setCrgbAt(r, c, getCRGB(color_fkey_f10)); return;}
+  else if (k == Key_F11) {::LEDControl.setCrgbAt(r, c, getCRGB(color_fkey_f11)); return;}
+  else if (k == Key_F12) {::LEDControl.setCrgbAt(r, c, getCRGB(color_fkey_f12)); return;}
+  else if (k == Key_F13) {::LEDControl.setCrgbAt(r, c, getCRGB(color_fkey_f13)); return;}
+  else if (k == Key_F14) {::LEDControl.setCrgbAt(r, c, getCRGB(color_fkey_f14)); return;}
+  else if (k == Key_F15) {::LEDControl.setCrgbAt(r, c, getCRGB(color_fkey_f15)); return;}
+  else if (k == Key_F16) {::LEDControl.setCrgbAt(r, c, getCRGB(color_fkey_f16)); return;}
+  else if (k == Key_F17) {::LEDControl.setCrgbAt(r, c, getCRGB(color_fkey_f17)); return;}
+  else if (k == Key_F18) {::LEDControl.setCrgbAt(r, c, getCRGB(color_fkey_f18)); return;}
+  else if (k == Key_F19) {::LEDControl.setCrgbAt(r, c, getCRGB(color_fkey_f19)); return;}
 
   // system keys
-  else if (k == Key_PrintScreen) {::LEDControl.setCrgbAt(r, c, color_printscreen); return;}
-  else if (k == Key_Pause) {::LEDControl.setCrgbAt(r, c, color_pause); return;}
-  else if (k == Key_ScrollLock) {::LEDControl.setCrgbAt(r, c, color_scrolllock); return;}
-  else if (k == Key_CapsLock) {::LEDControl.setCrgbAt(r, c, color_capslock); return;}
+  else if (k == Key_PrintScreen) {::LEDControl.setCrgbAt(r, c, getCRGB(color_printscreen)); return;}
+  else if (k == Key_Pause) {::LEDControl.setCrgbAt(r, c, getCRGB(color_pause)); return;}
+  else if (k == Key_ScrollLock) {::LEDControl.setCrgbAt(r, c, getCRGB(color_scrolllock)); return;}
+  else if (k == Key_CapsLock) {::LEDControl.setCrgbAt(r, c, getCRGB(color_capslock)); return;}
   
   // media keys
-  else if (k == Consumer_PlaySlashPause) {::LEDControl.setCrgbAt(r, c, color_media_play); return;}
-  else if (k == Consumer_ScanPreviousTrack) {::LEDControl.setCrgbAt(r, c, color_media_prev); return;}
-  else if (k == Consumer_ScanNextTrack) {::LEDControl.setCrgbAt(r, c, color_media_next); return;}
-  else if (k == Consumer_Stop) {::LEDControl.setCrgbAt(r, c, color_media_stop); return;}
-  else if (k == Consumer_VolumeIncrement) {::LEDControl.setCrgbAt(r, c, color_media_volup); return;}
-  else if (k == Consumer_VolumeDecrement) {::LEDControl.setCrgbAt(r, c, color_media_voldown); return;}
-  else if (k == Consumer_Mute) {::LEDControl.setCrgbAt(r, c, color_media_mute); return;}
+  else if (k == Consumer_PlaySlashPause) {::LEDControl.setCrgbAt(r, c, getCRGB(color_media_play)); return;}
+  else if (k == Consumer_ScanPreviousTrack) {::LEDControl.setCrgbAt(r, c, getCRGB(color_media_prev)); return;}
+  else if (k == Consumer_ScanNextTrack) {::LEDControl.setCrgbAt(r, c, getCRGB(color_media_next)); return;}
+  else if (k == Consumer_Stop) {::LEDControl.setCrgbAt(r, c, getCRGB(color_media_stop)); return;}
+  else if (k == Consumer_VolumeIncrement) {::LEDControl.setCrgbAt(r, c, getCRGB(color_media_volup)); return;}
+  else if (k == Consumer_VolumeDecrement) {::LEDControl.setCrgbAt(r, c, getCRGB(color_media_voldown)); return;}
+  else if (k == Consumer_Mute) {::LEDControl.setCrgbAt(r, c, getCRGB(color_media_mute)); return;}
 
   // mouse keys
-  else if (k == Key_mouseL) {::LEDControl.setCrgbAt(r, c, color_mousemove); return;}
-  else if (k == Key_mouseR) {::LEDControl.setCrgbAt(r, c, color_mousemove); return;}
-  else if (k == Key_mouseUp) {::LEDControl.setCrgbAt(r, c, color_mousemove); return;}
-  else if (k == Key_mouseDn) {::LEDControl.setCrgbAt(r, c, color_mousemove); return;}
-  else if (k == Key_mouseBtnR) {::LEDControl.setCrgbAt(r, c, color_mousebuttons); return;}
-  else if (k == Key_mouseBtnL) {::LEDControl.setCrgbAt(r, c, color_mousebuttons); return;}
-  else if (k == Key_mouseBtnM) {::LEDControl.setCrgbAt(r, c, color_mousebuttons); return;}
-  else if (k == Key_mouseWarpEnd) {::LEDControl.setCrgbAt(r, c, color_mousewarp); return;}
-  else if (k == Key_mouseWarpNW) {::LEDControl.setCrgbAt(r, c, color_mousewarp); return;}
-  else if (k == Key_mouseWarpSW) {::LEDControl.setCrgbAt(r, c, color_mousewarp); return;}
-  else if (k == Key_mouseWarpNE) {::LEDControl.setCrgbAt(r, c, color_mousewarp); return;}
-  else if (k == Key_mouseWarpSW) {::LEDControl.setCrgbAt(r, c, color_mousewarp); return;}
+  else if (k == Key_mouseL) {::LEDControl.setCrgbAt(r, c, getCRGB(color_mousemove)); return;}
+  else if (k == Key_mouseR) {::LEDControl.setCrgbAt(r, c, getCRGB(color_mousemove)); return;}
+  else if (k == Key_mouseUp) {::LEDControl.setCrgbAt(r, c, getCRGB(color_mousemove)); return;}
+  else if (k == Key_mouseDn) {::LEDControl.setCrgbAt(r, c, getCRGB(color_mousemove)); return;}
+  else if (k == Key_mouseBtnR) {::LEDControl.setCrgbAt(r, c, getCRGB(color_mousebuttons)); return;}
+  else if (k == Key_mouseBtnL) {::LEDControl.setCrgbAt(r, c, getCRGB(color_mousebuttons)); return;}
+  else if (k == Key_mouseBtnM) {::LEDControl.setCrgbAt(r, c, getCRGB(color_mousebuttons)); return;}
+  else if (k == Key_mouseWarpEnd) {::LEDControl.setCrgbAt(r, c, getCRGB(color_mousewarp)); return;}
+  else if (k == Key_mouseWarpNW) {::LEDControl.setCrgbAt(r, c, getCRGB(color_mousewarp)); return;}
+  else if (k == Key_mouseWarpSW) {::LEDControl.setCrgbAt(r, c, getCRGB(color_mousewarp)); return;}
+  else if (k == Key_mouseWarpNE) {::LEDControl.setCrgbAt(r, c, getCRGB(color_mousewarp)); return;}
+  else if (k == Key_mouseWarpSW) {::LEDControl.setCrgbAt(r, c, getCRGB(color_mousewarp)); return;}
   // mouse scroll
-  else if (k == Key_mouseScrollUp) {::LEDControl.setCrgbAt(r, c, color_mousescroll); return;}
-  else if (k == Key_mouseScrollDn) {::LEDControl.setCrgbAt(r, c, color_mousescroll); return;}
+  else if (k == Key_mouseScrollUp) {::LEDControl.setCrgbAt(r, c, getCRGB(color_mousescroll)); return;}
+  else if (k == Key_mouseScrollDn) {::LEDControl.setCrgbAt(r, c, getCRGB(color_mousescroll)); return;}
 
 
 }// end setKeyLed
 
 
-// dims the specified color from 0 (off) to 255 (full)
-cRGB LEDFunctionalColor::dim(cRGB color, byte brightness) {
-  return CRGB(color.r*brightness/255, color.g*brightness/255, color.b*brightness/255);
+// getCRGB() - sets a CRGB color based on a byte containing a color index (from our palette) and brightness (0-15)
+cRGB LEDFunctionalColor::getCRGB(byte colorbrightness) {
+  uint8_t brightness = colorbrightness & 15;
+  cRGB color = palette[colorbrightness >> 4];
+  return CRGB(color.r*brightness/15, color.g*brightness/15, color.b*brightness/15);
+}
+
+// dims the specified color from 0 (off) to 15 (full)
+byte LEDFunctionalColor::dim(byte color, uint8_t brightness) {
+  uint8_t coloridx = color >> 4;
+  uint8_t oldbrightness = color & 15;
+  uint8_t newbrightness = oldbrightness*brightness/15;
+
+  return (coloridx << 4) + newbrightness;
 }
 
 
@@ -1202,9 +1246,9 @@ void LEDFunctionalColor::update(void) {
     // Turn off when the function layer is active
     if (current_layer == 0) {
       // left fn
-      ::LEDControl.setCrgbAt(3, 6, color_fn); 
+      ::LEDControl.setCrgbAt(3, 6, getCRGB(color_fn)); 
       // right fn
-      ::LEDControl.setCrgbAt(3, 9, color_fn);
+      ::LEDControl.setCrgbAt(3, 9, getCRGB(color_fn));
     }
     else {
       // left fn

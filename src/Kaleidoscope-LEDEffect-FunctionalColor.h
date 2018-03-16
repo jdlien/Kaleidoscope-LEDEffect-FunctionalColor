@@ -2,6 +2,7 @@
 
 #include "Kaleidoscope-LEDControl.h"
 #include "Kaleidoscope-MouseKeys.h"
+#include "LEDUtils.h" // need this for hsvToRgb()
 
 namespace kaleidoscope {
 class LEDFunctionalColor : public LEDMode {
@@ -10,247 +11,297 @@ class LEDFunctionalColor : public LEDMode {
   LEDFunctionalColor(void);
   uint8_t functionLayer = 2;
 
-  // dims the brightness of all colors from 0-255
+
+  // Establish a palette of 16 colors. This is a rainbow of 14 vivid colors and two whites
+  cRGB palette [16] = {
+    CRGB(255,255,255), //white
+    CRGB(255, 235, 215), //warm white aka antiquewhite
+    CRGB(255,0,0), //red
+    hsvToRgb(16,255,255), //red-orange
+    hsvToRgb(32,255,255), //orange
+    hsvToRgb(48,255,255), //yellow
+    hsvToRgb(64,255,255), //green-yellow
+    CRGB(0,255,0), //green aka lime
+    hsvToRgb(112,255,255), //turquoise
+    hsvToRgb(128,255,255), //cyan
+    hsvToRgb(144,255,255), //deep sky blue
+    CRGB(0,0,255), //blue
+    hsvToRgb(192,255,255), //purple
+    hsvToRgb(208,255,255), //fuchsia
+    hsvToRgb(224,255,255), //magenta
+    hsvToRgb(240,255,255), //neon red
+  };
+
+/*
+   // An alternate set of 7 vivid colors with pale complements
+  cRGB palette2 [16] = {
+    CRGB(255,255,255), //white
+    CRGB(255, 235, 215), //warm white aka antiquewhite
+    CRGB(255,0,0), //red
+    CRGB(255,200,200), //pale red (pink)
+    // hsvToRgb(32,255,255), //orange
+    hsvToRgb(48,255,255), //yellow
+    hsvToRgb(48,70,255), //pale yellow
+    //hsvToRgb(64,255,255), //green-yellow
+    CRGB(0,255,0), //green aka lime
+    CRGB(200,255,200), //pale green
+    // hsvToRgb(112,255,255), //turquoise
+    hsvToRgb(128,255,255), //cyan
+    hsvToRgb(128,70,255), //pale cyan
+    CRGB(0,0,255), //blue
+    CRGB(200,200,255), //pale blue
+    hsvToRgb(200,255,255), //purple
+    hsvToRgb(200,70,255), //pale purple
+    CRGB(255,0,255), //magenta
+    CRGB(255,200,255), //pale magenta
+    //hsvToRgb(240,255,255), //neon red
+  };
+*/
+   
+
+  // dims the brightness of all colors from 0-16 
   void brightness(byte brightness);
 
   // functions to set colors
-  void all(cRGB color);
-  void allModifiers(cRGB color);
-  void allMouse(cRGB color);
-  void escape(cRGB color);
-  void numbers(cRGB color);
-  void letters(cRGB color);
-  void punctuation(cRGB color);
-  void brackets(cRGB color);
-  void backslash(cRGB color);
-  void pipe(cRGB color);
-  void tab(cRGB color);
-  void backspace(cRGB color);
-  void del(cRGB color);
-  void enter(cRGB color);
-  void arrows(cRGB color);
-  void nav(cRGB color);
-  void insert(cRGB color);
-  void shift(cRGB color);
-  void ctrl(cRGB color);
-  void alt(cRGB color);
-  void cmd(cRGB color);
-  void app(cRGB color);
-  void printscreen(cRGB color);
-  void pause(cRGB color);
-  void scrolllock(cRGB color);
-  void capslock(cRGB color);
-  void fkeys(cRGB color);
-  void fn(cRGB color);
-  void media(cRGB color);
-  void led(cRGB color);
-  void mousemove(cRGB color);
-  void mousebuttons(cRGB color);
-  void mousewarp(cRGB color);
-  void mousescroll(cRGB color);
+  void all(uint8_t color);
+  void allModifiers(uint8_t color);
+  void allMouse(uint8_t color);
+  void escape(uint8_t color);
+  void numbers(uint8_t color);
+  void letters(uint8_t color);
+  void punctuation(uint8_t color);
+  void brackets(uint8_t color);
+  void backslash(uint8_t color);
+  void pipe(uint8_t color);
+  void tab(uint8_t color);
+  void backspace(uint8_t color);
+  void space(uint8_t color);
+  void del(uint8_t color);
+  void enter(uint8_t color);
+  void arrows(uint8_t color);
+  void nav(uint8_t color);
+  void insert(uint8_t color);
+  void shift(uint8_t color);
+  void ctrl(uint8_t color);
+  void alt(uint8_t color);
+  void cmd(uint8_t color);
+  void app(uint8_t color);
+  void printscreen(uint8_t color);
+  void pause(uint8_t color);
+  void scrolllock(uint8_t color);
+  void capslock(uint8_t color);
+  void fkeys(uint8_t color);
+  void fn(uint8_t color);
+  void media(uint8_t color);
+  void led(uint8_t color);
+  void mousemove(uint8_t color);
+  void mousebuttons(uint8_t color);
+  void mousewarp(uint8_t color);
+  void mousescroll(uint8_t color);
   // individual key colors
-  void number_1(cRGB color);
-  void number_2(cRGB color);
-  void number_3(cRGB color);
-  void number_4(cRGB color);
-  void number_5(cRGB color);
-  void number_6(cRGB color);
-  void number_7(cRGB color);
-  void number_8(cRGB color);
-  void number_9(cRGB color);
-  void number_0(cRGB color);
-  void number_minus(cRGB color);
-  void number_equals(cRGB color);
-  void letter_a(cRGB color);
-  void letter_b(cRGB color);
-  void letter_c(cRGB color);
-  void letter_d(cRGB color);
-  void letter_e(cRGB color);
-  void letter_f(cRGB color);
-  void letter_g(cRGB color);
-  void letter_h(cRGB color);
-  void letter_i(cRGB color);
-  void letter_j(cRGB color);
-  void letter_k(cRGB color);
-  void letter_l(cRGB color);
-  void letter_m(cRGB color);
-  void letter_n(cRGB color);
-  void letter_o(cRGB color);
-  void letter_p(cRGB color);
-  void letter_q(cRGB color);
-  void letter_r(cRGB color);
-  void letter_s(cRGB color);
-  void letter_t(cRGB color);
-  void letter_u(cRGB color);
-  void letter_v(cRGB color);
-  void letter_w(cRGB color);
-  void letter_x(cRGB color);
-  void letter_y(cRGB color);
-  void letter_z(cRGB color);
-  void punctuation_backtick(cRGB color);
-  void punctuation_period(cRGB color);
-  void punctuation_comma(cRGB color);
-  void punctuation_semicolon(cRGB color);
-  void punctuation_quote(cRGB color);
-  void punctuation_slash(cRGB color);
-  void bracket_leftbracket(cRGB color);
-  void bracket_rightbracket(cRGB color);
-  void bracket_leftcurlybracket(cRGB color);
-  void bracket_rightcurlybracket(cRGB color);
-  void arrow_left(cRGB color);
-  void arrow_up(cRGB color);
-  void arrow_down(cRGB color);
-  void arrow_right(cRGB color);
-  void nav_home(cRGB color);
-  void nav_end(cRGB color);
-  void nav_pageup(cRGB color);
-  void nav_pagedown(cRGB color);
-  void fkey_f1(cRGB color);
-  void fkey_f2(cRGB color);
-  void fkey_f3(cRGB color);
-  void fkey_f4(cRGB color);
-  void fkey_f5(cRGB color);
-  void fkey_f6(cRGB color);
-  void fkey_f7(cRGB color);
-  void fkey_f8(cRGB color);
-  void fkey_f9(cRGB color);
-  void fkey_f10(cRGB color);
-  void fkey_f11(cRGB color);
-  void fkey_f12(cRGB color);
-  void fkey_f13(cRGB color);
-  void fkey_f14(cRGB color);
-  void fkey_f15(cRGB color);
-  void fkey_f16(cRGB color);
-  void fkey_f17(cRGB color);
-  void fkey_f18(cRGB color);
-  void fkey_f19(cRGB color);
-  void media_play(cRGB color);
-  void media_prev(cRGB color);
-  void media_next(cRGB color);
-  void media_stop(cRGB color);
-  void media_volup(cRGB color);
-  void media_voldown(cRGB color);
-  void media_mute(cRGB color);
+  void number_1(uint8_t color);
+  void number_2(uint8_t color);
+  void number_3(uint8_t color);
+  void number_4(uint8_t color);
+  void number_5(uint8_t color);
+  void number_6(uint8_t color);
+  void number_7(uint8_t color);
+  void number_8(uint8_t color);
+  void number_9(uint8_t color);
+  void number_0(uint8_t color);
+  void number_minus(uint8_t color);
+  void number_equals(uint8_t color);
+  void letter_a(uint8_t color);
+  void letter_b(uint8_t color);
+  void letter_c(uint8_t color);
+  void letter_d(uint8_t color);
+  void letter_e(uint8_t color);
+  void letter_f(uint8_t color);
+  void letter_g(uint8_t color);
+  void letter_h(uint8_t color);
+  void letter_i(uint8_t color);
+  void letter_j(uint8_t color);
+  void letter_k(uint8_t color);
+  void letter_l(uint8_t color);
+  void letter_m(uint8_t color);
+  void letter_n(uint8_t color);
+  void letter_o(uint8_t color);
+  void letter_p(uint8_t color);
+  void letter_q(uint8_t color);
+  void letter_r(uint8_t color);
+  void letter_s(uint8_t color);
+  void letter_t(uint8_t color);
+  void letter_u(uint8_t color);
+  void letter_v(uint8_t color);
+  void letter_w(uint8_t color);
+  void letter_x(uint8_t color);
+  void letter_y(uint8_t color);
+  void letter_z(uint8_t color);
+  void punctuation_backtick(uint8_t color);
+  void punctuation_period(uint8_t color);
+  void punctuation_comma(uint8_t color);
+  void punctuation_semicolon(uint8_t color);
+  void punctuation_quote(uint8_t color);
+  void punctuation_slash(uint8_t color);
+  void bracket_leftbracket(uint8_t color);
+  void bracket_rightbracket(uint8_t color);
+  void bracket_leftcurlybracket(uint8_t color);
+  void bracket_rightcurlybracket(uint8_t color);
+  void arrow_left(uint8_t color);
+  void arrow_up(uint8_t color);
+  void arrow_down(uint8_t color);
+  void arrow_right(uint8_t color);
+  void nav_home(uint8_t color);
+  void nav_end(uint8_t color);
+  void nav_pageup(uint8_t color);
+  void nav_pagedown(uint8_t color);
+  void fkey_f1(uint8_t color);
+  void fkey_f2(uint8_t color);
+  void fkey_f3(uint8_t color);
+  void fkey_f4(uint8_t color);
+  void fkey_f5(uint8_t color);
+  void fkey_f6(uint8_t color);
+  void fkey_f7(uint8_t color);
+  void fkey_f8(uint8_t color);
+  void fkey_f9(uint8_t color);
+  void fkey_f10(uint8_t color);
+  void fkey_f11(uint8_t color);
+  void fkey_f12(uint8_t color);
+  void fkey_f13(uint8_t color);
+  void fkey_f14(uint8_t color);
+  void fkey_f15(uint8_t color);
+  void fkey_f16(uint8_t color);
+  void fkey_f17(uint8_t color);
+  void fkey_f18(uint8_t color);
+  void fkey_f19(uint8_t color);
+  void media_play(uint8_t color);
+  void media_prev(uint8_t color);
+  void media_next(uint8_t color);
+  void media_stop(uint8_t color);
+  void media_volup(uint8_t color);
+  void media_voldown(uint8_t color);
+  void media_mute(uint8_t color);
 
 
   // functions to set colors with brightness
-  void all(cRGB color, byte brightness);
-  void allModifiers(cRGB color, byte brightness);
-  void allMouse(cRGB color, byte brightness);
-  void escape(cRGB color, byte brightness);
-  void numbers(cRGB color, byte brightness);
-  void letters(cRGB color, byte brightness);
-  void punctuation(cRGB color, byte brightness);
-  void brackets(cRGB color, byte brightness);
-  void backslash(cRGB color, byte brightness);
-  void pipe(cRGB color, byte brightness);
-  void tab(cRGB color, byte brightness);
-  void backspace(cRGB color, byte brightness);
-  void del(cRGB color, byte brightness);
-  void enter(cRGB color, byte brightness);
-  void arrows(cRGB color, byte brightness);
-  void nav(cRGB color, byte brightness);
-  void insert(cRGB color, byte brightness);
-  void shift(cRGB color, byte brightness);
-  void ctrl(cRGB color, byte brightness);
-  void alt(cRGB color, byte brightness);
-  void cmd(cRGB color, byte brightness);
-  void app(cRGB color, byte brightness);
-  void printscreen(cRGB color, byte brightness);
-  void pause(cRGB color, byte brightness);
-  void scrolllock(cRGB color, byte brightness);
-  void capslock(cRGB color, byte brightness);
-  void fkeys(cRGB color, byte brightness);
-  void fn(cRGB color, byte brightness);
-  void media(cRGB color, byte brightness);
-  void led(cRGB color, byte brightness);
-  void mousemove(cRGB color, byte brightness);
-  void mousebuttons(cRGB color, byte brightness);
-  void mousewarp(cRGB color, byte brightness);
-  void mousescroll(cRGB color, byte brightness);
+  void all(uint8_t color, byte brightness);
+  void allModifiers(uint8_t color, byte brightness);
+  void allMouse(uint8_t color, byte brightness);
+  void escape(uint8_t color, byte brightness);
+  void numbers(uint8_t color, byte brightness);
+  void letters(uint8_t color, byte brightness);
+  void punctuation(uint8_t color, byte brightness);
+  void brackets(uint8_t color, byte brightness);
+  void backslash(uint8_t color, byte brightness);
+  void pipe(uint8_t color, byte brightness);
+  void tab(uint8_t color, byte brightness);
+  void backspace(uint8_t color, byte brightness);
+  void space(uint8_t color, byte brightness);
+  void del(uint8_t color, byte brightness);
+  void enter(uint8_t color, byte brightness);
+  void arrows(uint8_t color, byte brightness);
+  void nav(uint8_t color, byte brightness);
+  void insert(uint8_t color, byte brightness);
+  void shift(uint8_t color, byte brightness);
+  void ctrl(uint8_t color, byte brightness);
+  void alt(uint8_t color, byte brightness);
+  void cmd(uint8_t color, byte brightness);
+  void app(uint8_t color, byte brightness);
+  void printscreen(uint8_t color, byte brightness);
+  void pause(uint8_t color, byte brightness);
+  void scrolllock(uint8_t color, byte brightness);
+  void capslock(uint8_t color, byte brightness);
+  void fkeys(uint8_t color, byte brightness);
+  void fn(uint8_t color, byte brightness);
+  void media(uint8_t color, byte brightness);
+  void led(uint8_t color, byte brightness);
+  void mousemove(uint8_t color, byte brightness);
+  void mousebuttons(uint8_t color, byte brightness);
+  void mousewarp(uint8_t color, byte brightness);
+  void mousescroll(uint8_t color, byte brightness);
   // here are the new individual key variables that need their own functions
-  void number_1(cRGB color, byte brightness);
-  void number_2(cRGB color, byte brightness);
-  void number_3(cRGB color, byte brightness);
-  void number_4(cRGB color, byte brightness);
-  void number_5(cRGB color, byte brightness);
-  void number_6(cRGB color, byte brightness);
-  void number_7(cRGB color, byte brightness);
-  void number_8(cRGB color, byte brightness);
-  void number_9(cRGB color, byte brightness);
-  void number_0(cRGB color, byte brightness);
-  void number_minus(cRGB color, byte brightness);
-  void number_equals(cRGB color, byte brightness);
-  void letter_a(cRGB color, byte brightness);
-  void letter_b(cRGB color, byte brightness);
-  void letter_c(cRGB color, byte brightness);
-  void letter_d(cRGB color, byte brightness);
-  void letter_e(cRGB color, byte brightness);
-  void letter_f(cRGB color, byte brightness);
-  void letter_g(cRGB color, byte brightness);
-  void letter_h(cRGB color, byte brightness);
-  void letter_i(cRGB color, byte brightness);
-  void letter_j(cRGB color, byte brightness);
-  void letter_k(cRGB color, byte brightness);
-  void letter_l(cRGB color, byte brightness);
-  void letter_m(cRGB color, byte brightness);
-  void letter_n(cRGB color, byte brightness);
-  void letter_o(cRGB color, byte brightness);
-  void letter_p(cRGB color, byte brightness);
-  void letter_q(cRGB color, byte brightness);
-  void letter_r(cRGB color, byte brightness);
-  void letter_s(cRGB color, byte brightness);
-  void letter_t(cRGB color, byte brightness);
-  void letter_u(cRGB color, byte brightness);
-  void letter_v(cRGB color, byte brightness);
-  void letter_w(cRGB color, byte brightness);
-  void letter_x(cRGB color, byte brightness);
-  void letter_y(cRGB color, byte brightness);
-  void letter_z(cRGB color, byte brightness);
-  void punctuation_backtick(cRGB color, byte brightness);
-  void punctuation_period(cRGB color, byte brightness);
-  void punctuation_comma(cRGB color, byte brightness);
-  void punctuation_semicolon(cRGB color, byte brightness);
-  void punctuation_quote(cRGB color, byte brightness);
-  void punctuation_slash(cRGB color, byte brightness);
-  void bracket_leftbracket(cRGB color, byte brightness);
-  void bracket_rightbracket(cRGB color, byte brightness);
-  void bracket_leftcurlybracket(cRGB color, byte brightness);
-  void bracket_rightcurlybracket(cRGB color, byte brightness);
-  void arrow_left(cRGB color, byte brightness);
-  void arrow_up(cRGB color, byte brightness);
-  void arrow_down(cRGB color, byte brightness);
-  void arrow_right(cRGB color, byte brightness);
-  void nav_home(cRGB color, byte brightness);
-  void nav_end(cRGB color, byte brightness);
-  void nav_pageup(cRGB color, byte brightness);
-  void nav_pagedown(cRGB color, byte brightness);
-  void fkey_f1(cRGB color, byte brightness);
-  void fkey_f2(cRGB color, byte brightness);
-  void fkey_f3(cRGB color, byte brightness);
-  void fkey_f4(cRGB color, byte brightness);
-  void fkey_f5(cRGB color, byte brightness);
-  void fkey_f6(cRGB color, byte brightness);
-  void fkey_f7(cRGB color, byte brightness);
-  void fkey_f8(cRGB color, byte brightness);
-  void fkey_f9(cRGB color, byte brightness);
-  void fkey_f10(cRGB color, byte brightness);
-  void fkey_f11(cRGB color, byte brightness);
-  void fkey_f12(cRGB color, byte brightness);
-  void fkey_f13(cRGB color, byte brightness);
-  void fkey_f14(cRGB color, byte brightness);
-  void fkey_f15(cRGB color, byte brightness);
-  void fkey_f16(cRGB color, byte brightness);
-  void fkey_f17(cRGB color, byte brightness);
-  void fkey_f18(cRGB color, byte brightness);
-  void fkey_f19(cRGB color, byte brightness);
-  void media_play(cRGB color, byte brightness);
-  void media_prev(cRGB color, byte brightness);
-  void media_next(cRGB color, byte brightness);
-  void media_stop(cRGB color, byte brightness);
-  void media_volup(cRGB color, byte brightness);
-  void media_voldown(cRGB color, byte brightness);
-  void media_mute(cRGB color, byte brightness);
+  void number_1(uint8_t color, byte brightness);
+  void number_2(uint8_t color, byte brightness);
+  void number_3(uint8_t color, byte brightness);
+  void number_4(uint8_t color, byte brightness);
+  void number_5(uint8_t color, byte brightness);
+  void number_6(uint8_t color, byte brightness);
+  void number_7(uint8_t color, byte brightness);
+  void number_8(uint8_t color, byte brightness);
+  void number_9(uint8_t color, byte brightness);
+  void number_0(uint8_t color, byte brightness);
+  void number_minus(uint8_t color, byte brightness);
+  void number_equals(uint8_t color, byte brightness);
+  void letter_a(uint8_t color, byte brightness);
+  void letter_b(uint8_t color, byte brightness);
+  void letter_c(uint8_t color, byte brightness);
+  void letter_d(uint8_t color, byte brightness);
+  void letter_e(uint8_t color, byte brightness);
+  void letter_f(uint8_t color, byte brightness);
+  void letter_g(uint8_t color, byte brightness);
+  void letter_h(uint8_t color, byte brightness);
+  void letter_i(uint8_t color, byte brightness);
+  void letter_j(uint8_t color, byte brightness);
+  void letter_k(uint8_t color, byte brightness);
+  void letter_l(uint8_t color, byte brightness);
+  void letter_m(uint8_t color, byte brightness);
+  void letter_n(uint8_t color, byte brightness);
+  void letter_o(uint8_t color, byte brightness);
+  void letter_p(uint8_t color, byte brightness);
+  void letter_q(uint8_t color, byte brightness);
+  void letter_r(uint8_t color, byte brightness);
+  void letter_s(uint8_t color, byte brightness);
+  void letter_t(uint8_t color, byte brightness);
+  void letter_u(uint8_t color, byte brightness);
+  void letter_v(uint8_t color, byte brightness);
+  void letter_w(uint8_t color, byte brightness);
+  void letter_x(uint8_t color, byte brightness);
+  void letter_y(uint8_t color, byte brightness);
+  void letter_z(uint8_t color, byte brightness);
+  void punctuation_backtick(uint8_t color, byte brightness);
+  void punctuation_period(uint8_t color, byte brightness);
+  void punctuation_comma(uint8_t color, byte brightness);
+  void punctuation_semicolon(uint8_t color, byte brightness);
+  void punctuation_quote(uint8_t color, byte brightness);
+  void punctuation_slash(uint8_t color, byte brightness);
+  void bracket_leftbracket(uint8_t color, byte brightness);
+  void bracket_rightbracket(uint8_t color, byte brightness);
+  void bracket_leftcurlybracket(uint8_t color, byte brightness);
+  void bracket_rightcurlybracket(uint8_t color, byte brightness);
+  void arrow_left(uint8_t color, byte brightness);
+  void arrow_up(uint8_t color, byte brightness);
+  void arrow_down(uint8_t color, byte brightness);
+  void arrow_right(uint8_t color, byte brightness);
+  void nav_home(uint8_t color, byte brightness);
+  void nav_end(uint8_t color, byte brightness);
+  void nav_pageup(uint8_t color, byte brightness);
+  void nav_pagedown(uint8_t color, byte brightness);
+  void fkey_f1(uint8_t color, byte brightness);
+  void fkey_f2(uint8_t color, byte brightness);
+  void fkey_f3(uint8_t color, byte brightness);
+  void fkey_f4(uint8_t color, byte brightness);
+  void fkey_f5(uint8_t color, byte brightness);
+  void fkey_f6(uint8_t color, byte brightness);
+  void fkey_f7(uint8_t color, byte brightness);
+  void fkey_f8(uint8_t color, byte brightness);
+  void fkey_f9(uint8_t color, byte brightness);
+  void fkey_f10(uint8_t color, byte brightness);
+  void fkey_f11(uint8_t color, byte brightness);
+  void fkey_f12(uint8_t color, byte brightness);
+  void fkey_f13(uint8_t color, byte brightness);
+  void fkey_f14(uint8_t color, byte brightness);
+  void fkey_f15(uint8_t color, byte brightness);
+  void fkey_f16(uint8_t color, byte brightness);
+  void fkey_f17(uint8_t color, byte brightness);
+  void fkey_f18(uint8_t color, byte brightness);
+  void fkey_f19(uint8_t color, byte brightness);
+  void media_play(uint8_t color, byte brightness);
+  void media_prev(uint8_t color, byte brightness);
+  void media_next(uint8_t color, byte brightness);
+  void media_stop(uint8_t color, byte brightness);
+  void media_volup(uint8_t color, byte brightness);
+  void media_voldown(uint8_t color, byte brightness);
+  void media_mute(uint8_t color, byte brightness);
 
 
   private:
@@ -261,132 +312,152 @@ class LEDFunctionalColor : public LEDMode {
   uint8_t last_layer = 0;
 
   //define colors for certain groups of keys
-  cRGB color_escape = dim(CRGB(255, 0, 0), 140);
-  cRGB color_numbers = dim(CRGB(250, 235, 215), 220);
-  cRGB color_number_1 = dim(CRGB(250, 235, 215), 220);
-  cRGB color_number_2 = dim(CRGB(250, 235, 215), 220);
-  cRGB color_number_3 = dim(CRGB(250, 235, 215), 220);
-  cRGB color_number_4 = dim(CRGB(250, 235, 215), 220);
-  cRGB color_number_5 = dim(CRGB(250, 235, 215), 220);
-  cRGB color_number_6 = dim(CRGB(250, 235, 215), 220);
-  cRGB color_number_7 = dim(CRGB(250, 235, 215), 220);
-  cRGB color_number_8 = dim(CRGB(250, 235, 215), 220);
-  cRGB color_number_9 = dim(CRGB(250, 235, 215), 220);
-  cRGB color_number_0 = dim(CRGB(250, 235, 215), 220);
-  cRGB color_number_minus = dim(CRGB(250, 235, 215), 220);
-  cRGB color_number_equals = dim(CRGB(250, 235, 215), 220);
+  // Colors are all a single byte where the left nybble is a color index (0-16) from palette
+  // The right nybble is a brightness from 0 (black) to 16 (full brightness).
+  // We can set the color by bitshifting an integer 4 left and adding 15
+  //  0 - 0000 1111 = 15  white
+  //  1 - 0001 1111 = 31  warm white
+  //  2 - 0010 1111 = 47  red
+  //  3 - 0011 1111 =     red-orange
+  //  4 - 0100 1111 =     orange
+  //  5 - 0101 1111 =     yellow
+  //  6 - 0110 1111 =     green-yellow
+  //  7 - 0111 1111 =     green
+  //  8 - 1000 1111 =     turquoise
+  //  9 - 1001 1111 =     cyan
+  // 10 - 1010 1111 =     deep sky blue
+  // 11 - 1011 1111 =     blue
+  // 12 - 1100 1111 =     purple
+  // 13 - 1101 1111 =     fuchsia
+  // 14 - 1110 1111 = 239 magenta
+  // 15 - 1111 1111 = 255 neon red
 
-  cRGB color_letters = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_a = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_b = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_c = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_d = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_e = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_f = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_g = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_h = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_i = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_j = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_k = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_l = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_m = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_n = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_o = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_p = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_q = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_r = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_s = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_t = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_u = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_v = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_w = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_x = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_y = dim(CRGB(250, 235, 215), 100);
-  cRGB color_letter_z  = dim(CRGB(250, 235, 215), 100); 
+  byte color_escape = (2 << 4) + 7; //red at half brightness
+  byte color_numbers = 0 + 13; //white at high brightness
+  byte color_number_1 = 13;
+  byte color_number_2 = 13;
+  byte color_number_3 = 13;
+  byte color_number_4 = 13;
+  byte color_number_5 = 13;
+  byte color_number_6 = 13;
+  byte color_number_7 = 13;
+  byte color_number_8 = 13;
+  byte color_number_9 = 13;
+  byte color_number_0 = 13;
+  byte color_number_minus = 13;
+  byte color_number_equals = 13;
 
-  cRGB color_punctuation = dim(CRGB(250, 235, 215), 150);
-  cRGB color_punctuation_backtick = dim(CRGB(250, 235, 215), 150);
-  cRGB color_punctuation_period = dim(CRGB(250, 235, 215), 150);
-  cRGB color_punctuation_comma = dim(CRGB(250, 235, 215), 150);
-  cRGB color_punctuation_semicolon = dim(CRGB(250, 235, 215), 150);
-  cRGB color_punctuation_quote = dim(CRGB(250, 235, 215), 150);
-  cRGB color_punctuation_slash = dim(CRGB(250, 235, 215), 150);
+  byte color_letters = (1 << 4) + 8; //warm white at medium brightness
+  byte color_letter_a = (1 << 4) + 8;
+  byte color_letter_b = (1 << 4) + 8;
+  byte color_letter_c = (1 << 4) + 8;
+  byte color_letter_d = (1 << 4) + 8;
+  byte color_letter_e = (1 << 4) + 8;
+  byte color_letter_f = (1 << 4) + 8;
+  byte color_letter_g = (1 << 4) + 8;
+  byte color_letter_h = (1 << 4) + 8;
+  byte color_letter_i = (1 << 4) + 8;
+  byte color_letter_j = (1 << 4) + 8;
+  byte color_letter_k = (1 << 4) + 8;
+  byte color_letter_l = (1 << 4) + 8;
+  byte color_letter_m = (1 << 4) + 8;
+  byte color_letter_n = (1 << 4) + 8;
+  byte color_letter_o = (1 << 4) + 8;
+  byte color_letter_p = (1 << 4) + 8;
+  byte color_letter_q = (1 << 4) + 8;
+  byte color_letter_r = (1 << 4) + 8;
+  byte color_letter_s = (1 << 4) + 8;
+  byte color_letter_t = (1 << 4) + 8;
+  byte color_letter_u = (1 << 4) + 8;
+  byte color_letter_v = (1 << 4) + 8;
+  byte color_letter_w = (1 << 4) + 8;
+  byte color_letter_x = (1 << 4) + 8;
+  byte color_letter_y = (1 << 4) + 8;
+  byte color_letter_z  = (1 << 4) + 8; 
 
-  cRGB color_brackets = dim(CRGB(250, 235, 215), 200);
-  cRGB color_bracket_leftbracket = dim(CRGB(250, 235, 215), 200);
-  cRGB color_bracket_rightbracket = dim(CRGB(250, 235, 215), 200);
-  cRGB color_bracket_leftcurlybracket = dim(CRGB(250, 235, 215), 200);
-  cRGB color_bracket_rightcurlybracket = dim(CRGB(250, 235, 215), 200);
+  byte color_punctuation = (1 << 4) + 13;
+  byte color_punctuation_backtick = (1 << 4) + 13;
+  byte color_punctuation_period = (1 << 4) + 13;
+  byte color_punctuation_comma = (1 << 4) + 13;
+  byte color_punctuation_semicolon = (1 << 4) + 13;
+  byte color_punctuation_quote = (1 << 4) + 13;
+  byte color_punctuation_slash = (1 << 4) + 13;
 
-  cRGB color_backslash = dim(CRGB(250, 235, 215), 200);
-  cRGB color_pipe = dim(CRGB(250, 235, 215), 200);
-  cRGB color_space = dim(CRGB(255, 255, 255), 180);
-  cRGB color_tab = dim(CRGB(255, 255, 255), 180);
-  cRGB color_backspace = dim(CRGB(255, 0, 0), 120);
-  cRGB color_delete = dim(CRGB(255, 100, 0), 250);
-  cRGB color_enter = dim(CRGB(255, 255, 255), 250);
-  cRGB color_arrows = dim(CRGB(255, 255, 255), 240);
-  cRGB color_arrow_left = dim(CRGB(255, 255, 255), 240);
-  cRGB color_arrow_up = dim(CRGB(255, 255, 255), 240);
-  cRGB color_arrow_down = dim(CRGB(255, 255, 255), 240);
-  cRGB color_arrow_right = dim(CRGB(255, 255, 255), 240);
+  byte color_brackets = (1 << 4) + 13;
+  byte color_bracket_leftbracket = (1 << 4) + 13;
+  byte color_bracket_rightbracket = (1 << 4) + 13;
+  byte color_bracket_leftcurlybracket = (1 << 4) + 13;
+  byte color_bracket_rightcurlybracket = (1 << 4) + 13;
 
-  cRGB color_nav = dim(CRGB(255, 255, 0), 220);
-  cRGB color_nav_home = dim(CRGB(255, 255, 0), 220);
-  cRGB color_nav_end = dim(CRGB(255, 255, 0), 220);
-  cRGB color_nav_pageup = dim(CRGB(255, 255, 0), 220);
-  cRGB color_nav_pagedown = dim(CRGB(255, 255, 0), 220);
+  byte color_backslash = (1 << 4) + 13;
+  byte color_pipe = (1 << 4) + 13;
+  byte color_space = 12;
+  byte color_tab = 12;
+  byte color_backspace = (2 << 4) + 9;
+  byte color_delete = (2 << 4) + 15;
+  byte color_enter = 15; //white at full brightness
+  byte color_arrows = 14; //white at high brightness
+  byte color_arrow_left = 14;
+  byte color_arrow_up = 14;
+  byte color_arrow_down = 14;
+  byte color_arrow_right = 14;
 
-  cRGB color_insert = dim(CRGB(154, 205, 50), 200);
-  cRGB color_shift = dim(CRGB(152, 251, 152), 220);
-  cRGB color_ctrl = dim(CRGB(135, 206, 235), 170);
-  cRGB color_alt = dim(CRGB(34, 139, 34), 240);
+  byte color_nav = (5 << 4) + 12;
+  byte color_nav_home = (5 << 4) + 12;
+  byte color_nav_end = (5 << 4) + 12;
+  byte color_nav_pageup = (5 << 4) + 12;
+  byte color_nav_pagedown = (5 << 4) + 12;
+
+  byte color_insert = (4 << 4) + 12;
+  byte color_shift = (8 << 4) + 10;
+  byte color_ctrl = (10 << 4) + 10;
+  byte color_alt = (7 << 4) + 10;
   //Mac command or Windows logo key
-  cRGB color_cmd = dim(CRGB(255, 192, 203), 170);
+  byte color_cmd = (14 << 4) + 8;
   //application context menu key
-  cRGB color_app = dim(CRGB(250, 235, 215), 150);
+  byte color_app = (13 << 4) + 8;
   
-  cRGB color_printscreen = dim(CRGB(255, 165, 0), 200);
-  cRGB color_pause = dim(CRGB(255, 100, 0), 150);
-  cRGB color_scrolllock = dim(CRGB(255, 165, 0), 150);
-  cRGB color_capslock = dim(CRGB(255, 165, 0), 150);
+  byte color_printscreen = (3 << 4) + 8;
+  byte color_pause = (3 << 4) + 8;
+  byte color_scrolllock = (3 << 4) + 8;
+  byte color_capslock = (3 << 4) + 8;
   
-  cRGB color_fkeys = dim(CRGB(255, 0, 0), 180);
-  cRGB color_fkey_f1 = dim(CRGB(255, 0, 0), 180);
-  cRGB color_fkey_f2 = dim(CRGB(255, 0, 0), 180);
-  cRGB color_fkey_f3 = dim(CRGB(255, 0, 0), 180);
-  cRGB color_fkey_f4 = dim(CRGB(255, 0, 0), 180);
-  cRGB color_fkey_f5 = dim(CRGB(255, 0, 0), 180);
-  cRGB color_fkey_f6 = dim(CRGB(255, 0, 0), 180);
-  cRGB color_fkey_f7 = dim(CRGB(255, 0, 0), 180);
-  cRGB color_fkey_f8 = dim(CRGB(255, 0, 0), 180);
-  cRGB color_fkey_f9 = dim(CRGB(255, 0, 0), 180);
-  cRGB color_fkey_f10 = dim(CRGB(255, 0, 0), 180);
-  cRGB color_fkey_f11 = dim(CRGB(255, 0, 0), 180);
-  cRGB color_fkey_f12 = dim(CRGB(255, 0, 0), 180);
-  cRGB color_fkey_f13 = dim(CRGB(255, 0, 0), 180);
-  cRGB color_fkey_f14 = dim(CRGB(255, 0, 0), 180);
-  cRGB color_fkey_f15 = dim(CRGB(255, 0, 0), 180);
-  cRGB color_fkey_f16 = dim(CRGB(255, 0, 0), 180);
-  cRGB color_fkey_f17 = dim(CRGB(255, 0, 0), 180);
-  cRGB color_fkey_f18 = dim(CRGB(255, 0, 0), 180);
-  cRGB color_fkey_f19 = dim(CRGB(255, 0, 0), 180);
+  byte color_fkeys = (2 << 4) + 13;
+  byte color_fkey_f1 = (2 << 4) + 13;
+  byte color_fkey_f2 = (2 << 4) + 13;
+  byte color_fkey_f3 = (2 << 4) + 13;
+  byte color_fkey_f4 = (2 << 4) + 13;
+  byte color_fkey_f5 = (2 << 4) + 13;
+  byte color_fkey_f6 = (2 << 4) + 13;
+  byte color_fkey_f7 = (2 << 4) + 13;
+  byte color_fkey_f8 = (2 << 4) + 13;
+  byte color_fkey_f9 = (2 << 4) + 13;
+  byte color_fkey_f10 = (2 << 4) + 13;
+  byte color_fkey_f11 = (2 << 4) + 13;
+  byte color_fkey_f12 = (2 << 4) + 13;
+  byte color_fkey_f13 = (2 << 4) + 13;
+  byte color_fkey_f14 = (2 << 4) + 13;
+  byte color_fkey_f15 = (2 << 4) + 13;
+  byte color_fkey_f16 = (2 << 4) + 13;
+  byte color_fkey_f17 = (2 << 4) + 13;
+  byte color_fkey_f18 = (2 << 4) + 13;
+  byte color_fkey_f19 = (2 << 4) + 13;
 
-  cRGB color_fn = dim(CRGB(255, 255, 255), 140);
-  cRGB color_media = dim(CRGB(238, 130, 238), 250);
-  cRGB color_media_play = dim(CRGB(238, 130, 238), 250);
-  cRGB color_media_prev = dim(CRGB(238, 130, 238), 250);
-  cRGB color_media_next = dim(CRGB(238, 130, 238), 250);
-  cRGB color_media_stop = dim(CRGB(238, 130, 238), 250);
-  cRGB color_media_volup = dim(CRGB(238, 130, 238), 250);
-  cRGB color_media_voldown = dim(CRGB(238, 130, 238), 250);
-  cRGB color_media_mute = dim(CRGB(238, 130, 238), 250);
+  byte color_fn = 8;
+  byte color_media = (13 << 4) + 14;
+  byte color_media_play = (13 << 4) + 14;
+  byte color_media_prev = (13 << 4) + 14;
+  byte color_media_next = (13 << 4) + 14;
+  byte color_media_stop = (13 << 4) + 14;
+  byte color_media_volup = (13 << 4) + 14;
+  byte color_media_voldown = (13 << 4) + 14;
+  byte color_media_mute = (13 << 4) + 14;
 
-  cRGB color_led = dim(CRGB(0, 0, 255), 250);
-  cRGB color_mousemove = dim(CRGB(0, 255, 255), 200);
-  cRGB color_mousebuttons = dim(CRGB(128, 255, 255), 250);
-  cRGB color_mousewarp = dim(CRGB(0, 255, 255), 150);
-  cRGB color_mousescroll = dim(CRGB(0, 255, 255), 150);
+  byte color_led = (11 << 4) + 15;
+  byte color_mousemove = (9 << 4) + 14;
+  byte color_mousebuttons = (8 << 4) + 15;
+  byte color_mousewarp = (9 << 4) + 14;
+  byte color_mousescroll = (9 << 4) + 14;
 
 
 
@@ -394,7 +465,8 @@ class LEDFunctionalColor : public LEDMode {
   protected:
   void onActivate(void) final;
   void update(void) final;
-  cRGB dim(cRGB color, byte brightness);
+  byte dim(byte color, uint8_t brightness);
+  cRGB getCRGB(byte colorbrightness);
   void setKeyLed(uint8_t r, uint8_t c);
 
 
