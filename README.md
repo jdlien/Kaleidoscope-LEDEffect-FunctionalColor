@@ -3,7 +3,7 @@
 This plugin automatically colors groups of keys per the user's preference
 based on the current function of the key on the active layer. 
 
-Version 2.0 allows almost every key to be individually set to a desired color.
+This version allows almost every key to be individually set to a desired color.
 To allow for this, FunctionalColor uses a 16 color palette with a rainbow of vivid colors, and each color can be set to any of 16 brightness levels, from 0 (off or black) to 15 (full brightness). 
 
 0  - WHITE
