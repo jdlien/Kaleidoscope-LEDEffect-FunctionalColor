@@ -81,7 +81,7 @@ void setup() {
 
     //Set individual groups of colors. You may delete any lines you don't need.
     FunColor.escape(RED, 13);
-    FunColor.numbers(WHITE, 160);
+    FunColor.numbers(WHITE, 14);
     FunColor.letters(WARMWHITE, 7);
     FunColor.punctuation(WARMWHITE, 14);
     FunColor.brackets(WARMWHITE, 14);
@@ -89,7 +89,7 @@ void setup() {
     FunColor.pipe(WARMWHITE, 14);
     FunColor.tab(WHITE, 8);
     FunColor.backspace(RED, 10);
-    FunColor.del(RED, 170);
+    FunColor.del(RED, 15);
     FunColor.enter(WHITE, 15);
     FunColor.arrows(WHITE, 15);
     FunColor.nav(YELLOW, 11);
@@ -118,32 +118,32 @@ void setup() {
     FunColor.letter_a(BLUE); //through z
     FunColor.number_minus(BLUE);
     FunColor.number_equals(BLUE);
-    punctuation_backtick(BLUE);
-    punctuation_period(BLUE);
-    punctuation_comma(BLUE);
-    punctuation_semicolon(BLUE);
-    punctuation_quote(BLUE);
-    punctuation_slash(BLUE);
-    bracket_leftbracket(BLUE);
-    bracket_rightbracket(BLUE);
-    bracket_leftcurlybracket(BLUE);
-    bracket_rightcurlybracket(BLUE);
-    arrow_left(BLUE);
-    arrow_up(BLUE);
-    arrow_down(BLUE);
-    arrow_right(BLUE);
-    nav_home(BLUE);
-    nav_end(BLUE);
-    nav_pageup(BLUE);
-    nav_pagedown(BLUE);
-    fkey_f1(BLUE); //through f19
-    media_play(BLUE);
-    media_prev(BLUE);
-    media_next(BLUE);
-    media_stop(BLUE);
-    media_volup(BLUE);
-    media_voldown(BLUE);
-    media_mute(BLUE);
+    FunColor.punctuation_backtick(BLUE);
+    FunColor.punctuation_period(BLUE);
+    FunColor.punctuation_comma(BLUE);
+    FunColor.punctuation_semicolon(BLUE);
+    FunColor.punctuation_quote(BLUE);
+    FunColor.punctuation_slash(BLUE);
+    FunColor.bracket_leftbracket(BLUE);
+    FunColor.bracket_rightbracket(BLUE);
+    FunColor.bracket_leftcurlybracket(BLUE);
+    FunColor.bracket_rightcurlybracket(BLUE);
+    FunColor.arrow_left(BLUE);
+    FunColor.arrow_up(BLUE);
+    FunColor.arrow_down(BLUE);
+    FunColor.arrow_right(BLUE);
+    FunColor.nav_home(BLUE);
+    FunColor.nav_end(BLUE);
+    FunColor.nav_pageup(BLUE);
+    FunColor.nav_pagedown(BLUE);
+    FunColor.fkey_f1(BLUE); //through f19
+    FunColor.media_play(BLUE);
+    FunColor.media_prev(BLUE);
+    FunColor.media_next(BLUE);
+    FunColor.media_stop(BLUE);
+    FunColor.media_volup(BLUE);
+    FunColor.media_voldown(BLUE);
+    FunColor.media_mute(BLUE);
     */
 
 
