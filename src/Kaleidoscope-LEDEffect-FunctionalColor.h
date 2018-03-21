@@ -3,89 +3,48 @@
 #include "Kaleidoscope-LEDControl.h"
 #include "Kaleidoscope-MouseKeys.h"
 
+#include "colors.h"
+
 namespace kaleidoscope {
-class LEDFunctionalColor : public LEDMode {
+   
+// This is the color-brightness-version of the plugin
+//
+class LEDFunctionalColorCB : public LEDMode {
  public:
-  LEDFunctionalColor(uint8_t fLayer);
-  LEDFunctionalColor(void);
+     
+  typedef byte & (*CBLookup)(const Key &);
+  
+  LEDFunctionalColorCB(uint8_t fLayer, 
+                     CBLookup cbLookup, 
+                     cRGB *palette, 
+                     uint8_t nPaletteEntries);
+  
+  LEDFunctionalColorCB(void);
+  
   uint8_t functionLayer = 2;
+  
+  // Note: Only use the methods below if you need runtime configuration
+  //       of key paletteId/brightness and palette colors. Else
+  //       assign appropriate initial values when defining the palette 
+  //       in the sketch. This allows Arduino to omit the setter methods
+  //       from the firmware binary and thus safes some flash memory.
 
-  // dims the brightness of all colors from 0-255
-  void brightness(byte brightness);
+  // Dims a palette color
+  //
+  void dimPalette(byte brightness);
 
-  // functions to set colors
-  void all(cRGB color);
-  void allModifiers(cRGB color);
-  void allMouse(cRGB color);
-  void escape(cRGB color);
-  void numbers(cRGB color);
-  void letters(cRGB color);
-  void punctuation(cRGB color);
-  void brackets(cRGB color);
-  void backslash(cRGB color);
-  void pipe(cRGB color);
-  void tab(cRGB color);
-  void backspace(cRGB color);
-  void del(cRGB color);
-  void enter(cRGB color);
-  void arrows(cRGB color);
-  void nav(cRGB color);
-  void insert(cRGB color);
-  void shift(cRGB color);
-  void ctrl(cRGB color);
-  void alt(cRGB color);
-  void cmd(cRGB color);
-  void app(cRGB color);
-  void printscreen(cRGB color);
-  void pause(cRGB color);
-  void scrolllock(cRGB color);
-  void capslock(cRGB color);
-  void fkeys(cRGB color);
-  void fn(cRGB color);
-  void media(cRGB color);
-  void led(cRGB color);
-  void mousemove(cRGB color);
-  void mousebuttons(cRGB color);
-  void mousewarp(cRGB color);
-  void mousescroll(cRGB color);
+  // Sets color and overlay brightness for all palette entries
+  //
+  void setAllPalette(const cRGB &color, byte brightness = 15);
+  
+  // Set color and overlay brightness for an individual palette entry
+  //
+  void setPaletteEntryColor(byte paletteId, const cRGB &color, byte brightness = 15);
 
-
-  // functions to set colors with brightness
-  void all(cRGB color, byte brightness);
-  void allModifiers(cRGB color, byte brightness);
-  void allMouse(cRGB color, byte brightness);
-  void escape(cRGB color, byte brightness);
-  void numbers(cRGB color, byte brightness);
-  void letters(cRGB color, byte brightness);
-  void punctuation(cRGB color, byte brightness);
-  void brackets(cRGB color, byte brightness);
-  void backslash(cRGB color, byte brightness);
-  void pipe(cRGB color, byte brightness);
-  void tab(cRGB color, byte brightness);
-  void backspace(cRGB color, byte brightness);
-  void del(cRGB color, byte brightness);
-  void enter(cRGB color, byte brightness);
-  void arrows(cRGB color, byte brightness);
-  void nav(cRGB color, byte brightness);
-  void insert(cRGB color, byte brightness);
-  void shift(cRGB color, byte brightness);
-  void ctrl(cRGB color, byte brightness);
-  void alt(cRGB color, byte brightness);
-  void cmd(cRGB color, byte brightness);
-  void app(cRGB color, byte brightness);
-  void printscreen(cRGB color, byte brightness);
-  void pause(cRGB color, byte brightness);
-  void scrolllock(cRGB color, byte brightness);
-  void capslock(cRGB color, byte brightness);
-  void fkeys(cRGB color, byte brightness);
-  void fn(cRGB color, byte brightness);
-  void media(cRGB color, byte brightness);
-  void led(cRGB color, byte brightness);
-  void mousemove(cRGB color, byte brightness);
-  void mousebuttons(cRGB color, byte brightness);
-  void mousewarp(cRGB color, byte brightness);
-  void mousescroll(cRGB color, byte brightness);
-
+  // Set the palette entry id and the overlay brightness for an individual 
+  // key (or key group)
+  //
+  void setKeyColor(const Key &k, byte paletteId, byte brightness = 15);
 
   private:
   uint16_t current_key = 0;
@@ -94,55 +53,113 @@ class LEDFunctionalColor : public LEDMode {
   uint16_t current_color = 0;
   uint8_t last_layer = 0;
 
-  //define colors for certain groups of keys
-  cRGB color_escape = dim(CRGB(255, 0, 0), 140);
-  cRGB color_numbers = dim(CRGB(250, 235, 215), 220);
-  cRGB color_letters = dim(CRGB(250, 235, 215), 100);
-  cRGB color_punctuation = dim(CRGB(250, 235, 215), 150);
-  cRGB color_brackets = dim(CRGB(250, 235, 215), 200);
-  cRGB color_backslash = dim(CRGB(250, 235, 215), 200);
-  cRGB color_pipe = dim(CRGB(250, 235, 215), 200);
-  cRGB color_space = dim(CRGB(255, 255, 255), 180);
-  cRGB color_tab = dim(CRGB(255, 255, 255), 180);
-  cRGB color_backspace = dim(CRGB(255, 0, 0), 120);
-  cRGB color_delete = dim(CRGB(255, 100, 0), 250);
-  cRGB color_enter = dim(CRGB(255, 255, 255), 250);
-  cRGB color_arrows = dim(CRGB(255, 255, 255), 240);
-  cRGB color_nav = dim(CRGB(255, 255, 0), 220);
-  cRGB color_insert = dim(CRGB(154, 205, 50), 200);
-  cRGB color_shift = dim(CRGB(152, 251, 152), 220);
-  cRGB color_ctrl = dim(CRGB(135, 206, 235), 170);
-  cRGB color_alt = dim(CRGB(34, 139, 34), 240);
-  //Mac command or Windows logo key
-  cRGB color_cmd = dim(CRGB(255, 192, 203), 170);
-  //application context menu key
-  cRGB color_app = dim(CRGB(250, 235, 215), 150);
-  
-  cRGB color_printscreen = dim(CRGB(255, 165, 0), 200);
-  cRGB color_pause = dim(CRGB(255, 100, 0), 150);
-  cRGB color_scrolllock = dim(CRGB(255, 165, 0), 150);
-  cRGB color_capslock = dim(CRGB(255, 165, 0), 150);
-  
-  cRGB color_fkeys = dim(CRGB(255, 0, 0), 180);
-  cRGB color_fn = dim(CRGB(255, 255, 255), 140);
-  cRGB color_media = dim(CRGB(238, 130, 238), 250);
-  cRGB color_led = dim(CRGB(0, 0, 255), 250);
-  cRGB color_mousemove = dim(CRGB(0, 255, 255), 200);
-  cRGB color_mousebuttons = dim(CRGB(128, 255, 255), 250);
-  cRGB color_mousewarp = dim(CRGB(0, 255, 255), 150);
-  cRGB color_mousescroll = dim(CRGB(0, 255, 255), 150);
-
-
-
+  cRGB *palette_ = nullptr;
+  uint8_t nPaletteEntries_ = 0;
+  CBLookup cbLookup_ = nullptr;
 
   protected:
   void onActivate(void) final;
   void update(void) final;
-  cRGB dim(cRGB color, byte brightness);
+  cRGB dim(const cRGB &color, byte brightness);
   void setKeyLed(uint8_t r, uint8_t c);
-
-
-
 };
 
+#define FC_CB_COLOR_LIST(ID) \
+   colorBrightness_##ID
+
+#define FC_CB_START_COLOR_LIST(NAME, DEFAULT_PALETTE_ID) \
+   byte &FC_CB_COLOR_LIST(NAME)(const Key &k) { \
+      constexpr byte defaultPaletteId = DEFAULT_PALETTE_ID; \
+      switch(k.raw) {
+
+#define FC_CB_END_COLOR_LIST \
+   } \
+   static byte default_cb = (defaultPaletteId << 4) | 0xF; \
+   return default_cb; \
+}
+//    case (Key_##KEY).raw:  
+
+#define FC_CB_COLOR(KEY, PALETTE_ID) \
+    case (Key_##KEY).flags << 8 | (Key_##KEY).keyCode: \
+       { \
+         static byte cb = (PALETTE_ID << 4) | 0xF /* start with full brightness  as default*/; \
+         return cb; \
+       } \
+       break;
+
+#define FC_CB_SHARE_COLOR(KEY) \
+   case (Key_##KEY).flags << 8 | (Key_##KEY).keyCode:
+      
+#define FC_CB_PALETTE_SIZE(PALETTE) \
+   sizeof(PALETTE)/sizeof(cRGB)
+   
+#define FC_CB_PALETTE(palette) palette, FC_CB_PALETTE_SIZE(palette)
+   
+     
+// This is the color-brightness-version of the plugin
+//
+class LEDFunctionalColorRGB : public LEDMode {
+ public:
+     
+  typedef cRGB & (*RGBLookup)(const Key &);
+  
+  LEDFunctionalColorRGB(uint8_t fLayer, 
+                     RGBLookup rgbLookup);
+  
+  LEDFunctionalColorRGB(void);
+  
+  uint8_t functionLayer = 2;
+  
+  // Note: Only use the methods below if you need runtime configuration
+  //       of key paletteId/brightness and palette colors. Else
+  //       assign appropriate initial values when defining the palette 
+  //       in the sketch. This allows Arduino to omit the setter methods
+  //       from the firmware binary and thus safes some flash memory.
+
+
+  // Set the palette entry id and the overlay brightness for an individual 
+  // key (or key group)
+  //
+  void setKeyColor(const Key &k, const cRGB &color);
+
+  private:
+  uint16_t current_key = 0;
+  uint16_t current_row = 0;
+  uint16_t current_col = 0;
+  uint16_t current_color = 0;
+  uint8_t last_layer = 0;
+
+  RGBLookup rgbLookup_ = nullptr;
+
+  protected:
+  void onActivate(void) final;
+  void update(void) final;
+  void setKeyLed(uint8_t r, uint8_t c);
+};
+
+#define FC_RGB_COLOR_LIST(ID) \
+   cRGBLookup_##ID
+
+#define FC_RGB_START_COLOR_LIST(NAME, DEFAULT_COLOR) \
+   cRGB &FC_RGB_COLOR_LIST(NAME)(const Key &k) { \
+      constexpr cRGB initialDefaultColor = DEFAULT_COLOR; \
+      switch(k.raw) {
+
+#define FC_RGB_END_COLOR_LIST \
+   } \
+   static cRGB defaultColor = initialDefaultColor; \
+   return defaultColor; \
+}
+//    case (Key_##KEY).raw:  
+
+#define FC_RGB_COLOR(KEY, COLOR) \
+    case (Key_##KEY).flags << 8 | (Key_##KEY).keyCode: \
+       { \
+         static cRGB color = COLOR; \
+         return color; \
+       } \
+       break;
+
+#define FC_RGB_SHARE_COLOR(KEY) \
+   case (Key_##KEY).flags << 8 | (Key_##KEY).keyCode:
 }
