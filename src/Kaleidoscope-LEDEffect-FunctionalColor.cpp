@@ -77,10 +77,12 @@ cRGB LEDFunctionalColorCB::dim(const cRGB &color, byte brightness) {
 
 
 void LEDFunctionalColorCB::onActivate(void) {
+  /* get rid of these
   current_key=0;
   current_col=0;
   current_row=0;
   current_color=0;
+  */
 	// Loop through every row and column and set each LED based on its key's function
 	for (uint8_t r = 0; r < ROWS; r++) {
 	  for (uint8_t c = 0; c < COLS; c++) {
