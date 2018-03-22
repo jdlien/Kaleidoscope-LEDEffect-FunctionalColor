@@ -3,14 +3,14 @@
 
 namespace kaleidoscope {
 
-LEDFunctionalColorCB::LEDFunctionalColorCB(uint8_t fLayer, 
-                     LEDFunctionalColorCB::CBLookup cbLookup, 
+LEDFunctionalColorCB::LEDFunctionalColorCB(LEDFunctionalColorCB::CBLookup cbLookup, 
                      cRGB *palette, 
-                     uint8_t nPaletteEntries)
-   : functionLayer(fLayer),
-     cbLookup_(cbLookup),
+                     uint8_t nPaletteEntries,
+                     uint8_t fLayer)
+  :  cbLookup_(cbLookup),
      palette_(palette),
-     nPaletteEntries_(nPaletteEntries)
+     nPaletteEntries_(nPaletteEntries),
+     functionLayer(fLayer)
 {
    assert(palette_);
    assert(cbLookup_);
@@ -77,12 +77,6 @@ cRGB LEDFunctionalColorCB::dim(const cRGB &color, byte brightness) {
 
 
 void LEDFunctionalColorCB::onActivate(void) {
-  /* get rid of these
-  current_key=0;
-  current_col=0;
-  current_row=0;
-  current_color=0;
-  */
 	// Loop through every row and column and set each LED based on its key's function
 	for (uint8_t r = 0; r < ROWS; r++) {
 	  for (uint8_t c = 0; c < COLS; c++) {

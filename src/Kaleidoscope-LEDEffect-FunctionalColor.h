@@ -16,10 +16,11 @@ class LEDFunctionalColorCB : public LEDMode {
   // (It only took me about four hours of reading to figure that out and what it means) :D
   typedef byte & (*CBLookup)(const Key &);
   
-  LEDFunctionalColorCB(uint8_t fLayer, 
+  LEDFunctionalColorCB(
                      CBLookup cbLookup, 
                      cRGB *palette, 
-                     uint8_t nPaletteEntries);
+                     uint8_t nPaletteEntries,
+                     uint8_t fLayer = 2);
   
   LEDFunctionalColorCB(void);
   
@@ -49,13 +50,6 @@ class LEDFunctionalColorCB : public LEDMode {
   void setKeyColor(const Key &k, byte paletteId, byte brightness = 15);
 
   private:
-  // I think these are not required
-  uint16_t current_key = 0;
-  uint16_t current_row = 0;
-  uint16_t current_col = 0;
-  uint16_t current_color = 0;
-
-  //This is required
   uint8_t last_layer = 0;
 
   cRGB *palette_ = nullptr;
@@ -80,23 +74,24 @@ class LEDFunctionalColorCB : public LEDMode {
 #define FC_CB_COLOR_LIST(ID) \
    colorBrightness_##ID
 
-#define FC_CB_START_COLOR_LIST(NAME, DEFAULT_PALETTE_ID) \
+#define FC_CB_START_COLOR_LIST(NAME, DEFAULT_PALETTE_ID, DEFAULT_BRIGHTNESS) \
    byte &FC_CB_COLOR_LIST(NAME)(const Key &k) { \
       constexpr byte defaultPaletteId = DEFAULT_PALETTE_ID; \
+      constexpr byte defaultBrightness = DEFAULT_BRIGHTNESS; \
       switch(k.raw) {
 
 
 #define FC_CB_END_COLOR_LIST \
    } /*end switch*/ \
-   static byte default_cb = (defaultPaletteId << 4) | 0xF; \
+   static byte default_cb = (defaultPaletteId << 4) | defaultBrightness; \
    return default_cb; \
 }
 //    case (Key_##KEY).raw:  
 
-#define FC_CB_COLOR(KEY, PALETTE_ID) \
+#define FC_CB_COLOR(KEY, PALETTE_ID, BRIGHTNESS) \
     case (Key_##KEY).flags << 8 | (Key_##KEY).keyCode: \
        { \
-         static byte cb = (PALETTE_ID << 4) | 0xF /* start with full brightness  as default*/; \
+         static byte cb = (PALETTE_ID << 4) | BRIGHTNESS; \
          return cb; \
        } \
        break;
@@ -186,9 +181,10 @@ class LEDFunctionalColorRGB : public LEDMode {
 #define FC_RGB_COLOR_LIST(ID) \
    cRGBLookup_##ID
 
-#define FC_RGB_START_COLOR_LIST(NAME, DEFAULT_COLOR) \
+#define FC_RGB_START_COLOR_LIST(NAME, DEFAULT_COLOR, DEFAULT_BRIGHTNESS) \
    cRGB &FC_RGB_COLOR_LIST(NAME)(const Key &k) { \
-      constexpr cRGB initialDefaultColor = DEFAULT_COLOR; \
+      constexpr cRGB initialDefaultColor = \
+      CRGB(DEFAULT_COLOR.r*DEFAULT_BRIGHTNESS/255, DEFAULT_COLOR.g*DEFAULT_BRIGHTNESS/255, DEFAULT_COLOR.b*DEFAULT_BRIGHTNESS/255); \
       switch(k.raw) {
 
 #define FC_RGB_END_COLOR_LIST \

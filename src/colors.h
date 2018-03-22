@@ -158,47 +158,11 @@ constexpr cRGB whitesmoke = CRGB(245, 245, 245);
 constexpr cRGB yellow = CRGB(255, 255, 0);
 constexpr cRGB yellowgreen = CRGB(154, 205, 50);
 
+// Not sure if this is thr right place for this...
 
+// Function to dim the color from 0-255 (by default) or over a specified range
+// dims the specified color from 0 (off) to 255 (full)
+cRGB dim(const cRGB &color, byte brightness, byte range=255);
 
-
-/*
-
-
-//define colors for certain groups of keys
-constexpr cRGB color_escape = dim(red, 140);
-constexpr cRGB color_numbers = dim(antiquewhite, 220);
-constexpr cRGB color_letters = dim(antiquewhite, 100);
-constexpr cRGB color_punctuation = dim(antiquewhite, 150);
-constexpr cRGB color_brackets = dim(antiquewhite, 200);
-constexpr cRGB color_backslash = dim(antiquewhite, 200);
-constexpr cRGB color_pipe = dim(antiquewhite, 200);
-constexpr cRGB color_space = dim(white, 180);
-constexpr cRGB color_tab = dim(white, 180);
-constexpr cRGB color_backspace = dim(red, 120);
-constexpr cRGB color_delete = dim(orangered, 250);
-constexpr cRGB color_enter = dim(white, 250);
-constexpr cRGB color_arrows = dim(white, 240);
-constexpr cRGB color_nav = dim(yellow, 220);
-constexpr cRGB color_insert = dim(yellowgreen, 200);
-constexpr cRGB color_shift = dim(palegreen, 220);
-constexpr cRGB color_ctrl = dim(skyblue, 170);
-constexpr cRGB color_alt = dim(forestgreen, 240);
-//Mac command or Windows logo key
-constexpr cRGB color_cmd = dim(pink, 170);
-//application context menu key
-constexpr cRGB color_app = dim(antiquewhite, 150);
-
-constexpr cRGB color_printscreen = dim(orange, 200);
-constexpr cRGB color_pause = dim(orangered, 150);
-constexpr cRGB color_scrolllock = dim(orange, 150);
-constexpr cRGB color_capslock = dim(orange, 150);
-
-constexpr cRGB color_fkeys = dim(red, 180);
-constexpr cRGB color_fn = dim(white, 140);
-constexpr cRGB color_media = dim(violet, 250);
-constexpr cRGB color_led = dim(blue, 250);
-constexpr cRGB color_mouse = dim(cyan, 250);
-
-*/
 } // namespace LEDEffect_FunctionalColor
 } // namespace kaleidoscope
