@@ -25,6 +25,9 @@ class LEDFunctionalColorCB : public LEDMode {
   LEDFunctionalColorCB(void);
   
   uint8_t functionLayer = 2;
+
+  // Apply the second palette color to numbers by default
+  byte numberCB = (1 << 4) | 12;
   
   // Note: Only use the methods below if you need runtime configuration
   //       of key paletteId/brightness and palette colors. Else
@@ -49,6 +52,14 @@ class LEDFunctionalColorCB : public LEDMode {
   //
   void setKeyColor(const Key &k, byte paletteId, byte brightness = 15);
 
+  static bool isNumber(const Key& k);
+
+  // We use groupColorLookup to retrieve the colors for the color groups
+  //template<typename ColorMap>
+  static cRGB groupColorLookup(const Key &k);
+
+  void setColorLookup(cRGB (&groupColorLookup)(const Key));
+
   private:
   uint8_t last_layer = 0;
 
@@ -63,6 +74,7 @@ class LEDFunctionalColorCB : public LEDMode {
   // This might get changed to incorporate a range, defaulting to 0-255, but sometimes only 0-15
   cRGB dim(const cRGB &color, byte brightness);
   void setKeyLed(uint8_t r, uint8_t c);
+
 };
 
 
@@ -83,6 +95,8 @@ class LEDFunctionalColorCB : public LEDMode {
 
 #define FC_CB_END_COLOR_LIST \
    } /*end switch*/ \
+    /*Handle colors for group members without specific colors here */ \
+    if(kaleidoscope::LEDFunctionalColorCB::isNumber(k)) {static byte cb =  (1 << 4) | 12;/*numberCB*/ return cb;} \
    static byte default_cb = (defaultPaletteId << 4) | defaultBrightness; \
    return default_cb; \
 }

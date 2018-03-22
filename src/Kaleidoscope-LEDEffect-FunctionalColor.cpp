@@ -16,10 +16,9 @@ LEDFunctionalColorCB::LEDFunctionalColorCB(LEDFunctionalColorCB::CBLookup cbLook
    assert(cbLookup_);
 }
 
-LEDFunctionalColorCB::LEDFunctionalColorCB(void)
+LEDFunctionalColorCB::LEDFunctionalColorCB(void){}
 
-{
-}
+
 
 void LEDFunctionalColorCB::dimPalette(byte brightness)
 {
@@ -48,6 +47,39 @@ void LEDFunctionalColorCB::setKeyColor(const Key &k, byte paletteId, byte bright
    colorBrightness = (paletteId << 4) | brightness;
 }
 
+
+
+// Here are a bunch of generalized functions for setting key groups all at once
+bool LEDFunctionalColorCB::isNumber(const Key& k) {
+  if((k.keyCode >= (Key_1).keyCode) && (k.keyCode <= (Key_0).keyCode)) {
+    return true;
+  } else return false;
+  // Uncomment this if you want to lump  - and = into numbers
+  /*
+  switch(k.raw) {
+    case (Key_Minus).flags << 8 | (Key_Minus).keyCode:
+    case (Key_Equals).flags << 8 | (Key_Equals).keyCode:
+    {
+      return true;
+    }
+    break;
+    default: return false;
+    break;
+  }
+  */
+}//end isNumber()
+
+
+template<typename ColorMap>
+cRGB groupColorLookup(const Key &k) {
+   if(LEDFunctionalColorCB::isNumber(k)) {return ColorMap::numberColor;}
+}
+
+void setColorLookup(cRGB (&gcl)(const Key)) {
+  gcl(???); //how to specify a key as the parameter?
+}
+
+
 /*
  * setKeyLed accepts a Key position and sets it to the appropriate color
  * from the user's definitions a using a series of if/else statements.
@@ -59,7 +91,7 @@ void LEDFunctionalColorCB::setKeyLed(uint8_t r, uint8_t c) {
   byte paletteId = colorBrightness >> 4;
   byte brightness = colorBrightness & 0xF; // keys have individual brightness
   
-   assert(paletteId < nPaletteEntries_);
+  assert(paletteId < nPaletteEntries_);
   const auto &color = palette_[paletteId];
   
   ::LEDControl.setCrgbAt(r, c, dim(color, brightness));
@@ -74,6 +106,9 @@ cRGB LEDFunctionalColorCB::dim(const cRGB &color, byte brightness) {
               uint8_t(brightnessScale*color.g), 
               uint8_t(brightnessScale*color.b));
 }
+
+
+
 
 
 void LEDFunctionalColorCB::onActivate(void) {
