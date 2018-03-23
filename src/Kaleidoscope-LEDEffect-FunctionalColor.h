@@ -52,13 +52,9 @@ class LEDFunctionalColorCB : public LEDMode {
   //
   void setKeyColor(const Key &k, byte paletteId, byte brightness = 15);
 
-  static bool isNumber(const Key& k);
 
-  // We use groupColorLookup to retrieve the colors for the color groups
-  //template<typename ColorMap>
-  static cRGB groupColorLookup(const Key &k);
 
-  void setColorLookup(cRGB (&groupColorLookup)(const Key));
+
 
   private:
   uint8_t last_layer = 0;
@@ -96,7 +92,7 @@ class LEDFunctionalColorCB : public LEDMode {
 #define FC_CB_END_COLOR_LIST \
    } /*end switch*/ \
     /*Handle colors for group members without specific colors here */ \
-    if(kaleidoscope::LEDFunctionalColorCB::isNumber(k)) {static byte cb =  (1 << 4) | 12;/*numberCB*/ return cb;} \
+    if(kaleidoscope::LEDEffect_FunctionalColor::isNumber(k)) {static byte cb =  (1 << 4) | 12;/*numberCB*/ return cb;} \
    static byte default_cb = (defaultPaletteId << 4) | defaultBrightness; \
    return default_cb; \
 }
@@ -157,10 +153,17 @@ class LEDFunctionalColorRGB : public LEDMode {
  public:
      
   typedef cRGB & (*RGBLookup)(const Key &);
+  void setColorLookup(RGBLookup rgbLookup) {
+     rgbLookup_ = rgbLookup;
+  }
+
+  // We use groupColorLookup to retrieve the colors for the color groups
+  template<typename ColorMap>
+  static cRGB groupColorLookup(const Key &k);
   
-  LEDFunctionalColorRGB(uint8_t fLayer, 
-                     RGBLookup rgbLookup);
+  LEDFunctionalColorRGB(RGBLookup rgbLookup, uint8_t fLayer = 2);
   
+  // I'm not sure why this is required
   LEDFunctionalColorRGB(void);
   
   uint8_t functionLayer = 2;
@@ -175,13 +178,9 @@ class LEDFunctionalColorRGB : public LEDMode {
   // Set the palette entry id and the overlay brightness for an individual 
   // key (or key group)
   //
-  void setKeyColor(const Key &k, const cRGB &color);
+  //void setKeyColor(const Key &k, const cRGB &color);
 
   private:
-  uint16_t current_key = 0;
-  uint16_t current_row = 0;
-  uint16_t current_col = 0;
-  uint16_t current_color = 0;
   uint8_t last_layer = 0;
 
   RGBLookup rgbLookup_ = nullptr;
@@ -197,8 +196,7 @@ class LEDFunctionalColorRGB : public LEDMode {
 
 #define FC_RGB_START_COLOR_LIST(NAME, DEFAULT_COLOR, DEFAULT_BRIGHTNESS) \
    cRGB &FC_RGB_COLOR_LIST(NAME)(const Key &k) { \
-      constexpr cRGB initialDefaultColor = \
-      CRGB(DEFAULT_COLOR.r*DEFAULT_BRIGHTNESS/255, DEFAULT_COLOR.g*DEFAULT_BRIGHTNESS/255, DEFAULT_COLOR.b*DEFAULT_BRIGHTNESS/255); \
+      constexpr cRGB initialDefaultColor = CRGB(DEFAULT_COLOR.r*DEFAULT_BRIGHTNESS/255, DEFAULT_COLOR.g*DEFAULT_BRIGHTNESS/255, DEFAULT_COLOR.b*DEFAULT_BRIGHTNESS/255); \
       switch(k.raw) {
 
 #define FC_RGB_END_COLOR_LIST \
@@ -218,4 +216,5 @@ class LEDFunctionalColorRGB : public LEDMode {
 
 #define FC_RGB_SHARE_COLOR(KEY) \
    case (Key_##KEY).flags << 8 | (Key_##KEY).keyCode:
-}
+
+}//namespace kaleidoscope

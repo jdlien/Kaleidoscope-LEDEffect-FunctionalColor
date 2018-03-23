@@ -49,37 +49,6 @@ void LEDFunctionalColorCB::setKeyColor(const Key &k, byte paletteId, byte bright
 
 
 
-// Here are a bunch of generalized functions for setting key groups all at once
-bool LEDFunctionalColorCB::isNumber(const Key& k) {
-  if((k.keyCode >= (Key_1).keyCode) && (k.keyCode <= (Key_0).keyCode)) {
-    return true;
-  } else return false;
-  // Uncomment this if you want to lump  - and = into numbers
-  /*
-  switch(k.raw) {
-    case (Key_Minus).flags << 8 | (Key_Minus).keyCode:
-    case (Key_Equals).flags << 8 | (Key_Equals).keyCode:
-    {
-      return true;
-    }
-    break;
-    default: return false;
-    break;
-  }
-  */
-}//end isNumber()
-
-
-template<typename ColorMap>
-cRGB groupColorLookup(const Key &k) {
-   if(LEDFunctionalColorCB::isNumber(k)) {return ColorMap::numberColor;}
-}
-
-void setColorLookup(cRGB (&gcl)(const Key)) {
-  gcl(???); //how to specify a key as the parameter?
-}
-
-
 /*
  * setKeyLed accepts a Key position and sets it to the appropriate color
  * from the user's definitions a using a series of if/else statements.
@@ -161,22 +130,29 @@ void LEDFunctionalColorCB::update(void) {
 }//end update()
 
 
-LEDFunctionalColorRGB::LEDFunctionalColorRGB(uint8_t fLayer, 
-                     LEDFunctionalColorRGB::RGBLookup rgbLookup)
-   : functionLayer(fLayer),
-     rgbLookup_(rgbLookup)
+LEDFunctionalColorRGB::LEDFunctionalColorRGB(LEDFunctionalColorRGB::RGBLookup rgbLookup, uint8_t fLayer)
+   : rgbLookup_(rgbLookup), functionLayer(fLayer)     
 {
    assert(rgbLookup_);
 }
 
-LEDFunctionalColorRGB::LEDFunctionalColorRGB(void)
+LEDFunctionalColorRGB::LEDFunctionalColorRGB(void){}
 
-{
-}
-
+/*
 void LEDFunctionalColorRGB::setKeyColor(const Key &k, const cRGB &color)
 {
    (*rgbLookup_)(k) = color;
+}
+void setColorLookup(RGBLookup rgbLookup) {
+   rgbLookup_ = rgbLookup;
+}
+*/
+
+
+
+template<typename ColorMap> cRGB LEDFunctionalColorRGB::groupColorLookup(const Key &k) {
+   //if(LEDFunctionalColorCB::isNumber(k)) {return ColorMap::numberColor;}
+  return CRGB(127,0,0);
 }
 
 /*
@@ -189,10 +165,6 @@ void LEDFunctionalColorRGB::setKeyLed(uint8_t r, uint8_t c) {
 }// end setKeyLed
 
 void LEDFunctionalColorRGB::onActivate(void) {
-  current_key=0;
-  current_col=0;
-  current_row=0;
-  current_color=0;
 	// Loop through every row and column and set each LED based on its key's function
 	for (uint8_t r = 0; r < ROWS; r++) {
 	  for (uint8_t c = 0; c < COLS; c++) {

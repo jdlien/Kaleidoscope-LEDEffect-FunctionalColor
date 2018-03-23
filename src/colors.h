@@ -3,8 +3,8 @@
 namespace kaleidoscope {
 namespace LEDEffect_FunctionalColor {
    
- /* Here's a big list of color names based on the CSS color names.
-   */
+// Here's a big list of color names based on the CSS color names.
+
 
 constexpr cRGB warmwhite = CRGB(255, 250, 200);
 constexpr cRGB aliceblue = CRGB(240, 248, 255);
@@ -84,7 +84,7 @@ constexpr cRGB lightgreen = CRGB(144, 238, 144);
 constexpr cRGB lightpink = CRGB(255, 182, 193);
 constexpr cRGB lightsalmon = CRGB(255, 160, 122);
 constexpr cRGB lightseagreen = CRGB(32, 178, 170);
- constexpr cRGB lightskyblue = CRGB(135, 206, 250);
+constexpr cRGB lightskyblue = CRGB(135, 206, 250);
 constexpr cRGB lightslategray = CRGB(119, 136, 153);
 constexpr cRGB lightslategrey = CRGB(119, 136, 153);
 constexpr cRGB lightsteelblue = CRGB(176, 196, 222);
@@ -158,11 +158,13 @@ constexpr cRGB whitesmoke = CRGB(245, 245, 245);
 constexpr cRGB yellow = CRGB(255, 255, 0);
 constexpr cRGB yellowgreen = CRGB(154, 205, 50);
 
-// Not sure if this is thr right place for this...
+// Not sure if this is the right place for this...
 
 // Function to dim the color from 0-255 (by default) or over a specified range
 // dims the specified color from 0 (off) to 255 (full)
-cRGB dim(const cRGB &color, byte brightness, byte range=255);
+inline static cRGB dim(const cRGB &color, byte brightness, byte range=255);
+
+inline static bool isNumber(const Key& k);
 
 } // namespace LEDEffect_FunctionalColor
 } // namespace kaleidoscope
