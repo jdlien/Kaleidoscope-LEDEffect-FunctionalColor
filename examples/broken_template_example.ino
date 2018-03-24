@@ -377,7 +377,7 @@ FC_RGB_START_COLOR_LIST(myRGBColorList, white, 127)
    
 FC_RGB_END_COLOR_LIST
 
-kaleidoscope::LEDFunctionalColorRGB fcRGB(&FC_RGB_COLOR_LIST(myRGBColorList), FUNCTION);
+kaleidoscope::LEDFunctionalColorRGB fcRGB(FC_RGB_COLOR_LIST(myRGBColorList), FUNCTION);
 
 void setup() {
 
@@ -398,7 +398,7 @@ void setup() {
     &NumPad,&Macros,&MouseKeys
   );
 
- fcRGB.setColorLookup(kaleidoscope::LEDFunctionalColorRGB::groupColorLookup<FColorMap>);
+ fcRGB.setColorLookup(kaleidoscope::LEDFunctionalColorRGB::template groupColorLookup<FColorMap>);
 
   NumPad.numPadLayer = NUMPAD;
 
