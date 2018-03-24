@@ -152,13 +152,13 @@ colorBrightness_myList(const Key &k) {
 class LEDFunctionalColorRGB : public LEDMode {
  public:
      
-  typedef cRGB & (*RGBLookup)(const Key &);
+  typedef cRGB (*RGBLookup)(const Key &);
   void setColorLookup(RGBLookup rgbLookup) {
      rgbLookup_ = rgbLookup;
   }
 
   // We use groupColorLookup to retrieve the colors for the color groups
-  template<typename ColorMap> cRGB LEDFunctionalColorRGB::groupColorLookup(const Key &k) {
+  template<typename ColorMap> cRGB groupColorLookup(const Key &k) {
     //if(LEDFunctionalColorCB::isNumber(k)) {return ColorMap::numberColor;}
     return CRGB(127,0,0);
   }
@@ -197,7 +197,7 @@ class LEDFunctionalColorRGB : public LEDMode {
    cRGBLookup_##ID
 
 #define FC_RGB_START_COLOR_LIST(NAME, DEFAULT_COLOR, DEFAULT_BRIGHTNESS) \
-   cRGB &FC_RGB_COLOR_LIST(NAME)(const Key &k) { \
+   cRGB FC_RGB_COLOR_LIST(NAME)(const Key &k) { \
       constexpr cRGB initialDefaultColor = CRGB(DEFAULT_COLOR.r*DEFAULT_BRIGHTNESS/255, DEFAULT_COLOR.g*DEFAULT_BRIGHTNESS/255, DEFAULT_COLOR.b*DEFAULT_BRIGHTNESS/255); \
       switch(k.raw) {
 
