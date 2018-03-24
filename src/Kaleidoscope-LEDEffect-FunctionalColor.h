@@ -158,8 +158,10 @@ class LEDFunctionalColorRGB : public LEDMode {
   }
 
   // We use groupColorLookup to retrieve the colors for the color groups
-  template<typename ColorMap>
-  static cRGB groupColorLookup(const Key &k);
+  template<typename ColorMap> cRGB LEDFunctionalColorRGB::groupColorLookup(const Key &k) {
+    //if(LEDFunctionalColorCB::isNumber(k)) {return ColorMap::numberColor;}
+    return CRGB(127,0,0);
+  }
   
   LEDFunctionalColorRGB(RGBLookup rgbLookup, uint8_t fLayer = 2);
   

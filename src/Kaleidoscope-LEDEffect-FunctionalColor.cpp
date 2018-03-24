@@ -149,12 +149,6 @@ void setColorLookup(RGBLookup rgbLookup) {
 */
 
 
-
-template<typename ColorMap> cRGB LEDFunctionalColorRGB::groupColorLookup(const Key &k) {
-   //if(LEDFunctionalColorCB::isNumber(k)) {return ColorMap::numberColor;}
-  return CRGB(127,0,0);
-}
-
 /*
  * setKeyLed accepts a Key position and sets it to the appropriate color
  * from the user's definitions a using a series of if/else statements.
