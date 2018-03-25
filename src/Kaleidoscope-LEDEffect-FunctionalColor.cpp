@@ -1,6 +1,9 @@
 #include "Kaleidoscope-LEDEffect-FunctionalColor.h"
 #include "assert.h"
 
+// Is it a bad idea to do this?
+using namespace kaleidoscope::LEDEffect_FunctionalColor;
+
 namespace kaleidoscope {
 
 LEDFunctionalColorCB::LEDFunctionalColorCB(LEDFunctionalColorCB::CBLookup cbLookup, 
@@ -65,18 +68,6 @@ void LEDFunctionalColorCB::setKeyLed(uint8_t r, uint8_t c) {
   
   ::LEDControl.setCrgbAt(r, c, dim(color, brightness));
 }// end setKeyLed
-
-
-// dims the specified color from 0 (off) to 255 (full)
-cRGB LEDFunctionalColorCB::dim(const cRGB &color, byte brightness) {
-  float brightnessScale = brightness/15.0;
-   
-   return CRGB(uint8_t(brightnessScale*color.r), 
-              uint8_t(brightnessScale*color.g), 
-              uint8_t(brightnessScale*color.b));
-}
-
-
 
 
 
@@ -195,9 +186,9 @@ void LEDFunctionalColorRGB::update(void) {
     }
     else {
       // left fn
-      ::LEDControl.setCrgbAt(3, 6, CRGB(0, 0, 0)); 
+      ::LEDControl.setCrgbAt(3, 6, black); 
       // right fn
-      ::LEDControl.setCrgbAt(3, 9, CRGB(0, 0, 0));
+      ::LEDControl.setCrgbAt(3, 9, black);
     }
 
   }

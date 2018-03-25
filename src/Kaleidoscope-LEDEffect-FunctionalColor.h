@@ -4,6 +4,9 @@
 #include "Kaleidoscope-MouseKeys.h"
 
 #include "colors.h"
+#include "keygroups.h"
+
+using namespace kaleidoscope::LEDEffect_FunctionalColor;
 
 namespace kaleidoscope {
    
@@ -67,8 +70,6 @@ class LEDFunctionalColorCB : public LEDMode {
   void onActivate(void) final;
   void update(void) final;
 
-  // This might get changed to incorporate a range, defaulting to 0-255, but sometimes only 0-15
-  cRGB dim(const cRGB &color, byte brightness);
   void setKeyLed(uint8_t r, uint8_t c);
 
 };
@@ -92,7 +93,7 @@ class LEDFunctionalColorCB : public LEDMode {
 #define FC_CB_END_COLOR_LIST \
    } /*end switch*/ \
     /*Handle colors for group members without specific colors here */ \
-    if(kaleidoscope::LEDEffect_FunctionalColor::isNumber(k)) {static byte cb =  (1 << 4) | 12;/*numberCB*/ return cb;} \
+    if(isNumber(k)) {static byte cb =  (1 << 4) | 12;/*numberCB*/ return cb;} \
    static byte default_cb = (defaultPaletteId << 4) | defaultBrightness; \
    return default_cb; \
 }
@@ -169,7 +170,26 @@ class LEDFunctionalColorRGB : public LEDMode {
   LEDFunctionalColorRGB(void);
   
   uint8_t functionLayer = 2;
-  
+ 
+  // This is out of scope... I'll need to figure out how to fix that
+  struct groupColors {
+    static constexpr cRGB alpha = warmwhite;
+    static constexpr cRGB number = white;
+    static constexpr cRGB punctuation = orange;
+    static constexpr cRGB function = red;
+    static constexpr cRGB navigation = yellow;
+    static constexpr cRGB arrow = white;
+    static constexpr cRGB keypad = red;
+    static constexpr cRGB lang = purple;
+    static constexpr cRGB media = magenta;
+    static constexpr cRGB modifier = skyblue;
+    static constexpr cRGB mouse = teal;
+    static constexpr cRGB mouseWheel = aquamarine;
+    static constexpr cRGB mouseButton = cyan;
+    static constexpr cRGB mouseWarp = teal;
+    static constexpr cRGB fn = white;
+  };
+
   // Note: Only use the methods below if you need runtime configuration
   //       of key paletteId/brightness and palette colors. Else
   //       assign appropriate initial values when defining the palette 
@@ -191,32 +211,49 @@ class LEDFunctionalColorRGB : public LEDMode {
   void onActivate(void) final;
   void update(void) final;
   void setKeyLed(uint8_t r, uint8_t c);
+
+
 };
 
-#define FC_RGB_COLOR_LIST(ID) \
+#define FC_COLOR_LIST(ID) \
    cRGBLookup_##ID
 
-#define FC_RGB_START_COLOR_LIST(NAME, DEFAULT_COLOR, DEFAULT_BRIGHTNESS) \
-   cRGB FC_RGB_COLOR_LIST(NAME)(const Key &k) { \
-      constexpr cRGB initialDefaultColor = CRGB(DEFAULT_COLOR.r*DEFAULT_BRIGHTNESS/255, DEFAULT_COLOR.g*DEFAULT_BRIGHTNESS/255, DEFAULT_COLOR.b*DEFAULT_BRIGHTNESS/255); \
+#define FC_START_COLOR_LIST(NAME, DEFAULT_COLOR, DEFAULT_BRIGHTNESS) \
+   cRGB FC_COLOR_LIST(NAME)(const Key &k) { \
+      constexpr cRGB initialDefaultColor = dim(DEFAULT_COLOR, DEFAULT_BRIGHTNESS); \
       switch(k.raw) {
 
-#define FC_RGB_END_COLOR_LIST \
+#define FC_END_COLOR_LIST \
    } \
    static cRGB defaultColor = initialDefaultColor; \
+   /* Now apply colors for keygroups */ \
+   if (isAlpha(k)) return groupColors::alpha; \
+   if (isNumber(k)) return groupColors::number; \
+   if (isPunctuation(k)) return groupColors::punctuation; \
+   if (isFunction(k)) return groupColors::function; \
+   if (isNavigation(k)) return groupColors::navigation; \
+   if (isArrow(k)) return groupColors::arrow; \
+   if (isKeypad(k)) return groupColors::keypad; \
+   if (isMedia(k)) return groupColors::media; \
+   /*if (isLang(k)) return groupColors::lang; */ \
+   if (isModifier(k)) return groupColors::modifier; \
+   if (isMouseWheel(k)) return groupColors::mouseWheel; \
+   if (isMouseButton(k)) return groupColors::mouseButton; \
+   if (isMouseWarp(k)) return groupColors::mouseWarp; \
+   if (isMouseMove(k)) return groupColors::mouseMove; \
    return defaultColor; \
 }
 //    case (Key_##KEY).raw:  
 
-#define FC_RGB_COLOR(KEY, COLOR) \
-    case (Key_##KEY).flags << 8 | (Key_##KEY).keyCode: \
+#define FC_COLOR(KEY, COLOR) \
+    case (KEY).flags << 8 | (KEY).keyCode: \
        { \
          static cRGB color = COLOR; \
          return color; \
        } \
        break;
 
-#define FC_RGB_SHARE_COLOR(KEY) \
-   case (Key_##KEY).flags << 8 | (Key_##KEY).keyCode:
+#define FC_GROUP(KEY) \
+   case (KEY).flags << 8 | (KEY).keyCode:
 
 }//namespace kaleidoscope

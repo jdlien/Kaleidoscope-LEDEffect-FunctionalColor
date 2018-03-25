@@ -162,9 +162,15 @@ constexpr cRGB yellowgreen = CRGB(154, 205, 50);
 
 // Function to dim the color from 0-255 (by default) or over a specified range
 // dims the specified color from 0 (off) to 255 (full)
-inline static cRGB dim(const cRGB &color, byte brightness, byte range=255);
+inline constexpr float brightnessScale(byte brightness, byte range=255) {
+  return float(brightness)/float(range);
+}
 
-inline static bool isNumber(const Key& k);
+inline constexpr cRGB dim(const cRGB &color, byte brightness, byte range=255) {
+  return CRGB(uint8_t(brightnessScale(brightness, range)*color.r), 
+              uint8_t(brightnessScale(brightness, range)*color.g), 
+              uint8_t(brightnessScale(brightness, range)*color.b));
+}
 
 } // namespace LEDEffect_FunctionalColor
 } // namespace kaleidoscope

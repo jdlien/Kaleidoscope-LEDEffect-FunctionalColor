@@ -358,26 +358,50 @@ kaleidoscope::LEDFunctionalColorCB fcCB(&FC_CB_COLOR_LIST(myCBColorList),
 *
 */
   // Configure the colors used for FunctionalColors groups
-  struct FColorMap {
-    static constexpr cRGB numberColor = purple;
+
+  struct groupColors {
+    static constexpr cRGB alpha = dim(warmwhite, 100);
+    static constexpr cRGB number = dim(white, 200);
+    static constexpr cRGB punctuation = dim(orange, 190);
+    static constexpr cRGB function = dim(red, 190);
+    static constexpr cRGB navigation = dim(yellow, 180); 
+    static constexpr cRGB arrow = white;
+    static constexpr cRGB keypad = red;
+    static constexpr cRGB media = dim(magenta, 200);
+    static constexpr cRGB modifier = skyblue;
+    static constexpr cRGB mouseMove = pink;
+    static constexpr cRGB mouseWheel = purple;
+    static constexpr cRGB mouseButton = cyan;
+    static constexpr cRGB mouseWarp = green;
+    static constexpr cRGB fn = white;
   };
 
+
 //specify your colorlist, the default color, and the default brightness (255 for full brightness)
-FC_RGB_START_COLOR_LIST(myRGBColorList, white, 127)
-
-   FC_RGB_COLOR(A, blue)
-   FC_RGB_COLOR(B, red)
+FC_START_COLOR_LIST(myRGBColorList, white, 127)   
+   // Let multiple keys be grouped by color to make it easier to change them all at once
+   FC_GROUP(Key_LeftShift)
+   FC_COLOR(Key_RightShift, darkseagreen)
    
-   // Let some keys share the same palette entry and overlay brightness
-   //
-   FC_RGB_SHARE_COLOR(1)
-   FC_RGB_SHARE_COLOR(2)
-   FC_RGB_SHARE_COLOR(3)
-   FC_RGB_COLOR(4, yellow)
+   FC_GROUP(Key_LeftAlt)
+   FC_COLOR(Key_RightAlt, forestgreen)
    
-FC_RGB_END_COLOR_LIST
+   FC_GROUP(Key_LeftGui)
+   FC_COLOR(Key_RightGui, pink)
+   
+   FC_COLOR(Key_Escape, dim(red, 150))
+   FC_COLOR(Key_Enter, white)
+   FC_COLOR(Key_Space, dim(white, 150))
+   FC_COLOR(Key_Backspace, dim(red, 150))
+   FC_COLOR(Key_Delete, red)
+   FC_COLOR(Key_LEDEffectNext, blue)
+   FC_COLOR(Key_PrintScreen, orange)
+   FC_COLOR(Key_ScrollLock, orange)
+   FC_COLOR(Key_Pause, orange)
+   
+FC_END_COLOR_LIST
 
-kaleidoscope::LEDFunctionalColorRGB fcRGB(FC_RGB_COLOR_LIST(myRGBColorList), FUNCTION);
+kaleidoscope::LEDFunctionalColorRGB fcRGB(FC_COLOR_LIST(myRGBColorList), FUNCTION);
 
 void setup() {
 
@@ -398,7 +422,7 @@ void setup() {
     &NumPad,&Macros,&MouseKeys
   );
 
- fcRGB.setColorLookup(kaleidoscope::LEDFunctionalColorRGB::template groupColorLookup<FColorMap>);
+ fcRGB.setColorLookup(kaleidoscope::LEDFunctionalColorRGB::template groupColorLookup<groupColors>);
 
   NumPad.numPadLayer = NUMPAD;
 
