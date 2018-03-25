@@ -90,8 +90,12 @@ inline constexpr bool isKeypad(const Key& k) {
 inline constexpr bool isMedia(const Key& k) {
   return (
   	(k.flags == KEY_FLAGS && (k.keyCode >= (Key_Execute).keyCode) && (k.keyCode <= (Key_VolumeDown).keyCode)) ||
-	((k.flags == HID_TYPE_OOC || k.flags == HID_TYPE_OSC) && (k.keyCode >= (Consumer_Play).keyCode) && (k.keyCode <= (Consumer_RandomPlay).keyCode)) ||
+	(k.keyCode == (Consumer_ScanPreviousTrack).keyCode && k.flags == (Consumer_ScanPreviousTrack).flags)||
+	(k.keyCode == (Consumer_ScanNextTrack).keyCode && k.flags == (Consumer_ScanNextTrack).flags)||
 	(k.keyCode == (Consumer_PlaySlashPause).keyCode && k.flags == (Consumer_PlaySlashPause).flags)||
+	(k.keyCode == (Consumer_Play).keyCode && k.flags == (Consumer_Play).flags)||
+	(k.keyCode == (Consumer_Pause).keyCode && k.flags == (Consumer_Pause).flags)||
+	(k.keyCode == (Consumer_Stop).keyCode && k.flags == (Consumer_Stop).flags)||
 	(k.flags == (Consumer_VolumeIncrement).flags && k.keyCode == (Consumer_VolumeIncrement).keyCode) ||
 	(k.flags == (Consumer_VolumeDecrement).flags && k.keyCode == (Consumer_VolumeDecrement).keyCode) ||
 	(k.keyCode == (Consumer_Mute).keyCode && k.flags == (Consumer_Mute).flags)

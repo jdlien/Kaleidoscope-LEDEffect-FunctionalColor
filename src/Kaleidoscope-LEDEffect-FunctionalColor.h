@@ -154,9 +154,12 @@ class LEDFunctionalColorRGB : public LEDMode {
  public:
      
   typedef cRGB (*RGBLookup)(const Key &);
+
+  /* I can't get this approach to work... I'm likely abandoning it now in favor of additional macros
   void setColorLookup(RGBLookup rgbLookup) {
-     rgbLookup_ = rgbLookup;
+      rgbLookup_ = rgbLookup;
   }
+  */
 
   // We use groupColorLookup to retrieve the colors for the color groups
   template<typename ColorMap> cRGB groupColorLookup(const Key &k) {
@@ -164,43 +167,14 @@ class LEDFunctionalColorRGB : public LEDMode {
     return CRGB(127,0,0);
   }
   
-  LEDFunctionalColorRGB(RGBLookup rgbLookup, uint8_t fLayer = 2);
+  LEDFunctionalColorRGB(RGBLookup rgbLookup, byte brightness = 210, uint8_t fLayer = 2);
   
   // I'm not sure why this is required
   LEDFunctionalColorRGB(void);
+
+  void brightness(byte b);
   
   uint8_t functionLayer = 2;
- 
-  // This is out of scope... I'll need to figure out how to fix that
-  struct groupColors {
-    static constexpr cRGB alpha = warmwhite;
-    static constexpr cRGB number = white;
-    static constexpr cRGB punctuation = orange;
-    static constexpr cRGB function = red;
-    static constexpr cRGB navigation = yellow;
-    static constexpr cRGB arrow = white;
-    static constexpr cRGB keypad = red;
-    static constexpr cRGB lang = purple;
-    static constexpr cRGB media = magenta;
-    static constexpr cRGB modifier = skyblue;
-    static constexpr cRGB mouse = teal;
-    static constexpr cRGB mouseWheel = aquamarine;
-    static constexpr cRGB mouseButton = cyan;
-    static constexpr cRGB mouseWarp = teal;
-    static constexpr cRGB fn = white;
-  };
-
-  // Note: Only use the methods below if you need runtime configuration
-  //       of key paletteId/brightness and palette colors. Else
-  //       assign appropriate initial values when defining the palette 
-  //       in the sketch. This allows Arduino to omit the setter methods
-  //       from the firmware binary and thus safes some flash memory.
-
-
-  // Set the palette entry id and the overlay brightness for an individual 
-  // key (or key group)
-  //
-  //void setKeyColor(const Key &k, const cRGB &color);
 
   private:
   uint8_t last_layer = 0;
@@ -208,6 +182,7 @@ class LEDFunctionalColorRGB : public LEDMode {
   RGBLookup rgbLookup_ = nullptr;
 
   protected:
+  byte brightnessSetting = 255;
   void onActivate(void) final;
   void update(void) final;
   void setKeyLed(uint8_t r, uint8_t c);
@@ -218,15 +193,18 @@ class LEDFunctionalColorRGB : public LEDMode {
 #define FC_COLOR_LIST(ID) \
    cRGBLookup_##ID
 
-#define FC_START_COLOR_LIST(NAME, DEFAULT_COLOR, DEFAULT_BRIGHTNESS) \
+#define FC_START_COLOR_LIST(NAME, DEFAULT_COLOR) \
    cRGB FC_COLOR_LIST(NAME)(const Key &k) { \
-      constexpr cRGB initialDefaultColor = dim(DEFAULT_COLOR, DEFAULT_BRIGHTNESS); \
+      constexpr cRGB initialDefaultColor = DEFAULT_COLOR; \
       switch(k.raw) {
 
 #define FC_END_COLOR_LIST \
-   } \
-   static cRGB defaultColor = initialDefaultColor; \
+   /*} // This is now provided by the FC_ENDKEYS macro */ \
    /* Now apply colors for keygroups */ \
+   static cRGB defaultColor = initialDefaultColor; \
+   return defaultColor; \
+}
+/*
    if (isAlpha(k)) return groupColors::alpha; \
    if (isNumber(k)) return groupColors::number; \
    if (isPunctuation(k)) return groupColors::punctuation; \
@@ -235,17 +213,14 @@ class LEDFunctionalColorRGB : public LEDMode {
    if (isArrow(k)) return groupColors::arrow; \
    if (isKeypad(k)) return groupColors::keypad; \
    if (isMedia(k)) return groupColors::media; \
-   /*if (isLang(k)) return groupColors::lang; */ \
    if (isModifier(k)) return groupColors::modifier; \
    if (isMouseWheel(k)) return groupColors::mouseWheel; \
    if (isMouseButton(k)) return groupColors::mouseButton; \
    if (isMouseWarp(k)) return groupColors::mouseWarp; \
    if (isMouseMove(k)) return groupColors::mouseMove; \
-   return defaultColor; \
-}
-//    case (Key_##KEY).raw:  
+*/
 
-#define FC_COLOR(KEY, COLOR) \
+#define FC_KEYCOLOR(KEY, COLOR) \
     case (KEY).flags << 8 | (KEY).keyCode: \
        { \
          static cRGB color = COLOR; \
@@ -253,7 +228,13 @@ class LEDFunctionalColorRGB : public LEDMode {
        } \
        break;
 
-#define FC_GROUP(KEY) \
+#define FC_GROUPKEY(KEY) \
    case (KEY).flags << 8 | (KEY).keyCode:
+
+// This looks super dumb but I have to close the switch statement from Color list before I can start group colors
+#define FC_ENDKEYS }
+
+#define FC_GROUPCOLOR(GROUPNAME, COLOR) \
+   if (is##GROUPNAME(k)) return COLOR; \
 
 }//namespace kaleidoscope

@@ -121,13 +121,17 @@ void LEDFunctionalColorCB::update(void) {
 }//end update()
 
 
-LEDFunctionalColorRGB::LEDFunctionalColorRGB(LEDFunctionalColorRGB::RGBLookup rgbLookup, uint8_t fLayer)
-   : rgbLookup_(rgbLookup), functionLayer(fLayer)     
+LEDFunctionalColorRGB::LEDFunctionalColorRGB(LEDFunctionalColorRGB::RGBLookup rgbLookup, byte brightness, uint8_t fLayer)
+   : rgbLookup_(rgbLookup), brightnessSetting(brightness), functionLayer(fLayer)     
 {
    assert(rgbLookup_);
 }
 
 LEDFunctionalColorRGB::LEDFunctionalColorRGB(void){}
+
+void LEDFunctionalColorRGB::brightness(byte b) {
+  brightnessSetting = b;
+}
 
 /*
 void LEDFunctionalColorRGB::setKeyColor(const Key &k, const cRGB &color)
@@ -146,7 +150,7 @@ void setColorLookup(RGBLookup rgbLookup) {
  */
 void LEDFunctionalColorRGB::setKeyLed(uint8_t r, uint8_t c) { 
   Key k = Layer.lookupOnActiveLayer(r, c);
-  ::LEDControl.setCrgbAt(r, c, (*rgbLookup_)(k));
+  ::LEDControl.setCrgbAt(r, c, dim((*rgbLookup_)(k), brightnessSetting));
 }// end setKeyLed
 
 void LEDFunctionalColorRGB::onActivate(void) {
@@ -176,15 +180,9 @@ void LEDFunctionalColorRGB::update(void) {
       }
     }
 
-    // set the fn keys (this assumes they haven't moved from the default location).
+    // Turn off fn keys when pressed (this assumes they haven't moved from the default location).
     // Turn off when the function layer is active
-    if (current_layer == 0) {
-      // left fn
-      ::LEDControl.setCrgbAt(3, 6, (*rgbLookup_)((Key){0})); // The default color
-      // right fn
-      ::LEDControl.setCrgbAt(3, 9, (*rgbLookup_)((Key){0}));
-    }
-    else {
+    if (current_layer != 0) {
       // left fn
       ::LEDControl.setCrgbAt(3, 6, black); 
       // right fn

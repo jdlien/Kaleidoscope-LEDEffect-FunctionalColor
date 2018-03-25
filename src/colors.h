@@ -18,7 +18,7 @@ constexpr cRGB black = CRGB(0, 0, 0);
 constexpr cRGB blanchedalmond = CRGB(255, 235, 205);
 constexpr cRGB blue = CRGB(0, 0, 255);
 constexpr cRGB blueviolet = CRGB(138, 43, 226);
-constexpr cRGB brown = CRGB(165, 42, 42);
+constexpr cRGB brown = CRGB(165, 42, 42); //Looks more like dim red
 constexpr cRGB burlywood = CRGB(222, 184, 135);
 constexpr cRGB cadetblue = CRGB(95, 158, 160);
 constexpr cRGB chartreuse = CRGB(127, 255, 0);
@@ -166,10 +166,19 @@ inline constexpr float brightnessScale(byte brightness, byte range=255) {
   return float(brightness)/float(range);
 }
 
+// dimLimit prevents small adjustments from completely shutting colors off, as they are not visible below 28.
+//if brightness is over about 51, and the *original* value for an rgb was over 80, set the new value to 28 if it would otherwise fall below that.
+inline constexpr byte dimLimit(byte brightness, byte rgbByte, byte range=255) {
+  //Uncomment this line to bypass the dimming limiting that prevents lights from blacking out at moderate values
+  //return brightnessScale(brightness, range)*rgbByte;
+  return byte(brightnessScale(brightness, range) >= 0.20 && rgbByte >= 80 && brightnessScale(brightness, range)*rgbByte < 28)?28:brightnessScale(brightness, range)*rgbByte;
+}
+
+//Note that in practice, on the model01, 28 is the lowest value that actually lights up at all
 inline constexpr cRGB dim(const cRGB &color, byte brightness, byte range=255) {
-  return CRGB(uint8_t(brightnessScale(brightness, range)*color.r), 
-              uint8_t(brightnessScale(brightness, range)*color.g), 
-              uint8_t(brightnessScale(brightness, range)*color.b));
+  return CRGB(uint8_t(dimLimit(brightness, color.r, range)), 
+              uint8_t(dimLimit(brightness, color.g, range)), 
+              uint8_t(dimLimit(brightness, color.b, range)));
 }
 
 } // namespace LEDEffect_FunctionalColor
