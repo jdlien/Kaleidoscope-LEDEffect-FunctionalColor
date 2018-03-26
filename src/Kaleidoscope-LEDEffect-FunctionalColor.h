@@ -155,15 +155,20 @@ class LEDFunctionalColorRGB : public LEDMode {
      
   typedef cRGB (*RGBLookup)(const Key &);
 
-  /* I can't get this approach to work... I'm likely abandoning it now in favor of additional macros
+  /* I can't get this approach to work... I'm likely abandoning it now in favor of additional macros */
   void setColorLookup(RGBLookup rgbLookup) {
       rgbLookup_ = rgbLookup;
   }
-  */
+
+  struct sampleColorMap {
+    static constexpr cRGB alpha = dim(white, 170);
+    static constexpr cRGB number = dim(blue, 190);
+  };
 
   // We use groupColorLookup to retrieve the colors for the color groups
-  template<typename ColorMap> cRGB groupColorLookup(const Key &k) {
-    //if(LEDFunctionalColorCB::isNumber(k)) {return ColorMap::numberColor;}
+  template<typename ColorMap> static cRGB groupColorLookup(const Key &k) {
+    if(isNumber(k)) {return ColorMap::number;}
+    if(isAlpha(k)) {return ColorMap::alpha;}
     return CRGB(127,0,0);
   }
   

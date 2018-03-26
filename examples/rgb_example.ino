@@ -380,6 +380,7 @@ FC_START_COLOR_LIST(myRGBColorList, white)
   FC_KEYCOLOR(Key_PrintScreen, orange)
   FC_KEYCOLOR(Key_ScrollLock, orange)
   FC_KEYCOLOR(Key_Pause, orange)
+  FC_KEYCOLOR(ShiftToLayer(FUNCTION), yellow)
   FC_ENDKEYS //Need this after individual key definitions, even if there are none
   
   //Now add desired colors for any groups: Alpha, Number, Punctuation, Function, Navigation, Arrow, Keypad, Media, Modifier, Mousewheel, MouseButton, MouseWarp, MouseMove, and Lang
@@ -404,6 +405,11 @@ kaleidoscope::LEDFunctionalColorRGB fcMHi = fcMax;
 kaleidoscope::LEDFunctionalColorRGB fcM = fcMax;
 kaleidoscope::LEDFunctionalColorRGB fcMLo = fcMax;
 kaleidoscope::LEDFunctionalColorRGB fcLo = fcMax;
+
+struct groupColors {
+  static constexpr cRGB numberColor = green;
+};
+
 void setup() {
 
   // First, call Kaleidoscope's internal setup function
@@ -429,7 +435,8 @@ void setup() {
   fcMLo.brightness(50);
   fcLo.brightness(40);
   
-  //fcHi.setColorLookup(kaleidoscope::LEDFunctionalColorRGB::template groupColorLookup<groupColors>);
+  using namespace kaleidoscope;
+  fcMax.setColorLookup(&LEDFunctionalColorRGB::groupColorLookup<LEDFunctionalColorRGB::sampleColorMap>);
 
   NumPad.numPadLayer = NUMPAD;
 
