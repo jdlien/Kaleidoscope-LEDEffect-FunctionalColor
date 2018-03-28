@@ -285,14 +285,15 @@ static kaleidoscope::LEDSolidColor solidViolet(130, 0, 120);
   * It's called when your keyboard first powers up. This is where you set up
   * Kaleidoscope and any plugins.
   */
-
-using namespace kaleidoscope::LEDEffect_FunctionalColor;
+//It seems a bit silly to use both of these, doesn't it?
+using namespace kaleidoscope::LEDFunctionalColor;
 
 //*****************************************************************************
 // Color-brightness example
 //*****************************************************************************
 
 // This example additionaly uses 1334 bytes of PROGMEM and 62 of ram
+/* I have no idea what I'm doing and I totally broke this
 
 // Let the user define a palette
 //
@@ -314,10 +315,11 @@ enum paletteIds {
    yellowId
 };
 
-FC_CB_START_COLOR_LIST(myCBColorList, greenId)
+//Specify the color list, the color you want as the default, and the default brightness of that color (from 0-15)
+FC_CB_START_COLOR_LIST(myCBColorList, greenId, 7)
 
-   FC_CB_COLOR(A, blueId)
-   FC_CB_COLOR(B, redId)
+   FC_CB_COLOR(A, blueId, 15)
+   FC_CB_COLOR(B, redId, 15)
    
    // Let some keys share the same palette entry and overlay brightness
    //
@@ -330,36 +332,83 @@ FC_CB_START_COLOR_LIST(myCBColorList, greenId)
    FC_CB_SHARE_COLOR(6)
    FC_CB_SHARE_COLOR(7)
    FC_CB_SHARE_COLOR(8)
-   FC_CB_COLOR(9, yellowId)
+   FC_CB_COLOR(9, greenId, 15)
+
+   FC_CB_SHARE_COLOR(F1)
+   FC_CB_SHARE_COLOR(F2)
+   FC_CB_SHARE_COLOR(F3)
+   FC_CB_SHARE_COLOR(F4)
+   FC_CB_SHARE_COLOR(F5)
+   FC_CB_SHARE_COLOR(F6)
+   FC_CB_SHARE_COLOR(F7)
+   FC_CB_SHARE_COLOR(F8)
+   FC_CB_SHARE_COLOR(F9)
+   FC_CB_SHARE_COLOR(F10)
+   FC_CB_SHARE_COLOR(F11)
+   FC_CB_COLOR(F12, redId, 14)
+   
    
 FC_CB_END_COLOR_LIST
-   
-kaleidoscope::LEDFunctionalColorCB fcCB(0 /* layer */,
-                                      &FC_CB_COLOR_LIST(myCBColorList),
-                                      FC_CB_PALETTE(palette));
 
-//*****************************************************************************
-// RGB example
-//*****************************************************************************
 
-// This example additionaly uses 572 bytes of PROGMEM and 39 of ram
+kaleidoscope::LEDFunctionalColorCB fcCB(&FC_CB_COLOR_LIST(myCBColorList),
+                                      FC_CB_PALETTE(palette),
+                                      FUNCTION;
+*
+*
+*/
+  // Configure the colors used for FunctionalColors groups
 
-FC_RGB_START_COLOR_LIST(myRGBColorList, white)
+//specify your colorlist, the default color, and the default brightness (255 for full brightness)
+FC_START_COLOR_LIST(myRGBColorList, white)   
+  // Let multiple keys be grouped by color to make it easier to change them all at once
+  FC_GROUPKEY(Key_LeftShift)
+  FC_KEYCOLOR(Key_RightShift, darkseagreen)
+  
+  FC_GROUPKEY(Key_LeftAlt)
+  FC_KEYCOLOR(Key_RightAlt, forestgreen)
+  
+  FC_GROUPKEY(Key_LeftGui)
+  FC_KEYCOLOR(Key_RightGui, pink)
+  
+  FC_KEYCOLOR(Key_Escape, dim(red, 150))
+  FC_KEYCOLOR(Key_Enter, white)
+  FC_KEYCOLOR(Key_Space, dim(white, 150))
+  FC_KEYCOLOR(Key_Backspace, dim(red, 150))
+  FC_KEYCOLOR(Key_Delete, red)
+  FC_KEYCOLOR(Key_LEDEffectNext, blue)
+  FC_KEYCOLOR(Key_PrintScreen, orange)
+  FC_KEYCOLOR(Key_ScrollLock, orange)
+  FC_KEYCOLOR(Key_Pause, orange)
+  FC_KEYCOLOR(ShiftToLayer(FUNCTION), yellow)
+  FC_ENDKEYS //Need this after individual key definitions, even if there are none
+  
+  //Now add desired colors for any groups: Alpha, Number, Punctuation, Function, Navigation, Arrow, Keypad, Media, Modifier, Mousewheel, MouseButton, MouseWarp, MouseMove, and Lang
+  FC_GROUPCOLOR(Alpha, dim(warmwhite, 100))
+  FC_GROUPCOLOR(Number, dim(antiquewhite, 200))
+  FC_GROUPCOLOR(Punctuation, dim(orange, 190))
+  FC_GROUPCOLOR(Function, dim(red, 190))
+  FC_GROUPCOLOR(Navigation, dim(yellow, 180))
+  FC_GROUPCOLOR(Arrow, white)
+  FC_GROUPCOLOR(Keypad, red)
+  FC_GROUPCOLOR(Media, dim(magenta, 200))
+  FC_GROUPCOLOR(Modifier, skyblue)
+  FC_GROUPCOLOR(MouseMove, pink)
+  FC_GROUPCOLOR(MouseWheel, purple)
+  FC_GROUPCOLOR(MouseButton, cyan)
+  FC_GROUPCOLOR(MouseWarp, green)
+FC_END_COLOR_LIST
 
-   FC_RGB_COLOR(A, blue)
-   FC_RGB_COLOR(B, red)
-   
-   // Let some keys share the same palette entry and overlay brightness
-   //
-   FC_RGB_SHARE_COLOR(1)
-   FC_RGB_SHARE_COLOR(2)
-   FC_RGB_SHARE_COLOR(3)
-   FC_RGB_COLOR(4, yellow)
-   
-FC_RGB_END_COLOR_LIST
+FCRGBPlugin fcMax(FC_COLOR_LIST(myRGBColorList), 255, FUNCTION);
+FCRGBPlugin fcHi = fcMax;
+FCRGBPlugin fcMHi = fcMax;
+FCRGBPlugin fcM = fcMax;
+FCRGBPlugin fcMLo = fcMax;
+FCRGBPlugin fcLo = fcMax;
 
-kaleidoscope::LEDFunctionalColorRGB fcRGB(0 /* layer */,
-                                      &FC_RGB_COLOR_LIST(myRGBColorList));
+struct groupColors {
+  static constexpr cRGB numberColor = green;
+};
 
 void setup() {
 
@@ -371,85 +420,26 @@ void setup() {
   // added in the order they're listed here.
   Kaleidoscope.use(
     
-    // The boot greeting effect pulses the LED button for 10 seconds after the keyboard is first connected
-//     &BootGreetingEffect,
-
-    // The hardware test mode, which can be invoked by tapping Prog, LED and the left Fn button at the same time.
-//     &TestMode,
-
     // LEDControl provides support for other LED modes
     &LEDControl,
 
-    &fcCB,
-    &fcRGB,
-    
-    // We start with the LED effect that turns off all the LEDs.
-//     &LEDOff,
+    //&fcCB,
+    &fcMax, &fcHi, &fcMHi, &fcM, &fcMLo, &fcLo,
 
-    // The rainbow effect changes the color of all of the keyboard's keys at the same time
-    // running through all the colors of the rainbow.
-    &LEDRainbowEffect,
-
-    // The rainbow wave effect lights up your keyboard with all the colors of a rainbow
-    // and slowly moves the rainbow across your keyboard
-    &LEDRainbowWaveEffect,
-
-    // The chase effect follows the adventure of a blue pixel which chases a red pixel across
-    // your keyboard. Spoiler: the blue pixel never catches the red pixel
-    &LEDChaseEffect,
-
-    // These static effects turn your keyboard's LEDs a variety of colors
-    &solidRed, &solidOrange, &solidYellow, &solidGreen, &solidBlue, &solidIndigo, &solidViolet,
-
-    // The breathe effect slowly pulses all of the LEDs on your keyboard
-    &LEDBreatheEffect,
-
-    // The AlphaSquare effect prints each character you type, using your
-    // keyboard's LEDs as a display
-    &AlphaSquareEffect,
-
-    // The stalker effect lights up the keys you've pressed recently
-    &StalkerEffect,
-
-    // The numpad plugin is responsible for lighting up the 'numpad' mode
-    // with a custom LED effect
-    &NumPad,
-
-    // The macros plugin adds support for macros
-    &Macros,
-
-    // The MouseKeys plugin lets you add keys to your keymap which move the mouse.
-    &MouseKeys
-
-    // The HostPowerManagement plugin enables waking up the host from suspend,
-    // and allows us to turn LEDs off when it goes to sleep.
-//     &HostPowerManagement
+    &NumPad,&Macros,&MouseKeys
   );
 
-  // While we hope to improve this in the future, the NumPad plugin
-  // needs to be explicitly told which keymap layer is your numpad layer
+  fcHi.brightness(80);
+  fcMHi.brightness(70);
+  fcM.brightness(60);
+  fcMLo.brightness(50);
+  fcLo.brightness(40);
+  
+  //fcMax.setColorLookup(&groupColorLookup<sampleColorMap>);
+  fcMax.setColorLookup(&keyColorLookup<sampleKeyMap>);
+
   NumPad.numPadLayer = NUMPAD;
 
-  // We configure the AlphaSquare effect to use RED letters
-  AlphaSquare.color = CRGB(255, 0, 0);
-
-  // We set the brightness of the rainbow effects to 150 (on a scale of 0-255)
-  // This draws more than 500mA, but looks much nicer than a dimmer effect
-  LEDRainbowEffect.brightness(150);
-  LEDRainbowWaveEffect.brightness(150);
-
-  // The LED Stalker mode has a few effects. The one we like is
-  // called 'BlazingTrail'. For details on other options,
-  // see https://github.com/keyboardio/Kaleidoscope-LED-Stalker
-  StalkerEffect.variant = STALKER(BlazingTrail);
-
-  // We want the keyboard to be able to wake the host up from suspend.
-//   HostPowerManagement.enableWakeup();
-
-  // We want to make sure that the firmware starts with LED effects off
-  // This avoids over-taxing devices that don't have a lot of power to share
-  // with USB devices
-//   LEDOff.activate();/
 }
 
 /** loop is the second of the standard Arduino sketch functions.

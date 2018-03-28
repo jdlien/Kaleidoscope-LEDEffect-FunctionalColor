@@ -1,7 +1,7 @@
 #pragma once
 
 namespace kaleidoscope {
-namespace LEDEffect_FunctionalColor {
+namespace LEDFunctionalColor {
    
 // Here's a big list of color names based on the CSS color names.
 
@@ -181,5 +181,5 @@ inline constexpr cRGB dim(const cRGB &color, byte brightness, byte range=255) {
               uint8_t(dimLimit(brightness, color.b, range)));
 }
 
-} // namespace LEDEffect_FunctionalColor
+} // namespace LEDFunctionalColor
 } // namespace kaleidoscope

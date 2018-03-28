@@ -2,8 +2,7 @@
 #include "assert.h"
 
 // Is it a bad idea to do this?
-using namespace kaleidoscope::LEDEffect_FunctionalColor;
-
+using namespace kaleidoscope::LEDFunctionalColor;
 namespace kaleidoscope {
 
 LEDFunctionalColorCB::LEDFunctionalColorCB(LEDFunctionalColorCB::CBLookup cbLookup, 
@@ -121,20 +120,20 @@ void LEDFunctionalColorCB::update(void) {
 }//end update()
 
 
-LEDFunctionalColorRGB::LEDFunctionalColorRGB(LEDFunctionalColorRGB::RGBLookup rgbLookup, byte brightness, uint8_t fLayer)
+FCRGBPlugin::FCRGBPlugin(FCRGBPlugin::RGBLookup rgbLookup, byte brightness, uint8_t fLayer)
    : rgbLookup_(rgbLookup), brightnessSetting(brightness), functionLayer(fLayer)     
 {
    assert(rgbLookup_);
 }
 
-LEDFunctionalColorRGB::LEDFunctionalColorRGB(void){}
+FCRGBPlugin::FCRGBPlugin(void){}
 
-void LEDFunctionalColorRGB::brightness(byte b) {
+void FCRGBPlugin::brightness(byte b) {
   brightnessSetting = b;
 }
 
 /*
-void LEDFunctionalColorRGB::setKeyColor(const Key &k, const cRGB &color)
+void FCRGBPlugin::setKeyColor(const Key &k, const cRGB &color)
 {
    (*rgbLookup_)(k) = color;
 }
@@ -148,12 +147,12 @@ void setColorLookup(RGBLookup rgbLookup) {
  * setKeyLed accepts a Key position and sets it to the appropriate color
  * from the user's definitions a using a series of if/else statements.
  */
-void LEDFunctionalColorRGB::setKeyLed(uint8_t r, uint8_t c) { 
+void FCRGBPlugin::setKeyLed(uint8_t r, uint8_t c) { 
   Key k = Layer.lookupOnActiveLayer(r, c);
   ::LEDControl.setCrgbAt(r, c, dim((*rgbLookup_)(k), brightnessSetting));
 }// end setKeyLed
 
-void LEDFunctionalColorRGB::onActivate(void) {
+void FCRGBPlugin::onActivate(void) {
 	// Loop through every row and column and set each LED based on its key's function
 	for (uint8_t r = 0; r < ROWS; r++) {
 	  for (uint8_t c = 0; c < COLS; c++) {
@@ -163,7 +162,7 @@ void LEDFunctionalColorRGB::onActivate(void) {
 	}
 }
 
-void LEDFunctionalColorRGB::update(void) {
+void FCRGBPlugin::update(void) {
   // first check which layer is active. Here we are assuming only fn or normal, but numlock is a thing too...
   uint8_t current_layer = 0;
   if ((::Layer_::isOn(functionLayer))) { //2 is FUNCTION in the default mapping

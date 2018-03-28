@@ -6,7 +6,7 @@
 #include "colors.h"
 #include "keygroups.h"
 
-using namespace kaleidoscope::LEDEffect_FunctionalColor;
+using namespace kaleidoscope::LEDFunctionalColor;
 
 namespace kaleidoscope {
    
@@ -150,32 +150,23 @@ colorBrightness_myList(const Key &k) {
      
 // This is the color-brightness-version of the plugin
 //
-class LEDFunctionalColorRGB : public LEDMode {
+
+namespace LEDFunctionalColor {
+
+class FCRGBPlugin : public LEDMode {
  public:
      
   typedef cRGB (*RGBLookup)(const Key &);
 
-  /* I can't get this approach to work... I'm likely abandoning it now in favor of additional macros */
+  // Allow the user/programmer to create or specify their own color lookup function
   void setColorLookup(RGBLookup rgbLookup) {
       rgbLookup_ = rgbLookup;
   }
-
-  struct sampleColorMap {
-    static constexpr cRGB alpha = dim(white, 170);
-    static constexpr cRGB number = dim(blue, 190);
-  };
-
-  // We use groupColorLookup to retrieve the colors for the color groups
-  template<typename ColorMap> static cRGB groupColorLookup(const Key &k) {
-    if(isNumber(k)) {return ColorMap::number;}
-    if(isAlpha(k)) {return ColorMap::alpha;}
-    return CRGB(127,0,0);
-  }
   
-  LEDFunctionalColorRGB(RGBLookup rgbLookup, byte brightness = 210, uint8_t fLayer = 2);
+  FCRGBPlugin(RGBLookup rgbLookup, byte brightness = 210, uint8_t fLayer = 2);
   
   // I'm not sure why this is required
-  LEDFunctionalColorRGB(void);
+  FCRGBPlugin(void);
 
   void brightness(byte b);
   
@@ -193,7 +184,84 @@ class LEDFunctionalColorRGB : public LEDMode {
   void setKeyLed(uint8_t r, uint8_t c);
 
 
+};//end class FCRGBPlugin
+
+/*
+  GroupColorLookup essentially accepts an struct full of color names.
+  The way this currently works is that there are a bunch of groups and keys that are set according to the values of the struct.
+  This means that every instance of the struct has to have every single one of a huge number of elements in the struct.
+  This also makes it impossible to set arbitrary keys the way you can with the macro.
+
+  What if I wanted an A that is pink and everything else blue? I can't do it this way, apparently. That sucks.
+
+  My initial thought for this was to iterate through all the color groups but also have members for the individual keys that aren't
+  covered by colorgroups: space, enter, tab, esc, backspace, led, num, whatever "any" is...
+  (I suppose I should do a reasonable job of supporting the default layout well)
+
+  Would there be some way of allowing arbitrary key assignments?
+  Could I have another function for FCRGBPlugin that allows you to specify individual keys
+  without having them built into the function by default?
+
+  okay, how about this?
+
+  Could I iterate through the members of a structure and then look for keys that match the struct member names?
+  Then I could just have a loop that goes through and then colors the keys based on the struct names.
+
+  I have a feeling that this might not be a very efficient way to do it.
+*/
+
+// We use groupColorLookup to retrieve the colors for the color groups
+template<typename ColorMap> static cRGB groupColorLookup(const Key &k) {
+  if(isNumber(k)) {return ColorMap::number;}
+  if(isAlpha(k)) {return ColorMap::alpha;}
+/*
+   if (isAlpha(k)) return groupColors::alpha; \
+   if (isNumber(k)) return groupColors::number; \
+   if (isPunctuation(k)) return groupColors::punctuation; \
+   if (isFunction(k)) return groupColors::function; \
+   if (isNavigation(k)) return groupColors::navigation; \
+   if (isArrow(k)) return groupColors::arrow; \
+   if (isKeypad(k)) return groupColors::keypad; \
+   if (isMedia(k)) return groupColors::media; \
+   if (isModifier(k)) return groupColors::modifier; \
+   if (isMouseWheel(k)) return groupColors::mouseWheel; \
+   if (isMouseButton(k)) return groupColors::mouseButton; \
+   if (isMouseWarp(k)) return groupColors::mouseWarp; \
+   if (isMouseMove(k)) return groupColors::mouseMove; \
+*/  
+  return CRGB(127,0,0);
+}
+
+//This sets colors on a per-key basis from the array of structs for key colors
+template<typename ColorMap> static cRGB keyColorLookup(const Key &k) {
+  //In this case ColorMap should be an array, right?
+  for(int i = 0; i < sizeof(ColorMap)/sizeof(ColorMap[0]); i++ ) {
+    //if the key member matches k, return color
+    if (k == ColorMap::k) return ColorMap::color;
+  }
+
+}
+
+//Is a typedef any value here?
+struct keyColor {
+  Key k;
+  cRGB color;
 };
+
+keyColor constexpr sampleKeyMap[] = {
+  {Key_A,red},
+  {Key_B,blue},
+  {Key_C,green}
+};
+
+
+// The first of many potential included colorMaps
+struct sampleColorMap {
+  static constexpr cRGB alpha = dim(white, 170);
+  static constexpr cRGB number = dim(blue, 190);
+};
+
+
 
 #define FC_COLOR_LIST(ID) \
    cRGBLookup_##ID
@@ -209,21 +277,7 @@ class LEDFunctionalColorRGB : public LEDMode {
    static cRGB defaultColor = initialDefaultColor; \
    return defaultColor; \
 }
-/*
-   if (isAlpha(k)) return groupColors::alpha; \
-   if (isNumber(k)) return groupColors::number; \
-   if (isPunctuation(k)) return groupColors::punctuation; \
-   if (isFunction(k)) return groupColors::function; \
-   if (isNavigation(k)) return groupColors::navigation; \
-   if (isArrow(k)) return groupColors::arrow; \
-   if (isKeypad(k)) return groupColors::keypad; \
-   if (isMedia(k)) return groupColors::media; \
-   if (isModifier(k)) return groupColors::modifier; \
-   if (isMouseWheel(k)) return groupColors::mouseWheel; \
-   if (isMouseButton(k)) return groupColors::mouseButton; \
-   if (isMouseWarp(k)) return groupColors::mouseWarp; \
-   if (isMouseMove(k)) return groupColors::mouseMove; \
-*/
+
 
 #define FC_KEYCOLOR(KEY, COLOR) \
     case (KEY).flags << 8 | (KEY).keyCode: \
@@ -241,5 +295,7 @@ class LEDFunctionalColorRGB : public LEDMode {
 
 #define FC_GROUPCOLOR(GROUPNAME, COLOR) \
    if (is##GROUPNAME(k)) return COLOR; \
+
+}//namespace LEDFunctionalColor
 
 }//namespace kaleidoscope

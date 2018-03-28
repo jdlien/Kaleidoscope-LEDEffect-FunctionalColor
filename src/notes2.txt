@@ -1,0 +1,28 @@
+// Create a method that can do this:
+setColor(Key_A, RED);
+
+It will work by creating a matrix of colors:
+
+byte colors[LAYER][ROWS][COLS];
+
+setColor(key, colorindex) {
+	//Magic that looks up Key based on name?
+	colors[key] = colorindex;
+
+	//Is that all??
+}
+
+
+For coloring individual keys, could I create an array of structs?
+Something like:
+[{Key_A:red},{Key_B:blue},{Key_C:green}]
+
+Then I can make my groupColorLookup function work by:
+ 1. Finding all the groupcolors and applying them
+ 	Then
+ 2. Going through the array and setting individual key colors from the array of structs
+
+
+
+Themes
+======
