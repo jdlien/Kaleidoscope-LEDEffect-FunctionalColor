@@ -6,12 +6,12 @@ This plugin automatically colors groups of keys based on the current function of
 
 ##### Table of Contents  
 [Basic Use](#basics)  
-[Advanced Usage](#advanced)
-[Using Custom Themes](#customThemes)
-[Using FC_COLOR_LIST overrides to set individual keys](#colorList)
-[Brightness Control with Macros](#brightnessMacros)
+[Advanced Usage](#advanced)  
+[Using Custom Themes](#customThemes)  
+[Using FC_COLOR_LIST overrides to set individual keys](#colorList)  
+[Brightness Control with Macros](#brightnessMacros)  
 
-<a name="basics"/>
+[basics](#basics)
 ## Basic Use of FunctionalColor
 
 To get started with FunctionalColor and use the default colors, you can just include the header,
