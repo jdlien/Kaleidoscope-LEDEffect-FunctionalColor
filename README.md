@@ -11,7 +11,7 @@ This plugin automatically colors groups of keys based on the current function of
 [Using FC_COLOR_LIST overrides to set individual keys](#setting-individual-keys-with-fc_color_list)  
 [Brightness Control with Macros](#brightness-control-with-macros)  
 
-[basics](#basics)
+
 ## Basic Use of FunctionalColor
 
 To get started with FunctionalColor and use the default colors, you can just include the header,
@@ -181,7 +181,7 @@ FCPlugin funColorCustom(FC_COLOR_LIST(customColors), 255, MONOWHITE);
 
 Now you can add &funColorCustom to the Kaleidoscope.use() list to make it show up on your keyboard.
 
-<a name="brightnessMacros"/>
+
 ## Brightness Control with Macros
 
 FunctionalColor supports macros that allow you to add keys to adjust the brightness of your theme while using the keyboard. To do this, first ensure that you have MACRO_FCUP and MACRO_FCDOWN in the enum near the beginning of the .ino.
