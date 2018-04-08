@@ -8,7 +8,7 @@ This plugin automatically colors groups of keys based on the current function of
 [Basic Use](#basic-use-of-functionalcolor)  
 [Advanced Usage](#advanced-usage)  
 [Using Custom Themes](#using-custom-themes)  
-[Using FC_COLOR_LIST overrides to set individual keys](#setting-individual-keys-with-fc_color_list)  
+[Setting individual keys with FC_COLOR_LIST](#setting-individual-keys-with-fc_color_list)  
 [Brightness Control with Macros](#brightness-control-with-macros)  
 
 
