@@ -130,7 +130,7 @@ template<typename ColorMap> static cRGB groupColorLookup(const Key &k, bool &ski
 
 // The first of many potential included colorMaps
 struct colorMap {
-  static constexpr cRGB defaultColor = black;
+  static constexpr cRGB defaultColor = dim(white, 120);
   static constexpr cRGB shift = nocolor;
   static constexpr cRGB control = nocolor;
   //Command keys (macOS) or Windows Logo keys

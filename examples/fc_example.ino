@@ -1,6 +1,5 @@
 // -*- mode: c++ -*-
-// Copyright 2016 Keyboardio, inc. <jesse@keyboard.io>
-// See "LICENSE" for license details
+// This example demonstrates using FunctionalColor with completely stock Model 01 firmware.
 
 #ifndef BUILD_INFORMATION
 #define BUILD_INFORMATION "locally built"
@@ -211,11 +210,13 @@ static void anyKeyMacro(uint8_t keyState) {
 
 //Include FunctionalColor before creating your color override list and creating FC instances
 #include "Kaleidoscope-LEDEffect-FunctionalColor.h"
-// A sample color override that makes mirrored rainbow homerows
-// Note that FunctionalColors allows you to use CSS color names (in lowercase)
+
+// Note: FunctionalColors allows you to use CSS color names (in lowercase)
 // You can also control the brightness from 0-255 by using a dim() function on the color.
-// eg to make a half-dimmed white use dim(white, 128)
+
+// Use color override Macros to set the color of specific keys--even those not customizable in a ColorMap struct
 FC_START_COLOR_LIST(customColors)
+ // Use any number of FCGROUPKEYs above a FC_KEYCOLOR to set several keys to the same color
  FC_GROUPKEY(Key_A)
  FC_KEYCOLOR(Key_Semicolon, orange)
  FC_GROUPKEY(Key_S)
@@ -233,20 +234,28 @@ FC_START_COLOR_LIST(customColors)
  FC_KEYCOLOR(M(MACRO_FCDOWN), cyan)
 FC_END_COLOR_LIST
 
-//User friendly list of themes
+//User friendly list of themes included with FunctionalColor. These just map to 0-5.
 enum { COLORMAP, MONOWHITE, DUOCOLOR, COLORFUL, DEFAULTCOLOR };
-//No arguments needed to use the default theme.
+
+
+// There are several ways you can make FunctionalColor instances.
+
+// No arguments are needed to use the default theme.
 FCPlugin funColor1;
-//You can specify a themeID (0-5) with optional brightness 0-255
-FCPlugin funColor2(MONOWHITE);
-//You can also specify a color override list as shown above like the following
+
+//You can specify a themeID (0-5) with optional brightness 0-255, and an optional colorList can follow.
+FCPlugin funColor2(MONOWHITE, 200);
+
+//You can specify only a color override list as shown above beginning with FC_START_COLOR_LIST(customColors)
 FCPlugin funColor3(FC_COLOR_LIST(customColors));
-//You can optionally specify brightness and a theme if you want something other than the default.
+
+//You can also specify the brightness and an optional theme if you want something other than the default.
 FCPlugin funColor4(FC_COLOR_LIST(customColors), 255, DUOCOLOR);
-//The last two examples will have custom themes applied - this is done in the setup() part of this .ino
+
+// The last two examples will use custom themes - these are applied later in the setup() part of this .ino
 // Look near the bottom of this file to see how this is done.
-// Note that it still works to use custom color overrides with a custom theme, demonstrated in funColor6
 FCPlugin funColor5;
+// Note that you can combine custom color overrides with a custom theme, demonstrated in funColor6
 FCPlugin funColor6(FC_COLOR_LIST(customColors));
 
 //To create customize a theme, make a subclass of one of the themes in FunctionalColor.
@@ -264,31 +273,50 @@ struct myTheme: public colorMapMono {
 };
 
 
-// Here is an example struct showing the full list of properties you can set
+// For reference, this example theme struct shows the full list of properties you can set
 // in case you want to define a completely custom theme. In practice you can
-// just subclass one you like and change only the elements you want to modify
+// just subclass one you like and change only the elements you want to modify.
 struct colorMapGreen: public colorMap {
-  // baseColor allows you to use a base color that just changes in brightness
+  // baseColor is used with just changes in brightness for a largely monochromatic theme.
+  // You can change baseColor from green to change all these colors at once
   static constexpr cRGB baseColor   = green;
+
+  // defaultColor is used when there is no color defined for a key.
+  // This is the only way to color "prog" if you don't assign a function to it.
   static constexpr cRGB defaultColor= dim(baseColor, 100);
+
+  // shift, control, gui, and alt can all be colored by "modifier" if nocolor is set here.
   static constexpr cRGB shift       = nocolor;
   static constexpr cRGB control     = nocolor;
+  // Windows Logo or, on macOS, command keys 
   static constexpr cRGB gui         = nocolor;
   static constexpr cRGB alt         = nocolor;
+  
   static constexpr cRGB modifier    = dim(baseColor, 130);
   static constexpr cRGB alpha       = dim(baseColor, 80);
   static constexpr cRGB number      = dim(baseColor, 100);
   static constexpr cRGB punctuation = dim(baseColor, 120);
+
+  // F1-F12 and F13-F24
   static constexpr cRGB function    = dim(baseColor, 150);
+  
+  // Page Up, Page Down, Home, End, Insert, and Delete (if del has nocolor)
   static constexpr cRGB navigation  = dim(baseColor, 180);
+  
+  // Print Screen, Pause/Break, and Scroll Lock keys (brightness on Macs)
   static constexpr cRGB system      = dim(baseColor, 50);
+  
   static constexpr cRGB arrow       = dim(baseColor, 250);
   static constexpr cRGB keypad      = dim(baseColor, 230);
+
+  // Includes play/pause, next/prev, volume control, mute, etc.
   static constexpr cRGB media       = dim(baseColor, 250);
+  
   static constexpr cRGB mouseWheel  = nocolor;
   static constexpr cRGB mouseButton = nocolor;
   static constexpr cRGB mouseWarp   = nocolor;
   static constexpr cRGB mouseMove   = nocolor;
+  // mouse includes the four above groups if nocolor is set for those
   static constexpr cRGB mouse       = dim(baseColor, 220);
   static constexpr cRGB space       = dim(baseColor, 100);
   static constexpr cRGB tab         = dim(baseColor, 100);
@@ -296,11 +324,14 @@ struct colorMapGreen: public colorMap {
   static constexpr cRGB backspace   = dim(baseColor, 100);
   static constexpr cRGB escape      = dim(baseColor, 100);
   static constexpr cRGB del         = dim(baseColor, 255);
+
+  //fn will work properly if your FUNCTION layer is between layers 1-3
   static constexpr cRGB fn          = dim(baseColor, 255);
+  
+  //NumLock and other layer locks
   static constexpr cRGB lock        = dim(baseColor, 255);
   static constexpr cRGB LEDEffectNext=dim(baseColor, 255);
 };
-
 
 
 
@@ -327,8 +358,8 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
     anyKeyMacro(keyState);
     break;
 
-  // Here are some macros you can use to control the brightness of your FunctionalColor instances.
-  // These names must be in the macros enum closer to the beginning of this file.
+  // Here are macros that control the brightness of the active FunctionalColor instance.
+  // These names must be in the macros enum near the beginning of this file.
   // Assign M(MACRO_FCUP) and M(MACRO_FCDOWN) to keys you'd like to use for this purpose.
   // In this example they have been assigned to the semicolon and comma keys on the fn layer.
   case MACRO_FCUP:
@@ -384,9 +415,11 @@ void setup() {
     // We start with the LED effect that turns off all the LEDs.
     &LEDOff,
 
+    // All FunctionalColor instances go here in the order you want them in
+    &funColor1,&funColor2,&funColor3,&funColor4,&funColor5,&funColor6,
+
     // The rainbow effect changes the color of all of the keyboard's keys at the same time
     // running through all the colors of the rainbow.
-    &funColor1,&funColor2,&funColor3,&funColor4,&funColor5,&funColor6,
     &LEDRainbowEffect,
 
     // The rainbow wave effect lights up your keyboard with all the colors of a rainbow
@@ -443,18 +476,11 @@ void setup() {
   // with USB devices
   LEDOff.activate();
 
-  //Apply a custom colorMap to one of your FunctionalColor instances.
+  // Here you can apply a custom colorMap to FunctionalColor instances.
   // Replace "myTheme" with the name of your colorMap.
   funColor5.setColorLookup(&groupColorLookup<myTheme>);
   funColor6.setColorLookup(&groupColorLookup<colorMapGreen>);
 }
-
-/** loop is the second of the standard Arduino sketch functions.
-  * As you might expect, it runs in a loop, never exiting.
-  *
-  * For Kaleidoscope-based keyboard firmware, you usually just want to
-  * call Kaleidoscope.loop(); and not do anything custom here.
-  */
 
 void loop() {
   Kaleidoscope.loop();
