@@ -332,22 +332,12 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   // Assign M(MACRO_FCUP) and M(MACRO_FCDOWN) to keys you'd like to use for this purpose.
   // In this example they have been assigned to the semicolon and comma keys on the fn layer.
   case MACRO_FCUP:
-   funColor1.brightnessUp(keyState);
-   funColor2.brightnessUp(keyState);
-   funColor3.brightnessUp(keyState);
-   funColor4.brightnessUp(keyState);
-   funColor5.brightnessUp(keyState);
-   funColor6.brightnessUp(keyState);
-   break;
+    FCPlugin::brightnessUp(keyState);
+    break;
    
   case MACRO_FCDOWN:
-   funColor1.brightnessDown(keyState);
-   funColor2.brightnessDown(keyState);
-   funColor3.brightnessDown(keyState);
-   funColor4.brightnessDown(keyState);
-   funColor5.brightnessDown(keyState);
-   funColor6.brightnessDown(keyState);
-   break;
+    FCPlugin::brightnessDown(keyState);
+    break;
   }
   return MACRO_NONE;
 }
