@@ -40,8 +40,13 @@ class FCPlugin : public LEDMode {
 
   void themeSelect(int themeID);
 
-  void brightnessUp(uint8_t keyState);
-  void brightnessDown(uint8_t keyState);
+  void thisBrightnessUp(uint8_t keyState);
+  void thisBrightnessDown(uint8_t keyState);
+
+  static void brightnessUp(uint8_t keyState);
+  static void brightnessDown(uint8_t keyState);
+
+
 
   private:
   uint32_t last_layerState = 0;
@@ -59,8 +64,10 @@ class FCPlugin : public LEDMode {
 
 
   protected:
-  // Set to 220 to hopefully avoid overloading people's USB ports.
+  // Default to 200 to hopefully avoid overloading people's USB ports.
   byte brightnessSetting = 200;
+  // Pointer to the currently in-use instance of FC
+  static FCPlugin *lastFC;
   void onActivate(void) final;
   void update(void) final;
   void setKeyLed(uint8_t r, uint8_t c);

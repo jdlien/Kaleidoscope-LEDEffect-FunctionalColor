@@ -61,20 +61,27 @@ byte FCPlugin::brightness() {
 }
 
 //These are special macros that allow the brightness of an FC instance to be adjusted
-void FCPlugin::brightnessUp(uint8_t keyState) {
+void FCPlugin::thisBrightnessUp(uint8_t keyState) {
   if (keyToggledOn(keyState)) {
     brightnessSetting += 16;
     this->refresh();
   }
 }
 
-void FCPlugin::brightnessDown(uint8_t keyState) {
+void FCPlugin::thisBrightnessDown(uint8_t keyState) {
   if (keyToggledOn(keyState)) {
     brightnessSetting -= 16;
     this->refresh();
   }
 }
 
+void FCPlugin::brightnessUp(uint8_t keyState) {
+  FCPlugin::lastFC->thisBrightnessUp(keyState);
+}
+
+void FCPlugin::brightnessDown(uint8_t keyState) {
+  FCPlugin::lastFC->thisBrightnessDown(keyState);
+}
 
 //setKeyLed accepts a Key position and sets it to the appropriate color from a lookup function
 void FCPlugin::setKeyLed(uint8_t r, uint8_t c) { 
@@ -87,6 +94,8 @@ void FCPlugin::setKeyLed(uint8_t r, uint8_t c) {
   ::LEDControl.setCrgbAt(r, c, dim(color, brightnessSetting));
 }// end setKeyLed()
 
+FCPlugin* FCPlugin::lastFC;
+
 
 //Forces an update of the LEDs
 void FCPlugin::refresh(void) {
@@ -97,6 +106,7 @@ void FCPlugin::refresh(void) {
       setKeyLed(r, c);
     }
   }
+  lastFC = this;
 }
 
 
