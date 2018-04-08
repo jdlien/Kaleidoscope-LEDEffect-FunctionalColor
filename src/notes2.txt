@@ -26,3 +26,31 @@ Then I can make my groupColorLookup function work by:
 
 Themes
 ======
+
+
+How I'd ideally like FunctionalColors to work:
+- You can just create an instance with no configuration and no parameters to get a reasonable set of defaults
+- You can create an instance by specifying a preset theme to pick one you like (or use a method to switch after instantiation).
+- You can assign your own custom function to it to completely control how the colors are assigned. (This is essentially what the macros do).
+
+- If you pick a theme, but want to override specific colors in the theme, you can create a subclass of the theme, changing the parts you don't like, then run it with that particular theme.
+
+- If you want to override specific keys that aren't really part of the theme (say, you want wasd keys a different color, but there's no theme property for those), then you can specify an override function for those.
+
+Macros can help you create your override function.
+
+So... there's a macro that optionally creates your override.
+
+
+Here's how this works:
+
+- FC is instantiated with no arguments
+- a default colormap struct is specified as the argument to the templatefunction and setcolorlookup
+	- this becomes maincolorlookup
+	- main colorlookup starts by calling the rgbLookup_ for exceptions, but if none are found, it just returns "none" which is a special color, I suppose.
+
+- subclasses are made for the default colormap struct that can then be passed instead.
+
+the rgbLookup function is now just the exceptions, and it gets called by the maincolorlookup
+
+I

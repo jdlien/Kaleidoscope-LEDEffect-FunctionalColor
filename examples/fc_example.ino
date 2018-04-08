@@ -29,11 +29,11 @@
 #include "Kaleidoscope-NumPad.h"
 
 // Support for an "LED off mode"
-// #include "LED-Off.h"
+#include "LED-Off.h"
 
 // Support for the "Boot greeting" effect, which pulses the 'LED' button for 10s
 // when the keyboard is connected to a computer (or that computer is powered on)
-// #include "Kaleidoscope-LEDEffect-BootGreeting.h"
+#include "Kaleidoscope-LEDEffect-BootGreeting.h"
 
 // Support for LED modes that set all LEDs to a single color
 #include "Kaleidoscope-LEDEffect-SolidColor.h"
@@ -54,12 +54,7 @@
 #include "Kaleidoscope-LED-AlphaSquare.h"
 
 // Support for Keyboardio's internal keyboard testing mode
-// #include "Kaleidoscope-Model01-TestMode.h"
-
-// Support for host power management (suspend & wakeup)
-// #include "Kaleidoscope-HostPowerManagement.h"
-
-#include "Kaleidoscope-LEDEffect-FunctionalColor.h"
+#include "Kaleidoscope-Model01-TestMode.h"
 
 
 /** This 'enum' is a list of all the macros used by the Model 01's firmware
@@ -76,7 +71,9 @@
   */
 
 enum { MACRO_VERSION_INFO,
-       MACRO_ANY
+       MACRO_ANY,
+       MACRO_FCUP,
+       MACRO_FCDOWN
      };
 
 
@@ -158,7 +155,7 @@ const Key keymaps[][ROWS][COLS] PROGMEM = {
 
    M(MACRO_VERSION_INFO),  ___, Key_Keypad7, Key_Keypad8,   Key_Keypad9,        Key_KeypadSubtract, ___,
    ___,                    ___, Key_Keypad4, Key_Keypad5,   Key_Keypad6,        Key_KeypadAdd,      ___,
-                           ___, Key_Keypad1, Key_Keypad2,   Key_Keypad3,        Key_Equals,         ___,
+                           ___, Key_Keypad1, Key_Keypad2,   Key_Keypad3,        Key_Equals,         Key_Quote,
    ___,                    ___, Key_Keypad0, Key_KeypadDot, Key_KeypadMultiply, Key_KeypadDivide,   Key_Enter,
    ___, ___, ___, ___,
    ___),
@@ -173,7 +170,7 @@ const Key keymaps[][ROWS][COLS] PROGMEM = {
 
    Consumer_ScanPreviousTrack, Key_F6,                 Key_F7,                   Key_F8,                   Key_F9,          Key_F10,          Key_F11,
    Consumer_PlaySlashPause,    Consumer_ScanNextTrack, Key_LeftCurlyBracket,     Key_RightCurlyBracket,    Key_LeftBracket, Key_RightBracket, Key_F12,
-                               Key_LeftArrow,          Key_DownArrow,            Key_UpArrow,              Key_RightArrow,  ___,              ___,
+                               Key_LeftArrow,          Key_DownArrow,            Key_UpArrow,              Key_RightArrow,  M(MACRO_FCDOWN),    M(MACRO_FCUP),
    Key_PcApplication,          Consumer_Mute,          Consumer_VolumeDecrement, Consumer_VolumeIncrement, ___,             Key_Backslash,    Key_Pipe,
    ___, ___, Key_Enter, ___,
    ___)
@@ -212,6 +209,100 @@ static void anyKeyMacro(uint8_t keyState) {
     kaleidoscope::hid::pressKey(lastKey);
 }
 
+//Include FunctionalColor before creating your color override list and creating FC instances
+#include "Kaleidoscope-LEDEffect-FunctionalColor.h"
+// A sample color override that makes mirrored rainbow homerows
+// Note that FunctionalColors allows you to use CSS color names (in lowercase)
+// You can also control the brightness from 0-255 by using a dim() function on the color.
+// eg to make a half-dimmed white use dim(white, 128)
+FC_START_COLOR_LIST(customColors)
+ FC_GROUPKEY(Key_A)
+ FC_KEYCOLOR(Key_Semicolon, orange)
+ FC_GROUPKEY(Key_S)
+ FC_KEYCOLOR(Key_L, yellow)
+ FC_GROUPKEY(Key_D)
+ FC_KEYCOLOR(Key_K, lime)
+ FC_GROUPKEY(Key_F)
+ FC_KEYCOLOR(Key_J, aqua)
+ //FC_NOCOLOR makes a key not change color, as if "transparent".
+ // In this example The uparrow key will not change the key color, even when on the active layer.
+ FC_NOCOLOR(Key_UpArrow)
+
+ // This shows how you can set the color of custom macros
+ FC_GROUPKEY(M(MACRO_FCUP))
+ FC_KEYCOLOR(M(MACRO_FCDOWN), cyan)
+FC_END_COLOR_LIST
+
+//User friendly list of themes
+enum { COLORMAP, MONOWHITE, DUOCOLOR, COLORFUL, DEFAULTCOLOR };
+//No arguments needed to use the default theme.
+FCPlugin funColor1;
+//You can specify a themeID (0-5) with optional brightness 0-255
+FCPlugin funColor2(MONOWHITE);
+//You can also specify a color override list as shown above like the following
+FCPlugin funColor3(FC_COLOR_LIST(customColors));
+//You can optionally specify brightness and a theme if you want something other than the default.
+FCPlugin funColor4(FC_COLOR_LIST(customColors), 255, DUOCOLOR);
+//The last two examples will have custom themes applied - this is done in the setup() part of this .ino
+// Look near the bottom of this file to see how this is done.
+// Note that it still works to use custom color overrides with a custom theme, demonstrated in funColor6
+FCPlugin funColor5;
+FCPlugin funColor6(FC_COLOR_LIST(customColors));
+
+//To create customize a theme, make a subclass of one of the themes in FunctionalColor.
+//They are colorMap, colorMapDefault, colorMapColorful, colorMapMono, colorMapDuo.
+//This example makes a few tweaks to colorMapMono that customize specific modifier keys
+struct myTheme: public colorMapMono {
+  static constexpr cRGB shift = darkseagreen;
+  static constexpr cRGB control = skyblue;
+  static constexpr cRGB alt = forestgreen;
+  static constexpr cRGB gui = pink; 
+  //You can also set something to "nocolor" which will avoid coloring a set of keys
+  // if they already are part of another larger group - ie set shift to nocolor and
+  // shiftkeys will inherit the color assigned to modifier
+  // static constexpr cRGB shift = nocolor;
+};
+
+
+// Here is an example struct showing the full list of properties you can set
+// in case you want to define a completely custom theme. In practice you can
+// just subclass one you like and change only the elements you want to modify
+struct colorMapGreen: public colorMap {
+  // baseColor allows you to use a base color that just changes in brightness
+  static constexpr cRGB baseColor   = green;
+  static constexpr cRGB defaultColor= dim(baseColor, 100);
+  static constexpr cRGB shift       = nocolor;
+  static constexpr cRGB control     = nocolor;
+  static constexpr cRGB gui         = nocolor;
+  static constexpr cRGB alt         = nocolor;
+  static constexpr cRGB modifier    = dim(baseColor, 130);
+  static constexpr cRGB alpha       = dim(baseColor, 80);
+  static constexpr cRGB number      = dim(baseColor, 100);
+  static constexpr cRGB punctuation = dim(baseColor, 120);
+  static constexpr cRGB function    = dim(baseColor, 150);
+  static constexpr cRGB navigation  = dim(baseColor, 180);
+  static constexpr cRGB system      = dim(baseColor, 50);
+  static constexpr cRGB arrow       = dim(baseColor, 250);
+  static constexpr cRGB keypad      = dim(baseColor, 230);
+  static constexpr cRGB media       = dim(baseColor, 250);
+  static constexpr cRGB mouseWheel  = nocolor;
+  static constexpr cRGB mouseButton = nocolor;
+  static constexpr cRGB mouseWarp   = nocolor;
+  static constexpr cRGB mouseMove   = nocolor;
+  static constexpr cRGB mouse       = dim(baseColor, 220);
+  static constexpr cRGB space       = dim(baseColor, 100);
+  static constexpr cRGB tab         = dim(baseColor, 100);
+  static constexpr cRGB enter       = dim(baseColor, 255);
+  static constexpr cRGB backspace   = dim(baseColor, 100);
+  static constexpr cRGB escape      = dim(baseColor, 100);
+  static constexpr cRGB del         = dim(baseColor, 255);
+  static constexpr cRGB fn          = dim(baseColor, 255);
+  static constexpr cRGB lock        = dim(baseColor, 255);
+  static constexpr cRGB LEDEffectNext=dim(baseColor, 255);
+};
+
+
+
 
 /** macroAction dispatches keymap events that are tied to a macro
     to that macro. It takes two uint8_t parameters.
@@ -235,6 +326,28 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   case MACRO_ANY:
     anyKeyMacro(keyState);
     break;
+
+  // Here are some macros you can use to control the brightness of your FunctionalColor instances.
+  // These names must be in the macros enum closer to the beginning of this file.
+  // Assign M(MACRO_FCUP) and M(MACRO_FCDOWN) to keys you'd like to use for this purpose.
+  // In this example they have been assigned to the semicolon and comma keys on the fn layer.
+  case MACRO_FCUP:
+   funColor1.brightnessUp(keyState);
+   funColor2.brightnessUp(keyState);
+   funColor3.brightnessUp(keyState);
+   funColor4.brightnessUp(keyState);
+   funColor5.brightnessUp(keyState);
+   funColor6.brightnessUp(keyState);
+   break;
+   
+  case MACRO_FCDOWN:
+   funColor1.brightnessDown(keyState);
+   funColor2.brightnessDown(keyState);
+   funColor3.brightnessDown(keyState);
+   funColor4.brightnessDown(keyState);
+   funColor5.brightnessDown(keyState);
+   funColor6.brightnessDown(keyState);
+   break;
   }
   return MACRO_NONE;
 }
@@ -254,157 +367,14 @@ static kaleidoscope::LEDSolidColor solidBlue(0, 70, 130);
 static kaleidoscope::LEDSolidColor solidIndigo(0, 0, 170);
 static kaleidoscope::LEDSolidColor solidViolet(130, 0, 120);
 
-/** toggleLedsOnSuspendResume toggles the LEDs off when the host goes to sleep,
- * and turns them back on when it wakes up.
- */
-// void toggleLedsOnSuspendResume(kaleidoscope::HostPowerManagement::Event event) {
-//   switch (event) {
-//   case kaleidoscope::HostPowerManagement::Suspend:
-//     LEDControl.paused = true;
-//     LEDControl.set_all_leds_to({0, 0, 0});
-//     LEDControl.syncLeds();
-//     break;
-//   case kaleidoscope::HostPowerManagement::Resume:
-//     LEDControl.paused = false;
-//     LEDControl.refreshAll();
-//     break;
-//   case kaleidoscope::HostPowerManagement::Sleep:
-//     break;
-//   }
-// }
 
-/** hostPowerManagementEventHandler dispatches power management events (suspend,
- * resume, and sleep) to other functions that perform action based on these
- * events.
- */
-// void hostPowerManagementEventHandler(kaleidoscope::HostPowerManagement::Event event) {
-//   toggleLedsOnSuspendResume(event);
-// }
 
 /** The 'setup' function is one of the two standard Arduino sketch functions.
   * It's called when your keyboard first powers up. This is where you set up
   * Kaleidoscope and any plugins.
   */
 
-using namespace kaleidoscope::LEDEffect_FunctionalColor;
-
-//*****************************************************************************
-// Color-brightness example
-//*****************************************************************************
-
-// This example additionaly uses 1334 bytes of PROGMEM and 62 of ram
-/* I have no idea what I'm doing and I totally broke this
-
-// Let the user define a palette
-//
-cRGB palette[] = {
-   CRGB(0, 0, 0), // fallback color
-   green,
-   blue,
-   red,
-   yellow
-};
-
-// For convenience
-//
-enum paletteIds {
-   fallbackId,
-   greenId,
-   blueId,
-   redId,
-   yellowId
-};
-
-//Specify the color list, the color you want as the default, and the default brightness of that color (from 0-15)
-FC_CB_START_COLOR_LIST(myCBColorList, greenId, 7)
-
-   FC_CB_COLOR(A, blueId, 15)
-   FC_CB_COLOR(B, redId, 15)
-   
-   // Let some keys share the same palette entry and overlay brightness
-   //
-   FC_CB_SHARE_COLOR(0)
-   FC_CB_SHARE_COLOR(1)
-   FC_CB_SHARE_COLOR(2)
-   FC_CB_SHARE_COLOR(3)
-   FC_CB_SHARE_COLOR(4)
-   FC_CB_SHARE_COLOR(5)
-   FC_CB_SHARE_COLOR(6)
-   FC_CB_SHARE_COLOR(7)
-   FC_CB_SHARE_COLOR(8)
-   FC_CB_COLOR(9, greenId, 15)
-
-   FC_CB_SHARE_COLOR(F1)
-   FC_CB_SHARE_COLOR(F2)
-   FC_CB_SHARE_COLOR(F3)
-   FC_CB_SHARE_COLOR(F4)
-   FC_CB_SHARE_COLOR(F5)
-   FC_CB_SHARE_COLOR(F6)
-   FC_CB_SHARE_COLOR(F7)
-   FC_CB_SHARE_COLOR(F8)
-   FC_CB_SHARE_COLOR(F9)
-   FC_CB_SHARE_COLOR(F10)
-   FC_CB_SHARE_COLOR(F11)
-   FC_CB_COLOR(F12, redId, 14)
-   
-   
-FC_CB_END_COLOR_LIST
-
-
-kaleidoscope::LEDFunctionalColorCB fcCB(&FC_CB_COLOR_LIST(myCBColorList),
-                                      FC_CB_PALETTE(palette),
-                                      FUNCTION;
-*
-*
-*/
-  // Configure the colors used for FunctionalColors groups
-
-  struct groupColors {
-    static constexpr cRGB alpha = dim(warmwhite, 100);
-    static constexpr cRGB number = dim(white, 200);
-    static constexpr cRGB punctuation = dim(orange, 190);
-    static constexpr cRGB function = dim(red, 190);
-    static constexpr cRGB navigation = dim(yellow, 180); 
-    static constexpr cRGB arrow = white;
-    static constexpr cRGB keypad = red;
-    static constexpr cRGB media = dim(magenta, 200);
-    static constexpr cRGB modifier = skyblue;
-    static constexpr cRGB mouseMove = pink;
-    static constexpr cRGB mouseWheel = purple;
-    static constexpr cRGB mouseButton = cyan;
-    static constexpr cRGB mouseWarp = green;
-    static constexpr cRGB fn = white;
-  };
-
-
-//specify your colorlist, the default color, and the default brightness (255 for full brightness)
-FC_START_COLOR_LIST(myRGBColorList, white, 127)   
-   // Let multiple keys be grouped by color to make it easier to change them all at once
-   FC_GROUP(Key_LeftShift)
-   FC_COLOR(Key_RightShift, darkseagreen)
-   
-   FC_GROUP(Key_LeftAlt)
-   FC_COLOR(Key_RightAlt, forestgreen)
-   
-   FC_GROUP(Key_LeftGui)
-   FC_COLOR(Key_RightGui, pink)
-   
-   FC_COLOR(Key_Escape, dim(red, 150))
-   FC_COLOR(Key_Enter, white)
-   FC_COLOR(Key_Space, dim(white, 150))
-   FC_COLOR(Key_Backspace, dim(red, 150))
-   FC_COLOR(Key_Delete, red)
-   FC_COLOR(Key_LEDEffectNext, blue)
-   FC_COLOR(Key_PrintScreen, orange)
-   FC_COLOR(Key_ScrollLock, orange)
-   FC_COLOR(Key_Pause, orange)
-   
-FC_END_COLOR_LIST
-
-kaleidoscope::LEDFunctionalColorRGB fcRGB(FC_COLOR_LIST(myRGBColorList), FUNCTION);
-
 void setup() {
-
   // First, call Kaleidoscope's internal setup function
   Kaleidoscope.setup();
 
@@ -412,20 +382,81 @@ void setup() {
   // The order can be important. For example, LED effects are
   // added in the order they're listed here.
   Kaleidoscope.use(
-    
+    // The boot greeting effect pulses the LED button for 10 seconds after the keyboard is first connected
+    &BootGreetingEffect,
+
+    // The hardware test mode, which can be invoked by tapping Prog, LED and the left Fn button at the same time.
+    &TestMode,
+
     // LEDControl provides support for other LED modes
     &LEDControl,
 
-    //&fcCB,
-    &fcRGB,
+    // We start with the LED effect that turns off all the LEDs.
+    &LEDOff,
 
-    &NumPad,&Macros,&MouseKeys
+    // The rainbow effect changes the color of all of the keyboard's keys at the same time
+    // running through all the colors of the rainbow.
+    &funColor1,&funColor2,&funColor3,&funColor4,&funColor5,&funColor6,
+    &LEDRainbowEffect,
+
+    // The rainbow wave effect lights up your keyboard with all the colors of a rainbow
+    // and slowly moves the rainbow across your keyboard
+    &LEDRainbowWaveEffect,
+
+    // The chase effect follows the adventure of a blue pixel which chases a red pixel across
+    // your keyboard. Spoiler: the blue pixel never catches the red pixel
+    &LEDChaseEffect,
+
+    // These static effects turn your keyboard's LEDs a variety of colors
+    &solidRed, &solidOrange, &solidYellow, &solidGreen, &solidBlue, &solidIndigo, &solidViolet,
+
+    // The breathe effect slowly pulses all of the LEDs on your keyboard
+    &LEDBreatheEffect,
+
+    // The AlphaSquare effect prints each character you type, using your
+    // keyboard's LEDs as a display
+    &AlphaSquareEffect,
+
+    // The stalker effect lights up the keys you've pressed recently
+    &StalkerEffect,
+
+    // The numpad plugin is responsible for lighting up the 'numpad' mode
+    // with a custom LED effect
+    &NumPad,
+
+    // The macros plugin adds support for macros
+    &Macros,
+
+    // The MouseKeys plugin lets you add keys to your keymap which move the mouse.
+    &MouseKeys
   );
 
- fcRGB.setColorLookup(kaleidoscope::LEDFunctionalColorRGB::template groupColorLookup<groupColors>);
-
+  // While we hope to improve this in the future, the NumPad plugin
+  // needs to be explicitly told which keymap layer is your numpad layer
   NumPad.numPadLayer = NUMPAD;
 
+  // We configure the AlphaSquare effect to use RED letters
+  AlphaSquare.color = { 255, 0, 0 };
+
+  // We set the brightness of the rainbow effects to 150 (on a scale of 0-255)
+  // This draws more than 500mA, but looks much nicer than a dimmer effect
+  LEDRainbowEffect.brightness(150);
+  LEDRainbowWaveEffect.brightness(150);
+
+  // The LED Stalker mode has a few effects. The one we like is
+  // called 'BlazingTrail'. For details on other options,
+  // see https://github.com/keyboardio/Kaleidoscope-LED-Stalker
+  StalkerEffect.variant = STALKER(BlazingTrail);
+
+  // We want to make sure that the firmware starts with LED effects off
+  // This avoids over-taxing devices that don't have a lot of power to share
+  // with USB devices
+  LEDOff.activate();
+
+  //Apply a custom colorMap to one of your FunctionalColor instances.
+  // Replace "myTheme" with the name of your colorMap.
+  funColor5.setColorLookup(&groupColorLookup<myTheme>);
+  funColor6.setColorLookup(&groupColorLookup<colorMapGreen>);
 }
 
 /** loop is the second of the standard Arduino sketch functions.

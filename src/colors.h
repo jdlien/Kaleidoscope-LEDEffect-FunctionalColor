@@ -2,10 +2,12 @@
 
 namespace kaleidoscope {
 namespace LEDFunctionalColor {
-   
+
+// A special color that serves, in some cases, as an "index color" and basically means, "skip this, return the next in line".
+// Since colors under 18 or so are equivalent to LED off, this would otherwise be equivalent to black anyways
+constexpr cRGB nocolor = CRGB(1, 1, 2);
+
 // Here's a big list of color names based on the CSS color names.
-
-
 constexpr cRGB warmwhite = CRGB(255, 250, 200);
 constexpr cRGB aliceblue = CRGB(240, 248, 255);
 constexpr cRGB antiquewhite = CRGB(250, 235, 215);
@@ -179,6 +181,10 @@ inline constexpr cRGB dim(const cRGB &color, byte brightness, byte range=255) {
   return CRGB(uint8_t(dimLimit(brightness, color.r, range)), 
               uint8_t(dimLimit(brightness, color.g, range)), 
               uint8_t(dimLimit(brightness, color.b, range)));
+}
+
+inline constexpr bool isColorMatch(cRGB color1, cRGB color2) {
+  return (color1.r == color2.r && color1.g == color2.g && color1.b == color2.b)?true:false;
 }
 
 } // namespace LEDFunctionalColor

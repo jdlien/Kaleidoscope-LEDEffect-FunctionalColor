@@ -1,198 +1,120 @@
 #include "Kaleidoscope-LEDEffect-FunctionalColor.h"
 #include "assert.h"
 
-// Is it a bad idea to do this?
 using namespace kaleidoscope::LEDFunctionalColor;
 namespace kaleidoscope {
 
-LEDFunctionalColorCB::LEDFunctionalColorCB(LEDFunctionalColorCB::CBLookup cbLookup, 
-                     cRGB *palette, 
-                     uint8_t nPaletteEntries,
-                     uint8_t fLayer)
-  :  cbLookup_(cbLookup),
-     palette_(palette),
-     nPaletteEntries_(nPaletteEntries),
-     functionLayer(fLayer)
+FCPlugin::FCPlugin(FCPlugin::RGBLookupException rgbLookupExc, byte brightness, int themeID)
+   : exceptionsLookup(rgbLookupExc)    
 {
-   assert(palette_);
-   assert(cbLookup_);
+  assert(exceptionsLookup);
+  themeSelect(themeID);
+  brightnessSetting = brightness;
 }
 
-LEDFunctionalColorCB::LEDFunctionalColorCB(void){}
-
-
-
-void LEDFunctionalColorCB::dimPalette(byte brightness)
+FCPlugin::FCPlugin(int themeID, byte brightness, FCPlugin::RGBLookupException rgbLookupExc)
+   : exceptionsLookup(rgbLookupExc)     
 {
-   for(uint8_t i = 0; i < nPaletteEntries_; ++i) {
-      palette_[i] = dim(palette_[i], brightness);
-   }
+   assert(exceptionsLookup);
+   themeSelect(themeID);
+   brightnessSetting = brightness;
 }
 
-void LEDFunctionalColorCB::setAllPalette(const cRGB &color, byte brightness)
-{
-   for(uint8_t i = 0; i < nPaletteEntries_; ++i) {
-      palette_[i] = dim(color, brightness);
-   }
-}
-  
-void LEDFunctionalColorCB::setPaletteEntryColor(byte paletteId, const cRGB &color, byte brightness)
-{
-   assert(paletteId < nPaletteEntries_);
-   palette_[paletteId] = dim(color, brightness);
+// Another constructor that allows the user to specify which theme they want to start with.
+FCPlugin::FCPlugin(int themeID, byte brightness){
+  // Switch block to specify themeid
+  themeSelect(themeID);
+  brightnessSetting = brightness;
 }
 
-void LEDFunctionalColorCB::setKeyColor(const Key &k, byte paletteId, byte brightness)
-{
-   byte &colorBrightness = (*cbLookup_)(k);
-   
-   colorBrightness = (paletteId << 4) | brightness;
-}
+void FCPlugin::themeSelect(int themeID) {
+    // Switch block to specify themeid
+  switch(themeID) {
+      case 0:
+        this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMap>);
+        break;
 
+      case 1:
+        this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMapMono>);
+        break;
 
+      case 2:
+        this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMapDuo>);
+        break;
 
-/*
- * setKeyLed accepts a Key position and sets it to the appropriate color
- * from the user's definitions a using a series of if/else statements.
- */
-void LEDFunctionalColorCB::setKeyLed(uint8_t r, uint8_t c) { 
-  Key k = Layer.lookupOnActiveLayer(r, c);
-  
-  byte colorBrightness = (*cbLookup_)(k);
-  byte paletteId = colorBrightness >> 4;
-  byte brightness = colorBrightness & 0xF; // keys have individual brightness
-  
-  assert(paletteId < nPaletteEntries_);
-  const auto &color = palette_[paletteId];
-  
-  ::LEDControl.setCrgbAt(r, c, dim(color, brightness));
-}// end setKeyLed
+      case 3:
+        this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMapColorful>);
+        break;
 
-
-
-void LEDFunctionalColorCB::onActivate(void) {
-	// Loop through every row and column and set each LED based on its key's function
-	for (uint8_t r = 0; r < ROWS; r++) {
-	  for (uint8_t c = 0; c < COLS; c++) {
-	    Key k = Layer.lookupOnActiveLayer(r, c);
-	    setKeyLed(r, c);
-	  }
-	}
-}
-
-
-void LEDFunctionalColorCB::update(void) {
-  // first check which layer is active. Here we are assuming only fn or normal, but numlock is a thing too...
-  uint8_t current_layer = 0;
-  if ((::Layer_::isOn(functionLayer))) { //2 is FUNCTION in the default mapping
-    current_layer = 1;
+      default:
+        this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMapDefault>);
   }
-
-  // Only set the colors again if the active layer changed
-  if (current_layer != last_layer) {
-    // Loop through every row and column and set each LED based on its key's function
-    for (uint8_t r = 0; r < ROWS; r++) {
-      for (uint8_t c = 0; c < COLS; c++) {
-        Key k = Layer.lookupOnActiveLayer(r, c);
-        setKeyLed(r, c);
-      }
-    }
-
-    // set the fn keys (this assumes they haven't moved from the default location).
-    // Turn off when the function layer is active
-    if (current_layer == 0) {
-      // left fn
-      ::LEDControl.setCrgbAt(3, 6, palette_[0]); 
-      // right fn
-      ::LEDControl.setCrgbAt(3, 9, palette_[0]);
-    }
-    else {
-      // left fn
-      ::LEDControl.setCrgbAt(3, 6, CRGB(0, 0, 0)); 
-      // right fn
-      ::LEDControl.setCrgbAt(3, 9, CRGB(0, 0, 0));
-    }
-
-  }
-
-  last_layer = current_layer;
-
-}//end update()
-
-
-FCRGBPlugin::FCRGBPlugin(FCRGBPlugin::RGBLookup rgbLookup, byte brightness, uint8_t fLayer)
-   : rgbLookup_(rgbLookup), brightnessSetting(brightness), functionLayer(fLayer)     
-{
-   assert(rgbLookup_);
 }
 
-FCRGBPlugin::FCRGBPlugin(void){}
 
-void FCRGBPlugin::brightness(byte b) {
+void FCPlugin::brightness(byte b) {
   brightnessSetting = b;
 }
 
-/*
-void FCRGBPlugin::setKeyColor(const Key &k, const cRGB &color)
-{
-   (*rgbLookup_)(k) = color;
-}
-void setColorLookup(RGBLookup rgbLookup) {
-   rgbLookup_ = rgbLookup;
-}
-*/
-
-
-/*
- * setKeyLed accepts a Key position and sets it to the appropriate color
- * from the user's definitions a using a series of if/else statements.
- */
-void FCRGBPlugin::setKeyLed(uint8_t r, uint8_t c) { 
-  Key k = Layer.lookupOnActiveLayer(r, c);
-  ::LEDControl.setCrgbAt(r, c, dim((*rgbLookup_)(k), brightnessSetting));
-}// end setKeyLed
-
-void FCRGBPlugin::onActivate(void) {
-	// Loop through every row and column and set each LED based on its key's function
-	for (uint8_t r = 0; r < ROWS; r++) {
-	  for (uint8_t c = 0; c < COLS; c++) {
-	    Key k = Layer.lookupOnActiveLayer(r, c);
-	    setKeyLed(r, c);
-	  }
-	}
+byte FCPlugin::brightness() {
+  return brightnessSetting;
 }
 
-void FCRGBPlugin::update(void) {
-  // first check which layer is active. Here we are assuming only fn or normal, but numlock is a thing too...
-  uint8_t current_layer = 0;
-  if ((::Layer_::isOn(functionLayer))) { //2 is FUNCTION in the default mapping
-    current_layer = 1;
+//These are special macros that allow the brightness of an FC instance to be adjusted
+void FCPlugin::brightnessUp(uint8_t keyState) {
+  if (keyToggledOn(keyState)) {
+    brightnessSetting += 16;
+    this->refresh();
   }
+}
+
+void FCPlugin::brightnessDown(uint8_t keyState) {
+  if (keyToggledOn(keyState)) {
+    brightnessSetting -= 16;
+    this->refresh();
+  }
+}
+
+
+//setKeyLed accepts a Key position and sets it to the appropriate color from a lookup function
+void FCPlugin::setKeyLed(uint8_t r, uint8_t c) { 
+  Key k = Layer.lookupOnActiveLayer(r, c);
+  bool skip = false, none = false;
+  auto color = exceptionsLookup(k, skip, none);
+  // if there was no match, we continue to mainColorLookup
+  if (none) { color = mainColorLookup(k, skip); }
+  if (skip) return;
+  ::LEDControl.setCrgbAt(r, c, dim(color, brightnessSetting));
+}// end setKeyLed()
+
+
+//Forces an update of the LEDs
+void FCPlugin::refresh(void) {
+  // Loop through every row and column and set each LED based on its key's function
+  for (uint8_t r = 0; r < ROWS; r++) {
+    for (uint8_t c = 0; c < COLS; c++) {
+      Key k = Layer.lookupOnActiveLayer(r, c);
+      setKeyLed(r, c);
+    }
+  }
+}
+
+
+void FCPlugin::onActivate(void) {
+  this->refresh();
+}
+
+
+//When the active layer is changed, update the colors.
+void FCPlugin::update(void) {
+  uint8_t current_layerState = ::Layer_::getLayerState();
 
   // Only set the colors again if the active layer changed
-  if (current_layer != last_layer) {
-    // Loop through every row and column and set each LED based on its key's function
-    for (uint8_t r = 0; r < ROWS; r++) {
-      for (uint8_t c = 0; c < COLS; c++) {
-        Key k = Layer.lookupOnActiveLayer(r, c);
-        setKeyLed(r, c);
-      }
-    }
+  if (current_layerState != last_layerState) { this->refresh(); }
 
-    // Turn off fn keys when pressed (this assumes they haven't moved from the default location).
-    // Turn off when the function layer is active
-    if (current_layer != 0) {
-      // left fn
-      ::LEDControl.setCrgbAt(3, 6, black); 
-      // right fn
-      ::LEDControl.setCrgbAt(3, 9, black);
-    }
+  last_layerState = current_layerState;
 
-  }
-
-  last_layer = current_layer;
-
-}//end update()
+}// end update()
 
 
 

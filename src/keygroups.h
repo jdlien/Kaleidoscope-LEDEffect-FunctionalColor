@@ -67,6 +67,16 @@ inline constexpr bool isKeypad(const Key& k) {
   	)?true:false;
 }
 
+// System keys like Pause/Break, Print Screen, and scroll lock
+inline constexpr bool isSystem(const Key& k) {
+  return ( k.flags == KEY_FLAGS && (
+  	k.keyCode == (Key_PrintScreen).keyCode ||
+  	k.keyCode == (Key_ScrollLock).keyCode ||
+  	k.keyCode == (Key_Pause).keyCode
+  	)
+  	)?true:false;
+}
+
 //Media keys used on some keyboards with extra buttons, as well as all the consumer control keys
 //includes, execute, help, menu, select, stop, again, undo, cut, copy, paste, find, mute, volup, voldn
 // #define HID_CONSUMER_PLAY	0xB0	// HID type OOC
@@ -108,6 +118,7 @@ inline constexpr bool isLang(const Key& k) {
 		(k.keyCode >= (Key_Lang1).keyCode) && (k.keyCode <= (Key_Lang9).keyCode) )?true:false;
 }
 
+//Here I will have some groups that have subgroups...
 //Control, shift, alt, gui (windows/command), and application (menu) key
 inline constexpr bool isModifier(const Key& k) {
 	return ( k.flags == KEY_FLAGS &&
@@ -115,8 +126,28 @@ inline constexpr bool isModifier(const Key& k) {
 		(k.keyCode >= (Key_LeftControl).keyCode) && (k.keyCode <= (Key_RightGui).keyCode)) )?true:false;
 }
 
+//Keys that are subgroups of Modifier keys
+inline constexpr bool isShift(const Key& k) {
+	return ( k.flags == KEY_FLAGS &&
+		(k.keyCode == (Key_LeftShift).keyCode || (k.keyCode == (Key_RightShift).keyCode) ) )?true:false;
+}
 
-//Here I will have some groups that overlap...
+inline constexpr bool isControl(const Key& k) {
+	return ( k.flags == KEY_FLAGS &&
+		(k.keyCode == (Key_LeftControl).keyCode || (k.keyCode == (Key_RightControl).keyCode) ) )?true:false;
+}
+
+inline constexpr bool isGui(const Key& k) {
+	return ( k.flags == KEY_FLAGS &&
+		(k.keyCode == (Key_LeftGui).keyCode || (k.keyCode == (Key_RightGui).keyCode) ) )?true:false;
+}
+
+inline constexpr bool isAlt(const Key& k) {
+	return ( k.flags == KEY_FLAGS &&
+		(k.keyCode == (Key_LeftAlt).keyCode || (k.keyCode == (Key_RightAlt).keyCode) ) )?true:false;
+}
+
+
 // All mouse keys. This technique seems to get some false positives (prog & led keys)
 inline constexpr bool isMouseMove(const Key& k) {
 	return ( ((Key_mouseUpL).flags == k.flags && (Key_mouseUpL).keyCode == k.keyCode) ||
@@ -155,3 +186,6 @@ inline constexpr bool isMouseWarp(const Key& k) {
 		)?true:false;
 }
 
+inline constexpr bool isMouse(const Key& k) {
+	return (isMouseMove(k) || isMouseWheel(k) || isMouseButton(k) || isMouseWarp(k));
+}

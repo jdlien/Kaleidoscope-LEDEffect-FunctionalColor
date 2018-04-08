@@ -10,291 +10,328 @@ using namespace kaleidoscope::LEDFunctionalColor;
 
 namespace kaleidoscope {
    
-// This is the color-brightness-version of the plugin
-//
-class LEDFunctionalColorCB : public LEDMode {
- public:
-  
-  // CBLookup is a pointer to a function that accepts a reference to a Key and returns a reference to a byte
-  // (It only took me about four hours of reading to figure that out and what it means) :D
-  typedef byte & (*CBLookup)(const Key &);
-  
-  LEDFunctionalColorCB(
-                     CBLookup cbLookup, 
-                     cRGB *palette, 
-                     uint8_t nPaletteEntries,
-                     uint8_t fLayer = 2);
-  
-  LEDFunctionalColorCB(void);
-  
-  uint8_t functionLayer = 2;
-
-  // Apply the second palette color to numbers by default
-  byte numberCB = (1 << 4) | 12;
-  
-  // Note: Only use the methods below if you need runtime configuration
-  //       of key paletteId/brightness and palette colors. Else
-  //       assign appropriate initial values when defining the palette 
-  //       in the sketch. This allows Arduino to omit the setter methods
-  //       from the firmware binary and thus saves some flash memory.
-
-  // Dims a palette color
-  //
-  void dimPalette(byte brightness);
-
-  // Sets color and overlay brightness for all palette entries
-  //
-  void setAllPalette(const cRGB &color, byte brightness = 15);
-  
-  // Set color and overlay brightness for an individual palette entry
-  //
-  void setPaletteEntryColor(byte paletteId, const cRGB &color, byte brightness = 15);
-
-  // Set the palette entry id and the overlay brightness for an individual 
-  // key (or key group)
-  //
-  void setKeyColor(const Key &k, byte paletteId, byte brightness = 15);
-
-
-
-
-
-  private:
-  uint8_t last_layer = 0;
-
-  cRGB *palette_ = nullptr;
-  uint8_t nPaletteEntries_ = 0;
-  CBLookup cbLookup_ = nullptr;
-
-  protected:
-  void onActivate(void) final;
-  void update(void) final;
-
-  void setKeyLed(uint8_t r, uint8_t c);
-
-};
-
-
-
-// Macro definitions
-//
-
-// This is to let you define multiple color lists? I'm not sure how you'd use this...
-#define FC_CB_COLOR_LIST(ID) \
-   colorBrightness_##ID
-
-#define FC_CB_START_COLOR_LIST(NAME, DEFAULT_PALETTE_ID, DEFAULT_BRIGHTNESS) \
-   byte &FC_CB_COLOR_LIST(NAME)(const Key &k) { \
-      constexpr byte defaultPaletteId = DEFAULT_PALETTE_ID; \
-      constexpr byte defaultBrightness = DEFAULT_BRIGHTNESS; \
-      switch(k.raw) {
-
-
-#define FC_CB_END_COLOR_LIST \
-   } /*end switch*/ \
-    /*Handle colors for group members without specific colors here */ \
-    if(isNumber(k)) {static byte cb =  (1 << 4) | 12;/*numberCB*/ return cb;} \
-   static byte default_cb = (defaultPaletteId << 4) | defaultBrightness; \
-   return default_cb; \
-}
-//    case (Key_##KEY).raw:  
-
-#define FC_CB_COLOR(KEY, PALETTE_ID, BRIGHTNESS) \
-    case (Key_##KEY).flags << 8 | (Key_##KEY).keyCode: \
-       { \
-         static byte cb = (PALETTE_ID << 4) | BRIGHTNESS; \
-         return cb; \
-       } \
-       break;
-
-#define FC_CB_SHARE_COLOR(KEY) \
-   case (Key_##KEY).flags << 8 | (Key_##KEY).keyCode:
-      
-#define FC_CB_PALETTE_SIZE(PALETTE) \
-   sizeof(PALETTE)/sizeof(cRGB)
-   
-#define FC_CB_PALETTE(palette) palette, FC_CB_PALETTE_SIZE(palette)
-   
-/*
-//After preprocessing, if passed key "a" this should produce a function that looks like...
-//FC_CB_START_COLOR_LIST(myList, 1)
-colorBrightness_myList(const Key &k) {
-   constexpr byte defaultPaletteId = 1;
-   switch(k.raw) {
-//FC_CB_COLOR
-// Just get the raw code from the key name somehow
-   case (Key_A).flags << 8 | (Key_A).keyCode:
-     {
-       static byte cb = (1 << 4) | 0xF
-       return cb;
-     }
-     break;
-
-//FC_CB_SHARE_COLOR(Key_B)
-   case (Key_B).flags << 8 | (Key_B).keyCode:
-// Any FC_CB_COLOR will now set the color for anything else that falls through, as there is no break on the SHARE_COLORs
-   case (Key_C).flags << 8 | (Key_C).keyCode:
-     {
-       static byte cb = (1 << 4) | 0xF
-       return cb;
-     }
-     break;   
-  }//end switch
-  static byte default_cb = (defaultPaletteId << 4) | 0xF; \
-  return default_cb;
-}//end colorBrightness_myList()
-*/
-
-
-
-     
-// This is the color-brightness-version of the plugin
-//
-
 namespace LEDFunctionalColor {
 
-class FCRGBPlugin : public LEDMode {
+class FCPlugin : public LEDMode {
  public:
      
-  typedef cRGB (*RGBLookup)(const Key &);
+  typedef cRGB (*RGBLookup)(const Key &, bool &skip);
+  //skip leaves the key "transparent" if set and doesn't change the color for this function.
+  //none continues to the next part of the color return function.
+  typedef cRGB (*RGBLookupException)(const Key &, bool &skip, bool &none);
 
   // Allow the user/programmer to create or specify their own color lookup function
   void setColorLookup(RGBLookup rgbLookup) {
-      rgbLookup_ = rgbLookup;
+      mainColorLookup = rgbLookup;
   }
   
-  FCRGBPlugin(RGBLookup rgbLookup, byte brightness = 210, uint8_t fLayer = 2);
-  
-  // I'm not sure why this is required
-  FCRGBPlugin(void);
+  FCPlugin(RGBLookupException rgbLookupExc, byte brightness = 210, int themeID=99);
+  FCPlugin(int themeID, byte brightness, RGBLookupException rgbLookupExc);
+  // This is supposed to allow you to specify your own theme via an id.
+  FCPlugin(int themeID = 99, byte brightness = 210);
 
+  void refresh(void);
+
+  // set brightness between 0-255
   void brightness(byte b);
-  
-  uint8_t functionLayer = 2;
+
+  //return current brightness
+  byte brightness();
+
+  void themeSelect(int themeID);
+
+  void brightnessUp(uint8_t keyState);
+  void brightnessDown(uint8_t keyState);
 
   private:
-  uint8_t last_layer = 0;
+  uint32_t last_layerState = 0;
 
-  RGBLookup rgbLookup_ = nullptr;
+  RGBLookup mainColorLookup = nullptr;
+
+  static cRGB keyExceptionsLookup(const Key &k, bool &skip, bool &none) {
+    //if (k.keyCode == (Key_A).keyCode && k.flags == (Key_A).flags) return cyan;
+    none = true;
+    //this shouldn't do anything, but I have to return something... some default, I guess.
+    return nocolor;
+  }
+
+  RGBLookupException exceptionsLookup = keyExceptionsLookup;
+
 
   protected:
-  byte brightnessSetting = 255;
+  // Set to 220 to hopefully avoid overloading people's USB ports.
+  byte brightnessSetting = 200;
   void onActivate(void) final;
   void update(void) final;
   void setKeyLed(uint8_t r, uint8_t c);
 
 
-};//end class FCRGBPlugin
+};//end class FCPlugin
 
-/*
-  GroupColorLookup essentially accepts an struct full of color names.
-  The way this currently works is that there are a bunch of groups and keys that are set according to the values of the struct.
-  This means that every instance of the struct has to have every single one of a huge number of elements in the struct.
-  This also makes it impossible to set arbitrary keys the way you can with the macro.
-
-  What if I wanted an A that is pink and everything else blue? I can't do it this way, apparently. That sucks.
-
-  My initial thought for this was to iterate through all the color groups but also have members for the individual keys that aren't
-  covered by colorgroups: space, enter, tab, esc, backspace, led, num, whatever "any" is...
-  (I suppose I should do a reasonable job of supporting the default layout well)
-
-  Would there be some way of allowing arbitrary key assignments?
-  Could I have another function for FCRGBPlugin that allows you to specify individual keys
-  without having them built into the function by default?
-
-  okay, how about this?
-
-  Could I iterate through the members of a structure and then look for keys that match the struct member names?
-  Then I could just have a loop that goes through and then colors the keys based on the struct names.
-
-  I have a feeling that this might not be a very efficient way to do it.
-*/
 
 // We use groupColorLookup to retrieve the colors for the color groups
-template<typename ColorMap> static cRGB groupColorLookup(const Key &k) {
-  if(isNumber(k)) {return ColorMap::number;}
-  if(isAlpha(k)) {return ColorMap::alpha;}
-/*
-   if (isAlpha(k)) return groupColors::alpha; \
-   if (isNumber(k)) return groupColors::number; \
-   if (isPunctuation(k)) return groupColors::punctuation; \
-   if (isFunction(k)) return groupColors::function; \
-   if (isNavigation(k)) return groupColors::navigation; \
-   if (isArrow(k)) return groupColors::arrow; \
-   if (isKeypad(k)) return groupColors::keypad; \
-   if (isMedia(k)) return groupColors::media; \
-   if (isModifier(k)) return groupColors::modifier; \
-   if (isMouseWheel(k)) return groupColors::mouseWheel; \
-   if (isMouseButton(k)) return groupColors::mouseButton; \
-   if (isMouseWarp(k)) return groupColors::mouseWarp; \
-   if (isMouseMove(k)) return groupColors::mouseMove; \
-*/  
-  return CRGB(127,0,0);
+template<typename ColorMap> static cRGB groupColorLookup(const Key &k, bool &skip) {
+  // If keys are a part of a larger group, they have precedence,
+  // unless they are set to skip
+  
+  if (isControl(k)) if (!isColorMatch(ColorMap::control, nocolor)) return ColorMap::control;
+  if (isGui(k)) if (!isColorMatch(ColorMap::gui, nocolor)) return ColorMap::gui;
+  if (isShift(k)) if (!isColorMatch(ColorMap::shift, nocolor)) return ColorMap::shift;
+  if (isAlt(k)) if (!isColorMatch(ColorMap::alt, nocolor)) return ColorMap::alt;
+
+  if (isMouseWheel(k)) if (!isColorMatch(ColorMap::mouseWheel, nocolor)) return ColorMap::mouseWheel;
+  if (isMouseButton(k)) if (!isColorMatch(ColorMap::mouseButton, nocolor)) return ColorMap::mouseButton;
+  if (isMouseWarp(k)) if (!isColorMatch(ColorMap::mouseWarp, nocolor)) return ColorMap::mouseWarp;
+  if (isMouseMove(k)) if (!isColorMatch(ColorMap::mouseMove, nocolor)) return ColorMap::mouseMove;
+  if ((Key_Escape).flags == k.flags && (Key_Escape).keyCode == k.keyCode)
+    if (!isColorMatch(ColorMap::escape, nocolor)) return ColorMap::escape;
+  if ((Key_Delete).flags == k.flags && (Key_Delete).keyCode == k.keyCode)
+    if (!isColorMatch(ColorMap::del, nocolor)) return ColorMap::del;
+
+
+  if (isAlpha(k)) return ColorMap::alpha;
+  if (isNumber(k)) return ColorMap::number;
+  if (isPunctuation(k)) return ColorMap::punctuation; 
+  if (isFunction(k)) return ColorMap::function; 
+  if (isNavigation(k)) return ColorMap::navigation; 
+  if (isSystem(k)) return ColorMap::system;
+  if (isArrow(k)) return ColorMap::arrow; 
+  if (isKeypad(k)) return ColorMap::keypad; 
+  if (isMedia(k)) return ColorMap::media; 
+  if (isModifier(k)) return ColorMap::modifier; 
+  if (isMouse(k)) return ColorMap::mouse; 
+
+  // Individual keys that are important and unique enough to justify having their own members here.
+  if ((Key_Space).flags == k.flags && (Key_Space).keyCode == k.keyCode) return ColorMap::space;
+  if ((Key_Enter).flags == k.flags && (Key_Enter).keyCode == k.keyCode) return ColorMap::enter;
+  if ((Key_Tab).flags == k.flags && (Key_Tab).keyCode == k.keyCode) return ColorMap::tab;
+  if ((Key_Backspace).flags == k.flags && (Key_Backspace).keyCode == k.keyCode) return ColorMap::backspace;
+
+  if ((Key_LEDEffectNext).flags == k.flags && (Key_LEDEffectNext).keyCode == k.keyCode) return ColorMap::LEDEffectNext;
+
+  // For these ones, I need to know what their layers are... they might change from the default. This should work for layers 1, 2 or 3
+  if ( (ShiftToLayer(2)).flags == k.flags && ( (ShiftToLayer(1)).keyCode == k.keyCode || (ShiftToLayer(2)).keyCode == k.keyCode || (ShiftToLayer(3)).keyCode == k.keyCode) ) return ColorMap::fn;
+  
+  // Should work for all LockLayer keys
+  if ( (LockLayer(1)).flags == k.flags && ( (LockLayer(1)).keyCode == k.keyCode || (LockLayer(1)).keyCode == k.keyCode) ) return ColorMap::lock;
+
+
+  return ColorMap::defaultColor;
+
 }
-
-//This sets colors on a per-key basis from the array of structs for key colors
-template<typename ColorMap> static cRGB keyColorLookup(const Key &k) {
-  //In this case ColorMap should be an array, right?
-  for(int i = 0; i < sizeof(ColorMap)/sizeof(ColorMap[0]); i++ ) {
-    //if the key member matches k, return color
-    if (k == ColorMap::k) return ColorMap::color;
-  }
-
-}
-
-//Is a typedef any value here?
-struct keyColor {
-  Key k;
-  cRGB color;
-};
-
-keyColor constexpr sampleKeyMap[] = {
-  {Key_A,red},
-  {Key_B,blue},
-  {Key_C,green}
-};
 
 
 // The first of many potential included colorMaps
-struct sampleColorMap {
-  static constexpr cRGB alpha = dim(white, 170);
-  static constexpr cRGB number = dim(blue, 190);
+struct colorMap {
+  static constexpr cRGB defaultColor = black;
+  static constexpr cRGB shift = nocolor;
+  static constexpr cRGB control = nocolor;
+  //Command keys (macOS) or Windows Logo keys
+  static constexpr cRGB gui = nocolor;//dim(pink, 190);
+  static constexpr cRGB alt = nocolor;
+  // Includes all the above modifiers
+  static constexpr cRGB modifier = purple;
+
+  static constexpr cRGB alpha = dim(warmwhite, 110);
+  static constexpr cRGB number = dim(white, 190);
+  static constexpr cRGB punctuation = dim(orange, 190);
+  static constexpr cRGB function = dim(red, 190);
+  static constexpr cRGB navigation = dim(yellow, 190);
+  static constexpr cRGB system = dim(orangered, 255);
+  static constexpr cRGB arrow = dim(white, 200);
+  static constexpr cRGB keypad = dim(green, 190);
+  static constexpr cRGB media = dim(magenta, 200);
+
+  static constexpr cRGB mouseWheel = nocolor;
+  static constexpr cRGB mouseButton = nocolor;
+  static constexpr cRGB mouseWarp = nocolor;
+  static constexpr cRGB mouseMove = nocolor;
+  // Includes all above mouse functions
+  static constexpr cRGB mouse = dim(cyan, 190);
+
+  // Important single keys
+  static constexpr cRGB space = dim(white, 140);
+  static constexpr cRGB tab = dim(white, 140);
+  static constexpr cRGB enter = dim(white, 250);
+  static constexpr cRGB backspace = dim(red, 140);
+  static constexpr cRGB escape = dim(red, 140);
+  static constexpr cRGB del = dim(red, 255);
+  static constexpr cRGB fn = dim(white, 250);
+  //Numlock or any use of lockLayer
+  static constexpr cRGB lock = dim(purple, 190);
+  static constexpr cRGB LEDEffectNext = dim(blue, 255);
+  // Where's the any key?
+
+};
+
+struct colorMapDefault : public colorMap {
+  static constexpr cRGB shift = dim(darkseagreen, 190);
+  static constexpr cRGB control = dim(lightskyblue, 190);
+  //Command keys (macOS) or Windows Logo keys
+  static constexpr cRGB gui = dim(pink, 190);
+  static constexpr cRGB alt = dim(forestgreen, 190);
+
+  static constexpr cRGB alpha = dim(warmwhite, 110);
+  static constexpr cRGB number = dim(white, 190);
+  static constexpr cRGB punctuation = dim(orange, 190);
+  static constexpr cRGB function = dim(red, 190);
+  static constexpr cRGB navigation = dim(yellow, 190);
+  static constexpr cRGB system = dim(orangered, 255);
+  static constexpr cRGB arrow = dim(white, 200);
+  static constexpr cRGB keypad = dim(green, 190);
+  static constexpr cRGB mouseWheel = dim(cyan, 190);
+  static constexpr cRGB mouseButton = dim(cyan, 240);
+  static constexpr cRGB mouseWarp = dim(turquoise, 110);
+  static constexpr cRGB mouseMove = dim(turquoise, 250);
+
+  static constexpr cRGB media = dim(magenta, 200);
+
+  static constexpr cRGB space = dim(white, 140);
+  static constexpr cRGB tab = dim(white, 140);
+  static constexpr cRGB enter = dim(white, 250);
+
+  static constexpr cRGB backspace = dim(red, 140);
+  static constexpr cRGB escape      = dim(red, 130);
+  static constexpr cRGB del = dim(red, 255);
+  static constexpr cRGB fn = dim(white, 250);
+  //Numlock or any use of lockLayer
+  static constexpr cRGB lock = dim(purple, 190);
+  static constexpr cRGB LEDEffectNext = dim(blue, 255);
+};
+
+struct colorMapColorful : public colorMap {
+  static constexpr cRGB shift = dim(darkseagreen, 190);
+  static constexpr cRGB control = dim(purple, 255);
+  //Command keys (macOS) or Windows Logo keys
+  static constexpr cRGB gui = dim(pink, 190);
+  static constexpr cRGB alt = dim(forestgreen, 190);
+
+  static constexpr cRGB alpha = dim(orange, 190);
+  static constexpr cRGB number = dim(red, 190);
+  static constexpr cRGB punctuation = dim(yellow, 190);
+  static constexpr cRGB function = dim(white, 190);
+  static constexpr cRGB navigation = dim(yellow, 190);
+  static constexpr cRGB system = dim(orangered, 255);
+  static constexpr cRGB arrow = dim(white, 200);
+  static constexpr cRGB keypad = dim(green, 190);
+  static constexpr cRGB mouseWheel = dim(cyan, 190);
+  static constexpr cRGB mouseButton = dim(cyan, 240);
+  static constexpr cRGB mouseWarp = dim(turquoise, 110);
+  static constexpr cRGB mouseMove = dim(turquoise, 250);
+
+  static constexpr cRGB media = dim(magenta, 200);
+
+  static constexpr cRGB space = dim(white, 140);
+  static constexpr cRGB tab = dim(white, 140);
+  static constexpr cRGB enter = dim(white, 250);
+
+  static constexpr cRGB backspace = dim(red, 140);
+  static constexpr cRGB escape      = dim(red, 130);
+  static constexpr cRGB del = dim(red, 255);
+  static constexpr cRGB fn = dim(white, 250);
+  //Numlock or any use of lockLayer
+  static constexpr cRGB lock = dim(purple, 190);
+  static constexpr cRGB LEDEffectNext = dim(blue, 255);
 };
 
 
+// A subclass that is monochromatic... set base color and then adjust the brightness.
+struct colorMapMono: public colorMap {
+  // baseColor allows you to use a base color that just changes in brightness
+  static constexpr cRGB baseColor   = white;
+  static constexpr cRGB defaultColor= dim(baseColor, 100);
+  static constexpr cRGB shift       = nocolor;
+  static constexpr cRGB control     = nocolor;
+  static constexpr cRGB gui         = nocolor;
+  static constexpr cRGB alt         = nocolor;
+  static constexpr cRGB modifier    = dim(baseColor, 130);
+  static constexpr cRGB alpha       = dim(baseColor, 80);
+  static constexpr cRGB number      = dim(baseColor, 100);
+  static constexpr cRGB punctuation = dim(baseColor, 120);
+  static constexpr cRGB function    = dim(baseColor, 150);
+  static constexpr cRGB navigation  = dim(baseColor, 180);
+  static constexpr cRGB system      = dim(baseColor, 50);
+  static constexpr cRGB arrow       = dim(baseColor, 250);
+  static constexpr cRGB keypad      = dim(baseColor, 230);
+  static constexpr cRGB media       = dim(baseColor, 250);
+  static constexpr cRGB mouseWheel  = nocolor;
+  static constexpr cRGB mouseButton = nocolor;
+  static constexpr cRGB mouseWarp   = nocolor;
+  static constexpr cRGB mouseMove   = nocolor;
+  static constexpr cRGB mouse       = dim(baseColor, 220);
+  static constexpr cRGB space       = dim(baseColor, 100);
+  static constexpr cRGB tab         = dim(baseColor, 100);
+  static constexpr cRGB enter       = dim(baseColor, 255);
+  static constexpr cRGB backspace   = dim(baseColor, 100);
+  static constexpr cRGB escape      = dim(baseColor, 100);
+  static constexpr cRGB del         = dim(baseColor, 255);
+  static constexpr cRGB fn          = dim(baseColor, 255);
+  static constexpr cRGB lock        = dim(baseColor, 255);
+  static constexpr cRGB LEDEffectNext=dim(baseColor, 255);
+};
 
-#define FC_COLOR_LIST(ID) \
-   cRGBLookup_##ID
+struct colorMapDuo: public colorMap {
+  // baseColor allows you to use a base color that just changes in brightness
+  static constexpr cRGB baseColor1  = white;
+  static constexpr cRGB baseColor2  = red;
+  static constexpr cRGB defaultColor= dim(baseColor1, 100);
+  static constexpr cRGB shift       = nocolor;
+  static constexpr cRGB control     = nocolor;
+  static constexpr cRGB gui         = nocolor;
+  static constexpr cRGB alt         = nocolor;
+  static constexpr cRGB modifier    = dim(baseColor2, 130);
+  static constexpr cRGB alpha       = dim(baseColor1, 80);
+  static constexpr cRGB number      = dim(baseColor1, 100);
+  static constexpr cRGB punctuation = dim(baseColor1, 120);
+  static constexpr cRGB function    = dim(baseColor1, 150);
+  static constexpr cRGB navigation  = dim(baseColor2, 130);
+  static constexpr cRGB system      = dim(baseColor2, 50);
+  static constexpr cRGB arrow       = dim(baseColor2, 250);
+  static constexpr cRGB keypad      = dim(baseColor2, 230);
+  static constexpr cRGB media       = dim(baseColor2, 190);
+  static constexpr cRGB mouseWheel  = nocolor;
+  static constexpr cRGB mouseButton = nocolor;
+  static constexpr cRGB mouseWarp   = nocolor;
+  static constexpr cRGB mouseMove   = nocolor;
+  static constexpr cRGB mouse       = dim(baseColor2, 250);
+  static constexpr cRGB space       = dim(baseColor1, 100);
+  static constexpr cRGB tab         = dim(baseColor1, 100);
+  static constexpr cRGB enter       = dim(baseColor1, 255);
+  static constexpr cRGB backspace   = dim(baseColor2, 100);
+  static constexpr cRGB escape      = dim(baseColor2, 100);
+  static constexpr cRGB del         = dim(baseColor2, 255);
+  static constexpr cRGB fn          = dim(baseColor1, 255);
+  static constexpr cRGB lock        = dim(baseColor1, 255);
+  static constexpr cRGB LEDEffectNext=dim(baseColor2, 255);
+};
 
-#define FC_START_COLOR_LIST(NAME, DEFAULT_COLOR) \
-   cRGB FC_COLOR_LIST(NAME)(const Key &k) { \
-      constexpr cRGB initialDefaultColor = DEFAULT_COLOR; \
+
+// These macros allow a user to create an exceptions function that they can pass to FCPlugin when initializing it
+
+#define FC_COLOR_LIST(ID) cRGBLookup_##ID
+
+#define FC_START_COLOR_LIST(NAME) \
+   cRGB FC_COLOR_LIST(NAME)(const Key &k, bool &skip, bool &none) { \
       switch(k.raw) {
 
-#define FC_END_COLOR_LIST \
-   /*} // This is now provided by the FC_ENDKEYS macro */ \
-   /* Now apply colors for keygroups */ \
-   static cRGB defaultColor = initialDefaultColor; \
-   return defaultColor; \
-}
+#define FC_NOCOLOR(KEY) \
+    case (KEY).flags << 8 | (KEY).keyCode: \
+       skip = true; \
+       return nocolor; // could return any color as a dummy
 
+#define FC_END_COLOR_LIST \
+   } \
+   none = true; \
+   return nocolor; \
+}
 
 #define FC_KEYCOLOR(KEY, COLOR) \
     case (KEY).flags << 8 | (KEY).keyCode: \
-       { \
-         static cRGB color = COLOR; \
-         return color; \
-       } \
-       break;
+       { static cRGB color = COLOR; return color; }
 
 #define FC_GROUPKEY(KEY) \
    case (KEY).flags << 8 | (KEY).keyCode:
 
-// This looks super dumb but I have to close the switch statement from Color list before I can start group colors
-#define FC_ENDKEYS }
-
-#define FC_GROUPCOLOR(GROUPNAME, COLOR) \
-   if (is##GROUPNAME(k)) return COLOR; \
 
 }//namespace LEDFunctionalColor
 
