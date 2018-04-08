@@ -6,7 +6,8 @@
 #include "Kaleidoscope-Macros.h"
 //Note that FunctionalColor already includes LEDControl and MouseKeys
 #include "Kaleidoscope-LEDEffect-FunctionalColor.h"
-
+//Add this line if you don't want to have to prefix colors and functions with kaleidoscope::LEDFunctionalColor
+using namespace kaleidoscope::LEDFunctionalColor;
 
 // List of macros includes names for FC brightness controls
 enum { MACRO_FCUP, MACRO_FCDOWN };
@@ -170,11 +171,11 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   // These names must be in the macros enum near the beginning of this file.
   // Assign M(MACRO_FCUP) and M(MACRO_FCDOWN) to keys you'd like to use for this purpose.
   case MACRO_FCUP:
-    FCPlugin::brightnessUp(keyState);
+    kaleidoscope::LEDFunctionalColor::FCPlugin::brightnessUp(keyState);
     break;
    
   case MACRO_FCDOWN:
-    FCPlugin::brightnessDown(keyState);
+    kaleidoscope::LEDFunctionalColor::FCPlugin::brightnessDown(keyState);
     break;
   }
   return MACRO_NONE;
@@ -197,8 +198,8 @@ void setup() {
 
   // Apply custom colorMaps to one of your FunctionalColor instances.
   // Replace "myTheme" with the name of your colorMap struct.
-  funColor5.setColorLookup(&groupColorLookup<myTheme>);
-  funColor6.setColorLookup(&groupColorLookup<colorMapGreen>);
+  funColor5.setColorLookup(&kaleidoscope::LEDFunctionalColor::groupColorLookup<myTheme>);
+  funColor6.setColorLookup(&kaleidoscope::LEDFunctionalColor::groupColorLookup<colorMapGreen>);
 } // end setup()
 
 

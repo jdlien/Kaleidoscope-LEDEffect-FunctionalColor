@@ -1,10 +1,9 @@
 #include "Kaleidoscope-LEDEffect-FunctionalColor.h"
 #include "assert.h"
 
-using namespace kaleidoscope::LEDFunctionalColor;
 namespace kaleidoscope {
 
-FCPlugin::FCPlugin(FCPlugin::RGBLookupException rgbLookupExc, byte brightness, int themeID)
+kaleidoscope::LEDFunctionalColor::FCPlugin::FCPlugin(kaleidoscope::LEDFunctionalColor::FCPlugin::RGBLookupException rgbLookupExc, byte brightness, int themeID)
    : exceptionsLookup(rgbLookupExc)    
 {
   assert(exceptionsLookup);
@@ -12,7 +11,7 @@ FCPlugin::FCPlugin(FCPlugin::RGBLookupException rgbLookupExc, byte brightness, i
   brightnessSetting = brightness;
 }
 
-FCPlugin::FCPlugin(int themeID, byte brightness, FCPlugin::RGBLookupException rgbLookupExc)
+kaleidoscope::LEDFunctionalColor::FCPlugin::FCPlugin(int themeID, byte brightness, kaleidoscope::LEDFunctionalColor::FCPlugin::RGBLookupException rgbLookupExc)
    : exceptionsLookup(rgbLookupExc)     
 {
    assert(exceptionsLookup);
@@ -21,13 +20,13 @@ FCPlugin::FCPlugin(int themeID, byte brightness, FCPlugin::RGBLookupException rg
 }
 
 // Another constructor that allows the user to specify which theme they want to start with.
-FCPlugin::FCPlugin(int themeID, byte brightness){
+kaleidoscope::LEDFunctionalColor::FCPlugin::FCPlugin(int themeID, byte brightness){
   // Switch block to specify themeid
   themeSelect(themeID);
   brightnessSetting = brightness;
 }
 
-void FCPlugin::themeSelect(int themeID) {
+void kaleidoscope::LEDFunctionalColor::FCPlugin::themeSelect(int themeID) {
     // Switch block to specify themeid
   switch(themeID) {
       case 0:
@@ -52,39 +51,39 @@ void FCPlugin::themeSelect(int themeID) {
 }
 
 
-void FCPlugin::brightness(byte b) {
+void kaleidoscope::LEDFunctionalColor::FCPlugin::brightness(byte b) {
   brightnessSetting = b;
 }
 
-byte FCPlugin::brightness() {
+byte kaleidoscope::LEDFunctionalColor::FCPlugin::brightness() {
   return brightnessSetting;
 }
 
 //These are special macros that allow the brightness of an FC instance to be adjusted
-void FCPlugin::thisBrightnessUp(uint8_t keyState) {
+void kaleidoscope::LEDFunctionalColor::FCPlugin::thisBrightnessUp(uint8_t keyState) {
   if (keyToggledOn(keyState)) {
     brightnessSetting += 16;
     this->refresh();
   }
 }
 
-void FCPlugin::thisBrightnessDown(uint8_t keyState) {
+void kaleidoscope::LEDFunctionalColor::FCPlugin::thisBrightnessDown(uint8_t keyState) {
   if (keyToggledOn(keyState)) {
     brightnessSetting -= 16;
     this->refresh();
   }
 }
 
-void FCPlugin::brightnessUp(uint8_t keyState) {
-  FCPlugin::lastFC->thisBrightnessUp(keyState);
+void kaleidoscope::LEDFunctionalColor::FCPlugin::brightnessUp(uint8_t keyState) {
+  kaleidoscope::LEDFunctionalColor::FCPlugin::lastFC->thisBrightnessUp(keyState);
 }
 
-void FCPlugin::brightnessDown(uint8_t keyState) {
-  FCPlugin::lastFC->thisBrightnessDown(keyState);
+void kaleidoscope::LEDFunctionalColor::FCPlugin::brightnessDown(uint8_t keyState) {
+  kaleidoscope::LEDFunctionalColor::FCPlugin::lastFC->thisBrightnessDown(keyState);
 }
 
 //setKeyLed accepts a Key position and sets it to the appropriate color from a lookup function
-void FCPlugin::setKeyLed(uint8_t r, uint8_t c) { 
+void kaleidoscope::LEDFunctionalColor::FCPlugin::setKeyLed(uint8_t r, uint8_t c) { 
   Key k = Layer.lookupOnActiveLayer(r, c);
   bool skip = false, none = false;
   auto color = exceptionsLookup(k, skip, none);
@@ -94,11 +93,11 @@ void FCPlugin::setKeyLed(uint8_t r, uint8_t c) {
   ::LEDControl.setCrgbAt(r, c, dim(color, brightnessSetting));
 }// end setKeyLed()
 
-FCPlugin* FCPlugin::lastFC;
+kaleidoscope::LEDFunctionalColor::FCPlugin* kaleidoscope::LEDFunctionalColor::FCPlugin::lastFC;
 
 
 //Forces an update of the LEDs
-void FCPlugin::refresh(void) {
+void kaleidoscope::LEDFunctionalColor::FCPlugin::refresh(void) {
   // Loop through every row and column and set each LED based on its key's function
   for (uint8_t r = 0; r < ROWS; r++) {
     for (uint8_t c = 0; c < COLS; c++) {
@@ -110,13 +109,13 @@ void FCPlugin::refresh(void) {
 }
 
 
-void FCPlugin::onActivate(void) {
+void kaleidoscope::LEDFunctionalColor::FCPlugin::onActivate(void) {
   this->refresh();
 }
 
 
 //When the active layer is changed, update the colors.
-void FCPlugin::update(void) {
+void kaleidoscope::LEDFunctionalColor::FCPlugin::update(void) {
   uint8_t current_layerState = ::Layer_::getLayerState();
 
   // Only set the colors again if the active layer changed

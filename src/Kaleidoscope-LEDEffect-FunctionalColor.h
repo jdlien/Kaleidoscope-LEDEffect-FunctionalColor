@@ -6,7 +6,7 @@
 #include "colors.h"
 #include "keygroups.h"
 
-using namespace kaleidoscope::LEDFunctionalColor;
+//using namespace kaleidoscope::LEDFunctionalColor;
 
 namespace kaleidoscope {
    
@@ -324,12 +324,12 @@ struct colorMapDuo: public colorMap {
 #define FC_NOCOLOR(KEY) \
     case (KEY).flags << 8 | (KEY).keyCode: \
        skip = true; \
-       return nocolor; // could return any color as a dummy
+       return kaleidoscope::LEDFunctionalColor::nocolor; // could return any color as a dummy
 
 #define FC_END_COLOR_LIST \
    } \
    none = true; \
-   return nocolor; \
+   return kaleidoscope::LEDFunctionalColor::nocolor; \
 }
 
 #define FC_KEYCOLOR(KEY, COLOR) \

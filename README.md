@@ -21,7 +21,7 @@ Configure your own colors for groups of keys inside setup():
 ```c++
 // Automatically sets key's LED on active layer based on the function of the key
 #include <Kaleidoscope-LEDEffect-FunctionalColor.h>
-FCPlugin funColor;
+kaleidoscope::LEDFunctionalColor::FCPlugin funColor;
 
 void setup() {
   Kaleidoscope.setup();
@@ -35,26 +35,27 @@ to any function that can be performed on the Model 01. It's probably easiest to 
 the well-commented [example .ino files](https://github.com/jdlien/Kaleidoscope-LEDEffect-FunctionalColor/blob/master/examples/) included in this repository to get up and running
 and gain a full understanding of what is possible, but here is a summary.
 
+
 Declare FCPlugin instances in the following ways:
 ```c++
 // With no arguments to get the default theme.
-FCPlugin funColor1;
+kaleidoscope::LEDFunctionalColor::FCPlugin funColor1;
 
 // Specify a themeID (0-5) with optional brightness 0-255, and an optional colorList can follow.
-FCPlugin funColor2(1, 200);
+kaleidoscope::LEDFunctionalColor::FCPlugin funColor2(1, 200);
 
 // Specify only a override colorList defined previously, beginning with FC_START_COLOR_LIST(customColors)
 // See below for information on how to use override colorLists.
-FCPlugin funColor3(FC_COLOR_LIST(customColors));
+kaleidoscope::LEDFunctionalColor::FCPlugin funColor3(FC_COLOR_LIST(customColors));
 
 //You can also specify the brightness and an optional theme if you want something other than the default.
-FCPlugin funColor4(FC_COLOR_LIST(customColors), 255, DUOCOLOR);
+kaleidoscope::LEDFunctionalColor::FCPlugin funColor4(FC_COLOR_LIST(customColors), 255, DUOCOLOR);
 
 // You can create and use custom themes - these are applied later in the setup() part of this .ino
-FCPlugin funColor5;
+kaleidoscope::LEDFunctionalColor::FCPlugin funColor5;
 
 // Note that you can combine custom color overrides with a custom theme, demonstrated in funColor6
-FCPlugin funColor6(FC_COLOR_LIST(customColors));
+kaleidoscope::LEDFunctionalColor::FCPlugin funColor6(FC_COLOR_LIST(customColors));
 
 ```
 
@@ -67,6 +68,10 @@ Your colormap must be applied in the setup() function. (See Below).
 For colors, you can use cRGB objects with CRGB(red, green, blue). Note that FunctionalColor includes a large list of predefined colors that match the CSS color names that are common. For the most part, if you can think of a color name, it'll be defined. In addition, you can also tweak the brightness of a color using the included dim() function. For a dark red color, you could use something like dim(red, 100).
 
 ```c++
+// Add this line after the FunctionalColor include if you don't want to
+// have to prefix colors and functions with kaleidoscope::LEDFunctionalColor::
+using namespace kaleidoscope::LEDFunctionalColor;
+
 struct myTheme: public colorMapMono {
   static constexpr cRGB shift = darkseagreen;
   static constexpr cRGB control = skyblue;
@@ -91,8 +96,8 @@ void setup() {
 
   // Here you can apply a custom colorMap to FunctionalColor instances.
   // Replace "myTheme" with the name of your colorMap.
-  funColor5.setColorLookup(&groupColorLookup<myTheme>);
-  funColor6.setColorLookup(&groupColorLookup<colorMapGreen>);
+  funColor5.setColorLookup(&kaleidoscope::LEDFunctionalColor::groupColorLookup<myTheme>);
+  funColor6.setColorLookup(&kaleidoscope::LEDFunctionalColor::groupColorLookup<colorMapGreen>);
 } // end setup()
 
 ```
@@ -151,6 +156,9 @@ LEDEffectNext // led key
 If you want to set specific colors for individual keys that are not specified in the colorMap struct, you can use a set of included macros to create a custom color override function **before** you declare a FunctionalColors instance, then specify your colorList when you initialize FunctionalColor.
 
 The following example shows how this can be done.
+Note that this example is done within the `kaleidoscope::LEDFunctionalColor` namespace -- add
+`using namespace kaleidoscope::LEDFunctionalColor;`
+to avoid needing to prefix colors and functions.
 ```c++
 // Make a new colorList named "customColors"
 FC_START_COLOR_LIST(customColors)
@@ -176,7 +184,7 @@ FC_END_COLOR_LIST
 
 enum { COLORMAP, MONOWHITE, DUOCOLOR, COLORFUL, DEFAULTCOLOR };
 // Create a FunctionalColors instance using this new customColors colorList, with full brightness, based on the MONOWHITE theme.
-FCPlugin funColorCustom(FC_COLOR_LIST(customColors), 255, MONOWHITE);
+kaleidoscope::LEDFunctionalColor::FCPlugin funColorCustom(FC_COLOR_LIST(customColors), 255, MONOWHITE);
 ```
 
 Now you can add &funColorCustom to the Kaleidoscope.use() list to make it show up on your keyboard.
@@ -212,11 +220,11 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
 
   // Add the following two case statements to make the FCUP/FCDOWN macros adjust brightness.
   case MACRO_FCUP:
-    FCPlugin::brightnessUp(keyState);
+    kaleidoscope::LEDFunctionalColor::FCPlugin::brightnessUp(keyState);
     break;
    
   case MACRO_FCDOWN:
-    FCPlugin::brightnessDown(keyState);
+    kaleidoscope::LEDFunctionalColor::FCPlugin::brightnessDown(keyState);
     break;
   }
   return MACRO_NONE;

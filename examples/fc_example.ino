@@ -210,6 +210,8 @@ static void anyKeyMacro(uint8_t keyState) {
 
 //Include FunctionalColor before creating your color override list and creating FC instances
 #include "Kaleidoscope-LEDEffect-FunctionalColor.h"
+//Add this line if you don't want to have to prefix colors and functions with kaleidoscope::LEDFunctionalColor
+using namespace kaleidoscope::LEDFunctionalColor;
 
 // Note: FunctionalColors allows you to use CSS color names (in lowercase)
 // You can also control the brightness from 0-255 by using a dim() function on the color.
@@ -363,11 +365,11 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   // Assign M(MACRO_FCUP) and M(MACRO_FCDOWN) to keys you'd like to use for this purpose.
   // In this example they have been assigned to the semicolon and comma keys on the fn layer.
   case MACRO_FCUP:
-    FCPlugin::brightnessUp(keyState);
+    kaleidoscope::LEDFunctionalColor::FCPlugin::brightnessUp(keyState);
     break;
    
   case MACRO_FCDOWN:
-    FCPlugin::brightnessDown(keyState);
+    kaleidoscope::LEDFunctionalColor::FCPlugin::brightnessDown(keyState);
     break;
   }
   return MACRO_NONE;
@@ -478,8 +480,8 @@ void setup() {
 
   // Here you can apply a custom colorMap to FunctionalColor instances.
   // Replace "myTheme" with the name of your colorMap.
-  funColor5.setColorLookup(&groupColorLookup<myTheme>);
-  funColor6.setColorLookup(&groupColorLookup<colorMapGreen>);
+  funColor5.setColorLookup(&kaleidoscope::LEDFunctionalColor::groupColorLookup<myTheme>);
+  funColor6.setColorLookup(&kaleidoscope::LEDFunctionalColor::groupColorLookup<colorMapGreen>);
 } // end setup()
 
 void loop() {
