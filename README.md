@@ -5,11 +5,11 @@
 This plugin automatically colors groups of keys based on the current function of the key on the active layer, dynamically switching colors when the fn key is pressed.
 
 ##### Table of Contents  
-[Basic Use](#basics)  
-[Advanced Usage](#advanced)  
-[Using Custom Themes](#customThemes)  
-[Using FC_COLOR_LIST overrides to set individual keys](#colorList)  
-[Brightness Control with Macros](#brightnessMacros)  
+[Basic Use](#basic-use-of-functionalcolor)  
+[Advanced Usage](#advanced-usage)  
+[Using Custom Themes](#using-custom-themes)  
+[Using FC_COLOR_LIST overrides to set individual keys](#setting-individual-keys-with-fc_color_list)  
+[Brightness Control with Macros](#brightness-control-with-macros)  
 
 [basics](#basics)
 ## Basic Use of FunctionalColor
@@ -29,7 +29,6 @@ void setup() {
 }
 ```
 
-<a name="advanced"/>
 ## Advanced Usage
 FunctionalColor allows you to create completely custom themes, assigning any color
 to any function that can be performed on the Model 01. It's probably easiest to examine
@@ -58,7 +57,7 @@ FCPlugin funColor5;
 FCPlugin funColor6(FC_COLOR_LIST(customColors));
 
 ```
-<a name="customThemes"/>
+
 ## Using Custom Themes
 
 If you want to customize one of the included themes, make a subclass of colorMap or any theme that you want to use as a starting point. They are colorMap, colorMapDefault, colorMapColorful, colorMapMono, colorMapDuo.
@@ -146,8 +145,8 @@ lock
 LEDEffectNext // led key
 ```
 
-<a name="colorList"/>
-## Using FC_COLOR_LIST overrides to set individual keys
+
+## Setting individual keys with FC_COLOR_LIST
 
 If you want to set specific colors for individual keys that are not specified in the colorMap struct, you can use a set of included macros to create a custom color override function **before** you declare a FunctionalColors instance, then specify your colorList when you initialize FunctionalColor.
 
