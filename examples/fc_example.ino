@@ -480,7 +480,7 @@ void setup() {
   // Replace "myTheme" with the name of your colorMap.
   funColor5.setColorLookup(&groupColorLookup<myTheme>);
   funColor6.setColorLookup(&groupColorLookup<colorMapGreen>);
-}
+} // end setup()
 
 void loop() {
   Kaleidoscope.loop();

@@ -5,110 +5,187 @@
 This plugin automatically colors groups of keys per the user's preference
 based on the current function of the key on the active layer. 
 
-## Using the extension
+## Basic use of the extension
 
-To use the plugin, include the header, declare an effect using the
-`LEDFunctionalColor` class, and tell the firmware to use the new effect.
+To get started with FunctionalColor and use the default colors, you can just include the header,
+declare an instance using the `FCPlugin` class, and tell the firmware to use it.
 Configure your own colors for groups of keys inside setup():
 
 ```c++
 // Automatically sets key's LED on active layer based on the function of the key
 #include <Kaleidoscope-LEDEffect-FunctionalColor.h>
 
-// You can make multiple variations of the theme.
-// Warning: having several versions consumes a lot of memory!
-kaleidoscope::LEDFunctionalColor FunColor;
-kaleidoscope::LEDFunctionalColor FunColorMedium;
-kaleidoscope::LEDFunctionalColor FunColorLow;
+FCPlugin funColor;
 
 void setup() {
-  Kaleidoscope.use(&FunColor, &FunColorMedium, &FunColorLow);
+  Kaleidoscope.use(&funColor);
 
   Kaleidoscope.setup(
-
-    // Optionally Make things more human readable by naming your colors
-    cRGB antiquewhite = CRGB(250, 235, 215);
-    cRGB blue = CRGB(0, 0, 255);
-    cRGB cyan = CRGB(0, 255, 255);
-    cRGB green = CRGB(0, 128, 0);
-    cRGB lightskyblue = CRGB(135, 206, 250);
-    cRGB lime = CRGB(0, 255, 0);
-    cRGB mintcream = CRGB(245, 255, 250);
-    cRGB orange = CRGB(255, 165, 0);
-    cRGB orangered = CRGB(255, 100, 0);
-    cRGB palegreen = CRGB(152, 251, 152);
-    cRGB pink = CRGB(255, 192, 203);
-    cRGB red = CRGB(255, 0, 0);
-    cRGB skyblue = CRGB(135, 206, 235);
-    cRGB slateblue = CRGB(106, 90, 205);
-    cRGB violet = CRGB(238, 130, 238);
-    cRGB white = CRGB(255, 255, 255);
-    cRGB yellow = CRGB(255, 255, 0);
-    cRGB yellowgreen = CRGB(154, 205, 50);
-
-    // If your FUNCTION layer is not the default, you must set it here
-    FunColor.functionLayer = FUNCTION;
-
-    // Here we can set custom colors for your FunctionalColor instance.
-    // You can optionally specify a brightness value, 0-255 to dim your lights.
-
-    // Set this first to provide a "default" color for all keys, then override with the other settings.
-    FunColor.all(CRGB(250, 235, 215));
-
-    // Set this second to change all modifiers (non-alphabet/numeric/punctuation keys)
-    FunColor.allModifiers(CRGB(250, 235, 215));
-
-    // Set this before individual mouse settings to change all mouse-related keys
-    FunColor.allMouse(CRGB(0, 200, 200)); 
-
-    //Set individual groups of colors. You may delete any lines you don't need.
-    FunColor.escape(red, 170);
-    FunColor.numbers(white, 160);
-    FunColor.letters(antiquewhite, 100);
-    FunColor.punctuation(antiquewhite, 170);
-    FunColor.brackets(antiquewhite, 200);
-    FunColor.backslash(antiquewhite, 170);
-    FunColor.pipe(antiquewhite, 170);
-    FunColor.tab(white, 170);
-    FunColor.backspace(red, 170);
-    FunColor.del(red, 170);
-    FunColor.enter(white, 170);
-    FunColor.arrows(white, 170);
-    FunColor.nav(yellow, 170);
-    FunColor.insert(yellow, 170);
-    FunColor.shift(palegreen, 170);
-    FunColor.ctrl(skyblue, 170);
-    FunColor.alt(green, 170);
-    FunColor.cmd(CRGB(250, 235, 215));
-    FunColor.app(CRGB(250, 235, 215));
-    FunColor.printscreen(CRGB(250, 235, 215));
-    FunColor.pause(CRGB(250, 235, 215));
-    FunColor.scrolllock(CRGB(250, 235, 215));
-    FunColor.capslock(CRGB(250, 235, 215));
-    FunColor.fkeys(red, 170);
-    FunColor.fn(CRGB(250, 235, 215));
-    FunColor.media(CRGB(250, 235, 215));
-    FunColor.led(blue, 190);
-    FunColor.mousemove(cyan, 170);
-    FunColor.mousebuttons(lightskyblue, 170);
-    FunColor.mousewarp(cyan, 100);
-    FunColor.mousescroll(lightskyblue, 100);
-
-    //Copy new settings to the dimmed versions
-    FunColorMedium = FunColor;
-    FunColorLow = FunColor;
-
-    // You could make adjustments to your other versions' groups here, if desired.
-
-    // Adjust the brightness of dimmed versions here from 0-255
-    FunColorMedium.brightness(210);
-    FunColorLow.brightness(170);
-
-
   );
 }
 ```
 
+
+## Advanced usage
+FunctionalColors allows you to create completely custom themes, assigning any color
+to any function that can be performed on the Model 01. It's probably easiest to examine
+the well-commented [example .ino files](https://github.com/jdlien/Kaleidoscope-LEDEffect-FunctionalColor/blob/master/examples/fc_example.ino) included in this repository to get up and running
+and gain a full understanding of what is possible, but here is a summary.
+
+Declare FCPlugin instances in the following ways:
+```
+// With no arguments to get the default theme.
+FCPlugin funColor1;
+
+// Specify a themeID (0-5) with optional brightness 0-255, and an optional colorList can follow.
+FCPlugin funColor2(1, 200);
+
+// Specify only a override colorList defined previously, beginning with FC_START_COLOR_LIST(customColors)
+// See below for information on how to use override colorLists.
+FCPlugin funColor3(FC_COLOR_LIST(customColors));
+
+//You can also specify the brightness and an optional theme if you want something other than the default.
+FCPlugin funColor4(FC_COLOR_LIST(customColors), 255, DUOCOLOR);
+
+// You can create and use custom themes - these are applied later in the setup() part of this .ino
+FCPlugin funColor5;
+
+// Note that you can combine custom color overrides with a custom theme, demonstrated in funColor6
+FCPlugin funColor6(FC_COLOR_LIST(customColors));
+
+```
+
+## Using Custom Themes
+
+If you want to customize one of the included themes, make a subclass of colorMap or any theme that you want to use as a starting point. They are colorMap, colorMapDefault, colorMapColorful, colorMapMono, colorMapDuo.
+
+Your colormap must be applied in the setup() function. (See Below).
+
+For colors, you can use cRGB objects with CRGB(red, green, blue). Note that FunctionalColor includes a large list of predefined colors that match the CSS color names that are common. For the most part, if you can think of a color name, it'll be defined. In addition, you can also tweak the brightness of a color using the included dim() function. For a dark red color, you could use something like dim(red, 100).
+
+```
+struct myTheme: public colorMapMono {
+  static constexpr cRGB shift = darkseagreen;
+  static constexpr cRGB control = skyblue;
+  static constexpr cRGB alt = forestgreen;
+  static constexpr cRGB gui = pink; 
+  //You can also set something to "nocolor" which will avoid coloring a set of keys
+  // if they already are part of another larger group - ie set shift to nocolor and
+  // shiftkeys will inherit the color assigned to modifier
+  // static constexpr cRGB shift = nocolor;
+};
+````
+
+After creating your custom theme struct, apply it using setColorLookup() in the setup() function near the bottom of the .ino file as shown here.
+
+```
+void setup() {
+  Kaleidoscope.setup();
+  Kaleidoscope.use(
+    // All FunctionalColor instances go here in the order you want them in
+    &funColor1,&funColor2,&funColor3,&funColor4,&funColor5,&funColor6
+  );
+
+  // Here you can apply a custom colorMap to FunctionalColor instances.
+  // Replace "myTheme" with the name of your colorMap.
+  funColor5.setColorLookup(&groupColorLookup<myTheme>);
+  funColor6.setColorLookup(&groupColorLookup<colorMapGreen>);
+} // end setup()
+
+```
+
+
+For reference, here is a full, annotated list of all the properties that are supported by FunctionalColors
+```
+// This is the only way to color "prog" if you don't assign a function to it.
+defaultColor // used when there is no color defined for a key.
+
+// shift, control, gui, and alt can all be colored by "modifier" if nocolor is set here.
+shift
+control // gui are Windows Logo or, on macOS, command keys 
+gui
+alt
+
+modifier
+alpha
+number
+punctuation
+
+function // F1-F12 and F13-F24
+
+navigation // Page Up, Page Down, Home, End, Insert, and Delete (if del has nocolor)
+
+system // Print Screen, Pause/Break, and Scroll Lock keys (brightness on Macs)
+
+arrow
+keypad
+
+media // Includes play/pause, next/prev, volume control, mute, etc.
+
+mouseWheel
+mouseButton
+mouseWarp
+mouseMove
+mouse //includes the four above groups if nocolor is set for those
+space
+tab
+enter
+backspace
+escape
+del //Forward delete key
+
+//fn will work properly for ShiftToLayer() with layers 1-3
+fn
+
+//NumLock and other layer locks
+lock
+LEDEffectNext // led key
+```
+
+## Using custom color overrides to set individual keys (FC_COLOR_LIST)
+
+If you want to set specific colors for individual keys that are not specified in the colorMap struct, you can use a set of included macros to create a custom color override function **before** you declare a FunctionalColors instance and specify it when you initialize it.
+
+The following example shows how this can be done.
+```
+// Make a new colorList named "customColors"
+FC_START_COLOR_LIST(customColors)
+ // Use any number of FCGROUPKEYs above a FC_KEYCOLOR to set several keys to the same color
+ FC_GROUPKEY(Key_A)
+ FC_GROUPKEY(Key_S)
+ FC_GROUPKEY(Key_D)
+ FC_KEYCOLOR(Key_F, blue)
+
+ FC_GROUPKEY(Key_J)
+ FC_GROUPKEY(Key_K)
+ FC_GROUPKEY(Key_L)
+ FC_KEYCOLOR(Key_Semicolon, red)
+
+ //FC_NOCOLOR makes a key not change color, as if "transparent".
+ // In this example The uparrow key will not change the key color, even when on the active layer.
+ FC_NOCOLOR(Key_UpArrow)
+
+ // This shows how you can set the color of custom macros
+ FC_GROUPKEY(M(MACRO_FCUP))
+ FC_KEYCOLOR(M(MACRO_FCDOWN), cyan)
+FC_END_COLOR_LIST
+
+enum { COLORMAP, MONOWHITE, DUOCOLOR, COLORFUL, DEFAULTCOLOR };
+// Create a FunctionalColors instance using this new customColors colorList, with full brightness, based on the MONOWHITE theme.
+FCPlugin funColorCustom(FC_COLOR_LIST(customColors), 255, MONOWHITE);
+```
+
+Now you can add &funColorCustom to the Kaleidoscope.use() list to make it show up on your keyboard.
+
+
+## Questions and Comments?
+
+If you have any questions or comments please let me know.
+
+I want to give my thanks to @noseglasses for being tremendously helpful at making this plugin as efficient and user-friendly as it is. My early attempts at this consumed almost all the memory on the keyboard and this version should take about 4KB, which is a massive improvement.
+
+
 ## Dependencies
 
 * [Kaleidoscope-LEDControl](https://github.com/keyboardio/Kaleidoscope-LEDControl)
+* [Kaleidoscope-MouseKeys](https://github.com/keyboardio/Kaleidoscope-MouseKeys)
