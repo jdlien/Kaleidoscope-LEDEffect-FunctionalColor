@@ -2,10 +2,17 @@
 
 
 
-This plugin automatically colors groups of keys per the user's preference
-based on the current function of the key on the active layer. 
+This plugin automatically colors groups of keys based on the current function of the key on the active layer, dynamically switching colors when the fn key is pressed.
 
-## Basic use of the extension
+##### Table of Contents  
+[Basic Use](#basics)  
+[Advanced Usage](#advanced)
+[Using Custom Themes](#customThemes)
+[Using FC_COLOR_LIST overrides to set individual keys](#colorList)
+[Brightness Control with Macros](#brightnessMacros)
+
+<a name="basics"/>
+## Basic Use of FunctionalColor
 
 To get started with FunctionalColor and use the default colors, you can just include the header,
 declare an instance using the `FCPlugin` class, and tell the firmware to use it.
@@ -14,26 +21,23 @@ Configure your own colors for groups of keys inside setup():
 ```c++
 // Automatically sets key's LED on active layer based on the function of the key
 #include <Kaleidoscope-LEDEffect-FunctionalColor.h>
-
 FCPlugin funColor;
 
 void setup() {
+  Kaleidoscope.setup();
   Kaleidoscope.use(&funColor);
-
-  Kaleidoscope.setup(
-  );
 }
 ```
 
-
-## Advanced usage
-FunctionalColors allows you to create completely custom themes, assigning any color
+<a name="advanced"/>
+## Advanced Usage
+FunctionalColor allows you to create completely custom themes, assigning any color
 to any function that can be performed on the Model 01. It's probably easiest to examine
-the well-commented [example .ino files](https://github.com/jdlien/Kaleidoscope-LEDEffect-FunctionalColor/blob/master/examples/fc_example.ino) included in this repository to get up and running
+the well-commented [example .ino files](https://github.com/jdlien/Kaleidoscope-LEDEffect-FunctionalColor/blob/master/examples/) included in this repository to get up and running
 and gain a full understanding of what is possible, but here is a summary.
 
 Declare FCPlugin instances in the following ways:
-```
+```c++
 // With no arguments to get the default theme.
 FCPlugin funColor1;
 
@@ -54,7 +58,7 @@ FCPlugin funColor5;
 FCPlugin funColor6(FC_COLOR_LIST(customColors));
 
 ```
-
+<a name="customThemes"/>
 ## Using Custom Themes
 
 If you want to customize one of the included themes, make a subclass of colorMap or any theme that you want to use as a starting point. They are colorMap, colorMapDefault, colorMapColorful, colorMapMono, colorMapDuo.
@@ -63,7 +67,7 @@ Your colormap must be applied in the setup() function. (See Below).
 
 For colors, you can use cRGB objects with CRGB(red, green, blue). Note that FunctionalColor includes a large list of predefined colors that match the CSS color names that are common. For the most part, if you can think of a color name, it'll be defined. In addition, you can also tweak the brightness of a color using the included dim() function. For a dark red color, you could use something like dim(red, 100).
 
-```
+```c++
 struct myTheme: public colorMapMono {
   static constexpr cRGB shift = darkseagreen;
   static constexpr cRGB control = skyblue;
@@ -78,7 +82,7 @@ struct myTheme: public colorMapMono {
 
 After creating your custom theme struct, apply it using setColorLookup() in the setup() function near the bottom of the .ino file as shown here.
 
-```
+```c++
 void setup() {
   Kaleidoscope.setup();
   Kaleidoscope.use(
@@ -96,7 +100,7 @@ void setup() {
 
 
 For reference, here is a full, annotated list of all the properties that are supported by FunctionalColors
-```
+```c++
 // This is the only way to color "prog" if you don't assign a function to it.
 defaultColor // used when there is no color defined for a key.
 
@@ -142,12 +146,13 @@ lock
 LEDEffectNext // led key
 ```
 
-## Using custom color overrides to set individual keys (FC_COLOR_LIST)
+<a name="colorList"/>
+## Using FC_COLOR_LIST overrides to set individual keys
 
-If you want to set specific colors for individual keys that are not specified in the colorMap struct, you can use a set of included macros to create a custom color override function **before** you declare a FunctionalColors instance and specify it when you initialize it.
+If you want to set specific colors for individual keys that are not specified in the colorMap struct, you can use a set of included macros to create a custom color override function **before** you declare a FunctionalColors instance, then specify your colorList when you initialize FunctionalColor.
 
 The following example shows how this can be done.
-```
+```c++
 // Make a new colorList named "customColors"
 FC_START_COLOR_LIST(customColors)
  // Use any number of FCGROUPKEYs above a FC_KEYCOLOR to set several keys to the same color
@@ -177,12 +182,54 @@ FCPlugin funColorCustom(FC_COLOR_LIST(customColors), 255, MONOWHITE);
 
 Now you can add &funColorCustom to the Kaleidoscope.use() list to make it show up on your keyboard.
 
+<a name="brightnessMacros"/>
+## Brightness Control with Macros
 
-## Questions and Comments?
+FunctionalColor supports macros that allow you to add keys to adjust the brightness of your theme while using the keyboard. To do this, first ensure that you have MACRO_FCUP and MACRO_FCDOWN in the enum near the beginning of the .ino.
+
+```c++
+enum { MACRO_VERSION_INFO,
+       MACRO_ANY,
+       MACRO_FCUP,
+       MACRO_FCDOWN
+     };
+```
+
+Assign M(MACRO_FCDOWN) and M(MACRO_FCUP) to the keys you would like to use to control the brightness of the active FunctionalColor instance.
+
+Finally, add the case statements to the macroAction function in your .ino file. If you're keeping the VERSION_INFO and ANY macros that come with the stock firmware, macroAction should look like this:
+
+```c++
+const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
+  switch (macroIndex) {
+
+  case MACRO_VERSION_INFO:
+    versionInfoMacro(keyState);
+    break;
+
+  case MACRO_ANY:
+    anyKeyMacro(keyState);
+    break;
+
+  // Add the following two case statements to make the FCUP/FCDOWN macros adjust brightness.
+  case MACRO_FCUP:
+    FCPlugin::brightnessUp(keyState);
+    break;
+   
+  case MACRO_FCDOWN:
+    FCPlugin::brightnessDown(keyState);
+    break;
+  }
+  return MACRO_NONE;
+}
+```
+
+
+## Questions or Comments?
 
 If you have any questions or comments please let me know.
 
-I want to give my thanks to @noseglasses for being tremendously helpful at making this plugin as efficient and user-friendly as it is. My early attempts at this consumed almost all the memory on the keyboard and this version should take about 4KB, which is a massive improvement.
+I want to give my thanks to @noseglasses for being tremendously helpful to me in making this plugin as efficient and user-friendly as it is. My early attempts at this consumed almost all the memory on the keyboard and this version should take about 4KB, which is a massive improvement.
 
 
 ## Dependencies
