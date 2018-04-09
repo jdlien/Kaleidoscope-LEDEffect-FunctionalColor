@@ -50,24 +50,25 @@ void LEDFunctionalColor::FCPlugin::themeSelect() {
 }
 
 template<typename IntType> void LEDFunctionalColor::FCPlugin::themeSelect(IntType themeID) {
-    // Switch block to specify themeid
+    // Switch block to specify themeid: Base, Default, Colorful, Mono, Duo
   switch(themeID) {
-      case 0:
+      case LEDFunctionalColor::Base:
         this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMap>);
         break;
 
-      case 1:
+      case LEDFunctionalColor::Mono:
         this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMapMono>);
         break;
 
-      case 2:
+      case LEDFunctionalColor::Duo:
         this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMapDuo>);
         break;
 
-      case 3:
+      case LEDFunctionalColor::Colorful:
         this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMapColorful>);
         break;
 
+      case LEDFunctionalColor::Default:
       default:
         this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMapDefault>);
   }
