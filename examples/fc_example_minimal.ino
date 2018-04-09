@@ -64,8 +64,6 @@ FC_START_COLOR_LIST(customColors)
  FC_NOCOLOR(Key_UpArrow)
 FC_END_COLOR_LIST
 
-//User friendly list of themes included with FunctionalColor. These just map to 0-5.
-enum { COLORMAP, MONOWHITE, DUOCOLOR, COLORFUL, DEFAULTCOLOR };
 
 // There are several ways you can make FunctionalColor instances.
 

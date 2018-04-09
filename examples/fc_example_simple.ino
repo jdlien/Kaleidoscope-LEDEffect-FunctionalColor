@@ -96,10 +96,6 @@ FC_START_COLOR_LIST(customColors)
 FC_END_COLOR_LIST
 
 
-//User friendly list of themes included with FunctionalColor. These just map to 0-5.
-enum { COLORMAP, MONOWHITE, DUOCOLOR, COLORFUL, DEFAULTCOLOR };
-
-
 // There are several ways you can make FunctionalColor instances.
 
 // No arguments are needed to use the default theme and brightness.
@@ -260,7 +256,7 @@ void setup() {
   // This applies our custom themes to funColor5 and funColor6
   FC_SET_THEME(funColor5, myTheme);
   FC_SET_THEME(funColor6, colorMapGreen);
-  
+
 } // end setup()
 
 // Run the firmware. Don't change anything past this line.
