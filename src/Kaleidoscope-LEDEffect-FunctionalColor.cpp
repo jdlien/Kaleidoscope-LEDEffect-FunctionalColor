@@ -3,14 +3,6 @@
 
 namespace kaleidoscope {
 
-LEDFunctionalColor::FCPlugin::FCPlugin(LEDFunctionalColor::FCPlugin::RGBLookupException rgbLookupExc, byte brightness)
-   : exceptionsLookup(rgbLookupExc)    
-{
-  assert(exceptionsLookup);
-  themeSelect();
-  brightnessSetting = brightness;
-}
-
 LEDFunctionalColor::FCPlugin::FCPlugin(byte brightness, LEDFunctionalColor::FCPlugin::RGBLookupException rgbLookupExc)
    : exceptionsLookup(rgbLookupExc)     
 {
@@ -20,10 +12,35 @@ LEDFunctionalColor::FCPlugin::FCPlugin(byte brightness, LEDFunctionalColor::FCPl
   brightnessSetting = brightness;
 }
 
+LEDFunctionalColor::FCPlugin::FCPlugin(LEDFunctionalColor::FCPlugin::RGBLookupException rgbLookupExc, byte brightness) {
+  FCPlugin(rgbLookupExc, brightness);
+}
+
+LEDFunctionalColor::FCPlugin::FCPlugin(byte brightness, LEDFunctionalColor::FCPlugin::RGBLookupException rgbLookupExc, int theme)
+   : exceptionsLookup(rgbLookupExc)     
+{
+  this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMapDefault>);
+  themeSelect(theme);
+  brightnessSetting = brightness;
+}
+
+
+LEDFunctionalColor::FCPlugin::FCPlugin(LEDFunctionalColor::FCPlugin::RGBLookupException rgbLookupExc, byte brightness, int theme) {
+ FCPlugin(brightness, rgbLookupExc, theme);
+}
+
+
 // Another constructor that uses the default theme  and allows an optional brightness.
 LEDFunctionalColor::FCPlugin::FCPlugin(byte brightness){
   // Switch block to specify themeid
   themeSelect();
+  brightnessSetting = brightness;
+}
+
+// Another constructor that uses the default theme  and allows an optional brightness.
+LEDFunctionalColor::FCPlugin::FCPlugin(byte brightness, int theme){
+  // Switch block to specify themeid
+  themeSelect(theme);
   brightnessSetting = brightness;
 }
 
@@ -32,9 +49,7 @@ void LEDFunctionalColor::FCPlugin::themeSelect() {
   this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMapDefault>);
 }
 
-/* This is removed as it's inefficient to specify all these themes that aren't being used.
-I may revisit this idea at a later time.
-void LEDFunctionalColor::FCPlugin::themeSelect(int themeID) {
+template<typename IntType> void LEDFunctionalColor::FCPlugin::themeSelect(IntType themeID) {
     // Switch block to specify themeid
   switch(themeID) {
       case 0:
@@ -55,9 +70,8 @@ void LEDFunctionalColor::FCPlugin::themeSelect(int themeID) {
 
       default:
         this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMapDefault>);
-  //}
+  }
 }
-*/
 
 void LEDFunctionalColor::FCPlugin::brightness(byte b) {
   brightnessSetting = b;

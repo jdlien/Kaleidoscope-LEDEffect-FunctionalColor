@@ -27,8 +27,14 @@ class FCPlugin : public LEDMode {
   
   FCPlugin(RGBLookupException rgbLookupExc, byte brightness = 210);
   FCPlugin(byte brightness, RGBLookupException rgbLookupExc);
-  // This is supposed to allow you to specify your own theme via an id.
+
+  // Optionally specify a theme right from the constructor using themeSelect
+  FCPlugin(byte brightness, RGBLookupException rgbLookupExc, int theme);
+  FCPlugin(RGBLookupException rgbLookupExc, byte brightness, int theme);
+
   FCPlugin(byte brightness = 210);
+
+  FCPlugin(byte brightness, int theme);
 
   void refresh(void);
 
@@ -39,6 +45,8 @@ class FCPlugin : public LEDMode {
   byte brightness();
 
   void themeSelect();
+
+  template<typename IntType> void themeSelect(IntType themeID);
 
   void thisBrightnessUp(uint8_t keyState);
   void thisBrightnessDown(uint8_t keyState);
@@ -75,6 +83,8 @@ class FCPlugin : public LEDMode {
 
 };//end class FCPlugin
 
+// List of themes. I can't actually make them the same as the actual theme name...
+enum { Base, Default, Colorful, Mono, Duo };
 
 // We use groupColorLookup to retrieve the colors for the color groups
 template<typename ColorMap> static cRGB groupColorLookup(const Key &k, bool &skip) {
