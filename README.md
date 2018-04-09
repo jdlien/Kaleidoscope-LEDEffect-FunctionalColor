@@ -38,18 +38,18 @@ and gain a full understanding of what is possible, but here is a summary.
 
 Declare FCPlugin instances in the following ways:
 ```c++
-// With no arguments to get the default theme.
+// With no arguments to get the default theme and brightness.
 kaleidoscope::LEDFunctionalColor::FCPlugin funColor1;
 
-// Specify a themeID (0-5) with optional brightness 0-255, and an optional colorList can follow.
-kaleidoscope::LEDFunctionalColor::FCPlugin funColor2(1, 200);
+// Specify an optional brightness 0-255, and an optional colorList can follow.
+kaleidoscope::LEDFunctionalColor::FCPlugin funColor2(200);
 
 // Specify only a override colorList defined previously, beginning with FC_START_COLOR_LIST(customColors)
 // See below for information on how to use override colorLists.
 kaleidoscope::LEDFunctionalColor::FCPlugin funColor3(FC_COLOR_LIST(customColors));
 
-//You can also specify the brightness and an optional theme if you want something other than the default.
-kaleidoscope::LEDFunctionalColor::FCPlugin funColor4(FC_COLOR_LIST(customColors), 255, DUOCOLOR);
+//You can also specify a colorList with the brightness after.
+kaleidoscope::LEDFunctionalColor::FCPlugin funColor4(FC_COLOR_LIST(customColors), 255);
 
 // You can create and use custom themes - these are applied later in the setup() part of this .ino
 kaleidoscope::LEDFunctionalColor::FCPlugin funColor5;
@@ -84,7 +84,7 @@ struct myTheme: public colorMapMono {
 };
 ````
 
-After creating your custom theme struct, apply it using setColorLookup() in the setup() function near the bottom of the .ino file as shown here.
+After creating your custom theme struct, apply it using FC_SET_THEME() in the setup() function near the bottom of the .ino file as shown here.
 
 ```c++
 void setup() {
@@ -94,10 +94,21 @@ void setup() {
     &funColor1,&funColor2,&funColor3,&funColor4,&funColor5,&funColor6
   );
 
-  // Here you can apply a custom colorMap to FunctionalColor instances.
-  // Replace "myTheme" with the name of your colorMap.
-  funColor5.setColorLookup(&kaleidoscope::LEDFunctionalColor::groupColorLookup<myTheme>);
-  funColor6.setColorLookup(&kaleidoscope::LEDFunctionalColor::groupColorLookup<colorMapGreen>);
+  // Use the FC_SET_THEME() to apply colorMaps here.
+  // If you aren't using namespace kaleidoscope::LEDFunctionalColor;
+  // prefix built-in themes with that namespace
+  // Here are all the defaults available:
+
+  // The default is already used without specifying it anyways, but it's here for completeness
+  FC_SET_THEME(funColor1, kaleidoscope::LEDFunctionalColor::colorMapDefault);
+  FC_SET_THEME(funColor2, kaleidoscope::LEDFunctionalColor::colorMapMono);
+  FC_SET_THEME(funColor3, kaleidoscope::LEDFunctionalColor::colorMapDuo);
+  FC_SET_THEME(funColor4, kaleidoscope::LEDFunctionalColor::colorMap);
+
+  // This applies our custom themes to funColor5 and funColor6
+  FC_SET_THEME(funColor5, myTheme);
+  FC_SET_THEME(funColor6, colorMapGreen);
+
 } // end setup()
 
 ```

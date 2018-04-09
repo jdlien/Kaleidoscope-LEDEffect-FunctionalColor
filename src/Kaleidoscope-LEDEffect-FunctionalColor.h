@@ -25,10 +25,10 @@ class FCPlugin : public LEDMode {
       mainColorLookup = rgbLookup;
   }
   
-  FCPlugin(RGBLookupException rgbLookupExc, byte brightness = 210, int themeID=99);
-  FCPlugin(int themeID, byte brightness, RGBLookupException rgbLookupExc);
+  FCPlugin(RGBLookupException rgbLookupExc, byte brightness = 210);
+  FCPlugin(byte brightness, RGBLookupException rgbLookupExc);
   // This is supposed to allow you to specify your own theme via an id.
-  FCPlugin(int themeID = 99, byte brightness = 210);
+  FCPlugin(byte brightness = 210);
 
   void refresh(void);
 
@@ -38,7 +38,7 @@ class FCPlugin : public LEDMode {
   //return current brightness
   byte brightness();
 
-  void themeSelect(int themeID);
+  void themeSelect();
 
   void thisBrightnessUp(uint8_t keyState);
   void thisBrightnessDown(uint8_t keyState);
@@ -339,6 +339,9 @@ struct colorMapDuo: public colorMap {
 #define FC_GROUPKEY(KEY) \
    case (KEY).flags << 8 | (KEY).keyCode:
 
+
+#define FC_SET_THEME(PLUGIN, COLOR_MAP) \
+   PLUGIN.setColorLookup(&kaleidoscope::LEDFunctionalColor::groupColorLookup<COLOR_MAP>);
 
 }//namespace LEDFunctionalColor
 
