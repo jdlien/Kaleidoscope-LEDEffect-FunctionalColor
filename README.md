@@ -193,9 +193,8 @@ FC_START_COLOR_LIST(customColors)
  FC_KEYCOLOR(M(MACRO_FCDOWN), cyan)
 FC_END_COLOR_LIST
 
-enum { COLORMAP, MONOWHITE, DUOCOLOR, COLORFUL, DEFAULTCOLOR };
-// Create a FunctionalColors instance using this new customColors colorList, with full brightness, based on the MONOWHITE theme.
-kaleidoscope::LEDFunctionalColor::FCPlugin funColorCustom(FC_COLOR_LIST(customColors), 255, MONOWHITE);
+// Create a FunctionalColors instance using this new customColors colorList, with full brightness.
+kaleidoscope::LEDFunctionalColor::FCPlugin funColorCustom(FC_COLOR_LIST(customColors), 255);
 ```
 
 Now you can add &funColorCustom to the Kaleidoscope.use() list to make it show up on your keyboard.
