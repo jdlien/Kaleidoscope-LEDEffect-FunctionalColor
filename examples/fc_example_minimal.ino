@@ -202,8 +202,8 @@ void setup() {
   // The default is already used without specifying it anyways, but it's here for completeness
   FC_SET_THEME(funColor1, kaleidoscope::LEDFunctionalColor::colorMapDefault);
   FC_SET_THEME(funColor2, kaleidoscope::LEDFunctionalColor::colorMapMono);
-  FC_SET_THEME(funColor3, kaleidoscope::LEDFunctionalColor::colorMapDuo);
-  FC_SET_THEME(funColor4, kaleidoscope::LEDFunctionalColor::colorMap);
+  // The themes are: colorMap, colorMapDefault, colorMapFruit, colorMapMono, colorMapDuo,
+  // colorMapPrincess, colorMapSea, colorMapFlower, colorMapKids, colorMapRedWhiteBlue.
 
   // This applies our custom themes to funColor5 and funColor6
   FC_SET_THEME(funColor5, myTheme);

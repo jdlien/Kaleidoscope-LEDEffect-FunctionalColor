@@ -55,7 +55,7 @@ void LEDFunctionalColor::FCPlugin::themeSelect() {
 }
 
 template<typename IntType> void LEDFunctionalColor::FCPlugin::themeSelect(IntType themeID) {
-    // Switch block to specify themeid: Base, Default, Colorful, Mono, Duo
+    // Switch block to specify theme
   switch(themeID) {
       case LEDFunctionalColor::Base:
         this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMap>);
@@ -69,9 +69,29 @@ template<typename IntType> void LEDFunctionalColor::FCPlugin::themeSelect(IntTyp
         this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMapDuo>);
         break;
 
-      case LEDFunctionalColor::Colorful:
-        this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMapColorful>);
+      case LEDFunctionalColor::Fruit:
+        this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMapFruit>);
         break;
+
+      case LEDFunctionalColor::Princess:
+        this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMapPrincess>);
+        break;
+
+      case LEDFunctionalColor::Sea:
+        this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMapSea>);
+        break;        
+
+      case LEDFunctionalColor::Flower:
+        this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMapFlower>);
+        break;  
+
+      case LEDFunctionalColor::Kids:
+        this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMapKids>);
+        break;  
+
+      case LEDFunctionalColor::RedWhiteBlue:
+        this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMapRedWhiteBlue>);
+        break;  
 
       case LEDFunctionalColor::Default:
       default:
