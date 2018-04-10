@@ -59,7 +59,10 @@ kaleidoscope::LEDFunctionalColor::FCPlugin funColor6(FC_COLOR_LIST(customColors)
 
 ```
 
-If you have extra Program RAM available (about 3kB at present), you can also use a shortcut to easily select a built-in theme in order to try it out.
+## Easily Initialize With Included Themes
+
+If you have extra Program memory available (about 3kB at present), you can use a shortcut to easily specify a built-in theme after the brightness.
+
 **Initializing with a theme is not recommended, as it is much less efficient**, but it makes it easy to try out and switch between included themes if you can spare the memory.
 
 To do this, specify a theme name (or an integer) after the brightness. These are within the kaleidosope::LEDFunctionalColor namespace and are
