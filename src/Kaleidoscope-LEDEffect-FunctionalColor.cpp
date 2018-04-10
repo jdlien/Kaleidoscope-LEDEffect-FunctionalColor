@@ -3,7 +3,7 @@
 
 namespace kaleidoscope {
 
-//With no arguments, themeSelect just sets the default theme.
+// themeDefault just sets the default theme.
 void LEDFunctionalColor::FCPlugin::themeDefault() {
   this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMapDefault>);
 }
