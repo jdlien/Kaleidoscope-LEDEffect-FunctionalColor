@@ -12,137 +12,6 @@ namespace kaleidoscope {
    
 namespace LEDFunctionalColor {
 
-class FCPlugin : public LEDMode {
- public:
-     
-  typedef cRGB (*RGBLookup)(const Key &, bool &skip);
-  //skip leaves the key "transparent" if set and doesn't change the color for this function.
-  //none continues to the next part of the color return function.
-  typedef cRGB (*RGBLookupException)(const Key &, bool &skip, bool &none);
-
-  // Allow the user/programmer to create or specify their own color lookup function
-  void setColorLookup(RGBLookup rgbLookup) {
-      mainColorLookup = rgbLookup;
-  }
-  
-  FCPlugin(RGBLookupException rgbLookupExc, byte brightness = 210);
-  FCPlugin(byte brightness, RGBLookupException rgbLookupExc);
-
-  // Optionally specify a theme right from the constructor using themeSelect
-  FCPlugin(byte brightness, RGBLookupException rgbLookupExc, int theme);
-  FCPlugin(RGBLookupException rgbLookupExc, byte brightness, int theme);
-
-  FCPlugin(byte brightness = 210);
-
-  FCPlugin(byte brightness, int theme);
-
-  void refresh(void);
-
-  // set brightness between 0-255
-  void brightness(byte b);
-
-  //return current brightness
-  byte brightness();
-
-  void themeSelect();
-
-  template<typename IntType> void themeSelect(IntType themeID);
-
-  void thisBrightnessUp(uint8_t keyState);
-  void thisBrightnessDown(uint8_t keyState);
-
-  static void brightnessUp(uint8_t keyState);
-  static void brightnessDown(uint8_t keyState);
-
-
-
-  private:
-  uint32_t last_layerState = 0;
-
-  RGBLookup mainColorLookup = nullptr;
-
-  static cRGB keyExceptionsLookup(const Key &k, bool &skip, bool &none) {
-    //if (k.keyCode == (Key_A).keyCode && k.flags == (Key_A).flags) return cyan;
-    none = true;
-    //this shouldn't do anything, but I have to return something... some default, I guess.
-    return nocolor;
-  }
-
-  RGBLookupException exceptionsLookup = keyExceptionsLookup;
-
-
-  protected:
-  // Default to 200 to hopefully avoid overloading people's USB ports.
-  byte brightnessSetting = 200;
-  // Pointer to the currently in-use instance of FC
-  static FCPlugin *lastFC;
-  void onActivate(void) final;
-  void update(void) final;
-  void setKeyLed(uint8_t r, uint8_t c);
-
-
-};//end class FCPlugin
-
-
-// We use groupColorLookup to retrieve the colors for the color groups
-template<typename ColorMap> static cRGB groupColorLookup(const Key &k, bool &skip) {
-  // If keys are a part of a larger group, they have precedence,
-  // unless they are set to skip
-  
-  if (isControl(k)) if (!isColorMatch(ColorMap::control, nocolor)) return ColorMap::control;
-  if (isGui(k)) if (!isColorMatch(ColorMap::gui, nocolor)) return ColorMap::gui;
-  if (isShift(k)) if (!isColorMatch(ColorMap::shift, nocolor)) return ColorMap::shift;
-  if (isAlt(k)) if (!isColorMatch(ColorMap::alt, nocolor)) return ColorMap::alt;
-
-  if (isMouseWheel(k)) if (!isColorMatch(ColorMap::mouseWheel, nocolor)) return ColorMap::mouseWheel;
-  if (isMouseButton(k)) if (!isColorMatch(ColorMap::mouseButton, nocolor)) return ColorMap::mouseButton;
-  if (isMouseWarp(k)) if (!isColorMatch(ColorMap::mouseWarp, nocolor)) return ColorMap::mouseWarp;
-  if (isMouseMove(k)) if (!isColorMatch(ColorMap::mouseMove, nocolor)) return ColorMap::mouseMove;
-  if ((Key_Escape).flags == k.flags && (Key_Escape).keyCode == k.keyCode)
-    if (!isColorMatch(ColorMap::escape, nocolor)) return ColorMap::escape;
-  if ((Key_Delete).flags == k.flags && (Key_Delete).keyCode == k.keyCode)
-    if (!isColorMatch(ColorMap::del, nocolor)) return ColorMap::del;
-
-
-  if (isAlpha(k)) if (!isColorMatch(ColorMap::alpha, nocolor)) return ColorMap::alpha;
-  if (isNumber(k)) if (!isColorMatch(ColorMap::number, nocolor)) return ColorMap::number;
-  if (isPunctuation(k)) if (!isColorMatch(ColorMap::punctuation, nocolor)) return ColorMap::punctuation; 
-  if (isFunction(k)) if (!isColorMatch(ColorMap::function, nocolor)) return ColorMap::function; 
-  if (isNavigation(k)) if (!isColorMatch(ColorMap::navigation, nocolor)) return ColorMap::navigation; 
-  if (isSystem(k)) if (!isColorMatch(ColorMap::system, nocolor)) return ColorMap::system;
-  if (isArrow(k)) if (!isColorMatch(ColorMap::arrow, nocolor)) return ColorMap::arrow; 
-  if (isKeypad(k)) if (!isColorMatch(ColorMap::keypad, nocolor)) return ColorMap::keypad; 
-  if (isMedia(k)) if (!isColorMatch(ColorMap::media, nocolor)) return ColorMap::media; 
-  if (isModifier(k)) if (!isColorMatch(ColorMap::modifier, nocolor)) return ColorMap::modifier; 
-  if (isMouse(k)) if (!isColorMatch(ColorMap::mouse, nocolor)) return ColorMap::mouse; 
-
-  // Individual keys that are important and unique enough to justify having their own members here.
-  if ((Key_Space).flags == k.flags && (Key_Space).keyCode == k.keyCode)
-    if (!isColorMatch(ColorMap::space, nocolor)) return ColorMap::space;
-  if ((Key_Enter).flags == k.flags && (Key_Enter).keyCode == k.keyCode)
-    if (!isColorMatch(ColorMap::enter, nocolor)) return ColorMap::enter;
-  if ((Key_Tab).flags == k.flags && (Key_Tab).keyCode == k.keyCode)
-    if (!isColorMatch(ColorMap::tab, nocolor)) return ColorMap::tab;
-  if ((Key_Backspace).flags == k.flags && (Key_Backspace).keyCode == k.keyCode)
-    if (!isColorMatch(ColorMap::backspace, nocolor)) return ColorMap::backspace;
-
-  if ((Key_LEDEffectNext).flags == k.flags && (Key_LEDEffectNext).keyCode == k.keyCode)
-    if (!isColorMatch(ColorMap::LEDEffectNext, nocolor)) return ColorMap::LEDEffectNext;
-
-  // For these ones, I need to know what their layers are... they might change from the default. This should work for layers 1, 2 or 3
-  if ( (ShiftToLayer(2)).flags == k.flags && ( (ShiftToLayer(1)).keyCode == k.keyCode || (ShiftToLayer(2)).keyCode == k.keyCode || (ShiftToLayer(3)).keyCode == k.keyCode) )
-    if (!isColorMatch(ColorMap::fn, nocolor)) return ColorMap::fn;
-  
-  // Should work for all LockLayer keys
-  if ( (LockLayer(1)).flags == k.flags && ( (LockLayer(1)).keyCode == k.keyCode || (LockLayer(1)).keyCode == k.keyCode) )
-    if (!isColorMatch(ColorMap::lock, nocolor)) return ColorMap::lock;
-
-
-  return ColorMap::defaultColor;
-
-}
-
-
 // The base colormap - no colors are set, so everything falls back to the default color.
 // You can subclass this and change defaultColor to make a new colorMap that is all one color.
 struct colorMap {
@@ -501,8 +370,221 @@ struct colorMapRedWhiteBlue: public colorMap {
 };
 
 
+
 // List of themes (without colorMap).
 enum { Base, Default, Fruit, Mono, Duo, Princess, Sea, Flower, Kids, RedWhiteBlue };
+
+
+
+// We use groupColorLookup to retrieve the colors for the color groups
+template<typename ColorMap> static cRGB groupColorLookup(const Key &k, bool &skip) {
+  // If keys are a part of a larger group, they have precedence,
+  // unless they are set to skip
+  
+  if (isControl(k)) if (!isColorMatch(ColorMap::control, nocolor)) return ColorMap::control;
+  if (isGui(k)) if (!isColorMatch(ColorMap::gui, nocolor)) return ColorMap::gui;
+  if (isShift(k)) if (!isColorMatch(ColorMap::shift, nocolor)) return ColorMap::shift;
+  if (isAlt(k)) if (!isColorMatch(ColorMap::alt, nocolor)) return ColorMap::alt;
+
+  if (isMouseWheel(k)) if (!isColorMatch(ColorMap::mouseWheel, nocolor)) return ColorMap::mouseWheel;
+  if (isMouseButton(k)) if (!isColorMatch(ColorMap::mouseButton, nocolor)) return ColorMap::mouseButton;
+  if (isMouseWarp(k)) if (!isColorMatch(ColorMap::mouseWarp, nocolor)) return ColorMap::mouseWarp;
+  if (isMouseMove(k)) if (!isColorMatch(ColorMap::mouseMove, nocolor)) return ColorMap::mouseMove;
+  if ((Key_Escape).flags == k.flags && (Key_Escape).keyCode == k.keyCode)
+    if (!isColorMatch(ColorMap::escape, nocolor)) return ColorMap::escape;
+  if ((Key_Delete).flags == k.flags && (Key_Delete).keyCode == k.keyCode)
+    if (!isColorMatch(ColorMap::del, nocolor)) return ColorMap::del;
+
+
+  if (isAlpha(k)) if (!isColorMatch(ColorMap::alpha, nocolor)) return ColorMap::alpha;
+  if (isNumber(k)) if (!isColorMatch(ColorMap::number, nocolor)) return ColorMap::number;
+  if (isPunctuation(k)) if (!isColorMatch(ColorMap::punctuation, nocolor)) return ColorMap::punctuation; 
+  if (isFunction(k)) if (!isColorMatch(ColorMap::function, nocolor)) return ColorMap::function; 
+  if (isNavigation(k)) if (!isColorMatch(ColorMap::navigation, nocolor)) return ColorMap::navigation; 
+  if (isSystem(k)) if (!isColorMatch(ColorMap::system, nocolor)) return ColorMap::system;
+  if (isArrow(k)) if (!isColorMatch(ColorMap::arrow, nocolor)) return ColorMap::arrow; 
+  if (isKeypad(k)) if (!isColorMatch(ColorMap::keypad, nocolor)) return ColorMap::keypad; 
+  if (isMedia(k)) if (!isColorMatch(ColorMap::media, nocolor)) return ColorMap::media; 
+  if (isModifier(k)) if (!isColorMatch(ColorMap::modifier, nocolor)) return ColorMap::modifier; 
+  if (isMouse(k)) if (!isColorMatch(ColorMap::mouse, nocolor)) return ColorMap::mouse; 
+
+  // Individual keys that are important and unique enough to justify having their own members here.
+  if ((Key_Space).flags == k.flags && (Key_Space).keyCode == k.keyCode)
+    if (!isColorMatch(ColorMap::space, nocolor)) return ColorMap::space;
+  if ((Key_Enter).flags == k.flags && (Key_Enter).keyCode == k.keyCode)
+    if (!isColorMatch(ColorMap::enter, nocolor)) return ColorMap::enter;
+  if ((Key_Tab).flags == k.flags && (Key_Tab).keyCode == k.keyCode)
+    if (!isColorMatch(ColorMap::tab, nocolor)) return ColorMap::tab;
+  if ((Key_Backspace).flags == k.flags && (Key_Backspace).keyCode == k.keyCode)
+    if (!isColorMatch(ColorMap::backspace, nocolor)) return ColorMap::backspace;
+
+  if ((Key_LEDEffectNext).flags == k.flags && (Key_LEDEffectNext).keyCode == k.keyCode)
+    if (!isColorMatch(ColorMap::LEDEffectNext, nocolor)) return ColorMap::LEDEffectNext;
+
+  // For these ones, I need to know what their layers are... they might change from the default. This should work for layers 1, 2 or 3
+  if ( (ShiftToLayer(2)).flags == k.flags && ( (ShiftToLayer(1)).keyCode == k.keyCode || (ShiftToLayer(2)).keyCode == k.keyCode || (ShiftToLayer(3)).keyCode == k.keyCode) )
+    if (!isColorMatch(ColorMap::fn, nocolor)) return ColorMap::fn;
+  
+  // Should work for all LockLayer keys
+  if ( (LockLayer(1)).flags == k.flags && ( (LockLayer(1)).keyCode == k.keyCode || (LockLayer(1)).keyCode == k.keyCode) )
+    if (!isColorMatch(ColorMap::lock, nocolor)) return ColorMap::lock;
+
+
+  return ColorMap::defaultColor;
+
+}
+
+
+class FCPlugin : public LEDMode {
+ public:
+     
+  typedef cRGB (*RGBLookup)(const Key &, bool &skip);
+  //skip leaves the key "transparent" if set and doesn't change the color for this function.
+  //none continues to the next part of the color return function.
+  typedef cRGB (*RGBLookupException)(const Key &, bool &skip, bool &none);
+
+  // Allow the user/programmer to create or specify their own color lookup function
+  void setColorLookup(RGBLookup rgbLookup) {
+      mainColorLookup = rgbLookup;
+  }
+  
+  inline FCPlugin(byte brightness, RGBLookupException rgbLookupExc)
+   : exceptionsLookup(rgbLookupExc)
+  {
+    themeDefault();
+    brightnessSetting = brightness;
+  }
+
+  inline FCPlugin(RGBLookupException rgbLookupExc, byte brightness = 210)
+   : exceptionsLookup(rgbLookupExc)
+  {
+    themeDefault();
+    brightnessSetting = brightness;
+  }
+
+  inline FCPlugin(byte brightness, RGBLookupException rgbLookupExc, int theme)
+   : exceptionsLookup(rgbLookupExc)     
+  {
+    themeSelect(theme);
+    brightnessSetting = brightness;
+  }
+
+
+  inline FCPlugin(RGBLookupException rgbLookupExc, byte brightness, int theme)
+   : exceptionsLookup(rgbLookupExc)
+  {
+    themeSelect(theme);
+    brightnessSetting = brightness;
+  }
+
+
+// Another constructor that uses the default theme  and allows an optional brightness.
+  inline FCPlugin(byte brightness = 210){
+  // Switch block to specify themeid
+    themeDefault();
+    brightnessSetting = brightness;
+  }
+
+// Another constructor that uses the default theme  and allows an optional brightness.
+  inline FCPlugin(byte brightness, int theme){
+  // Switch block to specify themeid
+    themeSelect(theme);
+    brightnessSetting = brightness;
+  }
+
+  template<typename IntType> void themeSelect(IntType themeID) {
+      // Switch block to specify theme
+    switch(themeID) {
+        case Base:
+          this->setColorLookup(&groupColorLookup<colorMap>);
+          break;
+
+        case Mono:
+          this->setColorLookup(&groupColorLookup<colorMapMono>);
+          break;
+
+        case Duo:
+          this->setColorLookup(&groupColorLookup<colorMapDuo>);
+          break;
+
+        case Fruit:
+          this->setColorLookup(&groupColorLookup<colorMapFruit>);
+          break;
+
+        case Princess:
+          this->setColorLookup(&groupColorLookup<colorMapPrincess>);
+          break;
+
+        case Sea:
+          this->setColorLookup(&groupColorLookup<colorMapSea>);
+          break;        
+
+        case Flower:
+          this->setColorLookup(&groupColorLookup<colorMapFlower>);
+          break;  
+
+        case Kids:
+          this->setColorLookup(&groupColorLookup<colorMapKids>);
+          break;  
+
+        case RedWhiteBlue:
+          this->setColorLookup(&groupColorLookup<colorMapRedWhiteBlue>);
+          break;  
+
+        case Default:
+        default:
+          this->setColorLookup(&groupColorLookup<colorMapDefault>);
+    }
+  }
+
+  void refresh(void);
+
+  // set brightness between 0-255
+  void brightness(byte b);
+
+  //return current brightness
+  byte brightness();
+
+  void themeDefault();
+
+  void thisBrightnessUp(uint8_t keyState);
+  void thisBrightnessDown(uint8_t keyState);
+
+  static void brightnessUp(uint8_t keyState);
+  static void brightnessDown(uint8_t keyState);
+
+
+
+  private:
+  uint32_t last_layerState = 0;
+
+  RGBLookup mainColorLookup = nullptr;
+
+  static cRGB keyExceptionsLookup(const Key &k, bool &skip, bool &none) {
+    //if (k.keyCode == (Key_A).keyCode && k.flags == (Key_A).flags) return cyan;
+    none = true;
+    //this shouldn't do anything, but I have to return something... some default, I guess.
+    return nocolor;
+  }
+
+  RGBLookupException exceptionsLookup = keyExceptionsLookup;
+
+
+  protected:
+  // Default to 200 to hopefully avoid overloading people's USB ports.
+  byte brightnessSetting = 200;
+  // Pointer to the currently in-use instance of FC
+  static FCPlugin *lastFC;
+  void onActivate(void) final;
+  void update(void) final;
+  void setKeyLed(uint8_t r, uint8_t c);
+
+
+};//end class FCPlugin
+
+
+
+
 
 
 // These macros allow a user to create an exceptions function that they can pass to FCPlugin when initializing it
