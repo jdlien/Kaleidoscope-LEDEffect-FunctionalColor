@@ -48,8 +48,8 @@ void LEDFunctionalColor::FCPlugin::setKeyLed(uint8_t r, uint8_t c) {
   auto color = exceptionsLookup(k, skip, none);
   // if there was no match, we continue to mainColorLookup
   if (none) {
-    if(!mainColorLookup) return; // could return a default color from exceptions here. color = defaultColor;
-    color = mainColorLookup(k, skip);
+    if(mainColorLookup) color = mainColorLookup(k, skip);
+    // Otherwise we return the defaultColor from exceptions (nocolor if no custom function is defined)  
   }
   if (skip) return;
   ::LEDControl.setCrgbAt(r, c, dim(color, brightnessSetting));
