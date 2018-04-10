@@ -48,7 +48,7 @@ void LEDFunctionalColor::FCPlugin::setKeyLed(uint8_t r, uint8_t c) {
   auto color = exceptionsLookup(k, skip, none);
   // if there was no match, we continue to mainColorLookup
   if (none) {
-    if(!mainColorLookup) return;
+    if(!mainColorLookup) return; // could return a default color from exceptions here. color = defaultColor;
     color = mainColorLookup(k, skip);
   }
   if (skip) return;

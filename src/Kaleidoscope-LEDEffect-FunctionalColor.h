@@ -16,42 +16,42 @@ namespace LEDFunctionalColor {
 // You can subclass this and change defaultColor to make a new colorMap that is all one color.
 struct colorMap {
   static constexpr cRGB defaultColor = dim(white, 120);
-  static constexpr cRGB shift = nocolor;
-  static constexpr cRGB control = nocolor;
+  static constexpr cRGB shift        = nocolor;
+  static constexpr cRGB control      = nocolor;
   //Command keys (macOS) or Windows Logo keys
-  static constexpr cRGB gui = nocolor;//dim(pink, 190);
-  static constexpr cRGB alt = nocolor;
+  static constexpr cRGB gui          = nocolor;//dim(pink, 190);
+  static constexpr cRGB alt          = nocolor;
   // Includes all the above modifiers
-  static constexpr cRGB modifier = nocolor;
+  static constexpr cRGB modifier     = nocolor;
 
-  static constexpr cRGB alpha = nocolor;
-  static constexpr cRGB number = nocolor;
-  static constexpr cRGB punctuation = nocolor;
-  static constexpr cRGB function = nocolor;
-  static constexpr cRGB navigation = nocolor;
-  static constexpr cRGB system = nocolor;
-  static constexpr cRGB arrow = nocolor;
-  static constexpr cRGB keypad = nocolor;
-  static constexpr cRGB media = nocolor;
+  static constexpr cRGB alpha        = nocolor;
+  static constexpr cRGB number       = nocolor;
+  static constexpr cRGB punctuation  = nocolor;
+  static constexpr cRGB function     = nocolor;
+  static constexpr cRGB navigation   = nocolor;
+  static constexpr cRGB system       = nocolor;
+  static constexpr cRGB arrow        = nocolor;
+  static constexpr cRGB keypad       = nocolor;
+  static constexpr cRGB media        = nocolor;
 
-  static constexpr cRGB mouseWheel = nocolor;
-  static constexpr cRGB mouseButton = nocolor;
-  static constexpr cRGB mouseWarp = nocolor;
-  static constexpr cRGB mouseMove = nocolor;
+  static constexpr cRGB mouseWheel   = nocolor;
+  static constexpr cRGB mouseButton  = nocolor;
+  static constexpr cRGB mouseWarp    = nocolor;
+  static constexpr cRGB mouseMove    = nocolor;
   // Includes all above mouse functions
-  static constexpr cRGB mouse = nocolor;
+  static constexpr cRGB mouse        = nocolor;
 
   // Important single keys
-  static constexpr cRGB space = nocolor;
-  static constexpr cRGB tab = nocolor;
-  static constexpr cRGB enter = nocolor;
-  static constexpr cRGB backspace = nocolor;
-  static constexpr cRGB escape = nocolor;
-  static constexpr cRGB del = nocolor;
-  static constexpr cRGB fn = nocolor;
+  static constexpr cRGB space        = nocolor;
+  static constexpr cRGB tab          = nocolor;
+  static constexpr cRGB enter        = nocolor;
+  static constexpr cRGB backspace    = nocolor;
+  static constexpr cRGB escape       = nocolor;
+  static constexpr cRGB del          = nocolor;
+  static constexpr cRGB fn           = nocolor;
   //Numlock or any use of lockLayer
-  static constexpr cRGB lock = nocolor;
-  static constexpr cRGB LEDEffectNext = nocolor;
+  static constexpr cRGB lock         = nocolor;
+  static constexpr cRGB LEDEffectNext= nocolor;
   // Where's the any key?
 
 };
@@ -59,10 +59,8 @@ struct colorMap {
 struct colorMapDefault : public colorMap {
   static constexpr cRGB shift = dim(darkseagreen, 190);
   static constexpr cRGB control = dim(lightskyblue, 190);
-  //Command keys (macOS) or Windows Logo keys
   static constexpr cRGB gui = dim(pink, 190);
   static constexpr cRGB alt = dim(forestgreen, 190);
-
   static constexpr cRGB alpha = dim(warmwhite, 110);
   static constexpr cRGB number = dim(white, 190);
   static constexpr cRGB punctuation = dim(gold, 190);
@@ -75,18 +73,14 @@ struct colorMapDefault : public colorMap {
   static constexpr cRGB mouseButton = dim(cyan, 240);
   static constexpr cRGB mouseWarp = dim(turquoise, 110);
   static constexpr cRGB mouseMove = dim(turquoise, 250);
-
   static constexpr cRGB media = dim(magenta, 200);
-
   static constexpr cRGB space = dim(white, 140);
   static constexpr cRGB tab = dim(white, 140);
   static constexpr cRGB enter = dim(white, 250);
-
   static constexpr cRGB backspace = dim(red, 140);
   static constexpr cRGB escape      = dim(red, 130);
   static constexpr cRGB del = dim(red, 255);
   static constexpr cRGB fn = dim(white, 250);
-  //Numlock or any use of lockLayer
   static constexpr cRGB lock = dim(purple, 190);
   static constexpr cRGB LEDEffectNext = dim(blue, 255);
 };
@@ -94,10 +88,8 @@ struct colorMapDefault : public colorMap {
 struct colorMapFruit : public colorMap {
   static constexpr cRGB shift = dim(darkseagreen, 190);
   static constexpr cRGB control = dim(purple, 255);
-  //Command keys (macOS) or Windows Logo keys
   static constexpr cRGB gui = dim(pink, 190);
   static constexpr cRGB alt = dim(forestgreen, 190);
-
   static constexpr cRGB alpha = dim(orange, 190);
   static constexpr cRGB number = dim(red, 190);
   static constexpr cRGB punctuation = dim(yellow, 190);
@@ -110,22 +102,17 @@ struct colorMapFruit : public colorMap {
   static constexpr cRGB mouseButton = dim(cyan, 240);
   static constexpr cRGB mouseWarp = dim(turquoise, 110);
   static constexpr cRGB mouseMove = dim(turquoise, 250);
-
   static constexpr cRGB media = dim(magenta, 200);
-
   static constexpr cRGB space = dim(white, 140);
   static constexpr cRGB tab = dim(white, 140);
   static constexpr cRGB enter = dim(white, 250);
-
   static constexpr cRGB backspace = dim(red, 140);
   static constexpr cRGB escape      = dim(red, 130);
   static constexpr cRGB del = dim(red, 255);
   static constexpr cRGB fn = dim(white, 250);
-  //Numlock or any use of lockLayer
   static constexpr cRGB lock = dim(purple, 190);
   static constexpr cRGB LEDEffectNext = dim(blue, 255);
 };
-
 
 // A subclass that is monochromatic... set base color and then adjust the brightness.
 struct colorMapMono: public colorMap {
@@ -478,19 +465,42 @@ class FCPlugin : public LEDMode {
   }
 
 
-// Another constructor that uses the default theme  and allows an optional brightness.
+  // Another constructor that uses the default theme  and allows an optional brightness.
   inline FCPlugin(byte brightness = 210){
   // Switch block to specify themeid
     themeDefault();
     brightnessSetting = brightness;
   }
 
-// Another constructor that uses the default theme  and allows an optional brightness.
+  // Another constructor that uses the default theme  and allows an optional brightness.
   inline FCPlugin(byte brightness, int theme){
   // Switch block to specify themeid
     themeSelect(theme);
     brightnessSetting = brightness;
   }
+
+  // Constructors that set no theme at all - can use this to save memory
+  // if you're assigning your own theme later or only using exceptions
+  inline FCPlugin(byte brightness = 210, bool notheme){
+  // Switch block to specify themeid
+    brightnessSetting = brightness;
+  }
+
+  inline FCPlugin(byte brightness, RGBLookupException rgbLookupExc, bool notheme)
+   : exceptionsLookup(rgbLookupExc)     
+  {
+    brightnessSetting = brightness;
+  }
+
+  inline FCPlugin(RGBLookupException rgbLookupExc, byte brightness, bool notheme)
+   : exceptionsLookup(rgbLookupExc)
+  {
+    brightnessSetting = brightness;
+  }
+
+  // Yet more constructors that can be used to set a default color.
+
+
 
   template<typename IntType> void themeSelect(IntType themeID) {
       // Switch block to specify theme
@@ -573,6 +583,9 @@ class FCPlugin : public LEDMode {
   protected:
   // Default to 200 to hopefully avoid overloading people's USB ports.
   byte brightnessSetting = 200;
+  // This is used when there's no mainColorLookup. Can I avoid using the memory if I don't need it, though?
+  // CRGB defaultColor = black;
+
   // Pointer to the currently in-use instance of FC
   static FCPlugin *lastFC;
   void onActivate(void) final;
@@ -605,6 +618,14 @@ class FCPlugin : public LEDMode {
    none = true; \
    return kaleidoscope::LEDFunctionalColor::nocolor; \
 }
+
+// You can use this in lieu of FC_END_COLOR_LIST to return a default color if you're not using any colorMap
+#define FC_END_COLOR_LIST_DEFAULT(DEFAULTCOLOR) \
+   } \
+   none = true; \
+   return DEFAULTCOLOR; \
+}
+
 
 #define FC_KEYCOLOR(KEY, COLOR) \
     case (KEY).flags << 8 | (KEY).keyCode: \
