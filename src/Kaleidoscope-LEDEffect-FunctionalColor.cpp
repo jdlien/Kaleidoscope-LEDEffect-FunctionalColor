@@ -4,14 +4,16 @@
 namespace kaleidoscope {
 
 LEDFunctionalColor::FCPlugin::FCPlugin(byte brightness, LEDFunctionalColor::FCPlugin::RGBLookupException rgbLookupExc)
-   : exceptionsLookup(rgbLookupExc)     
+   : exceptionsLookup(rgbLookupExc)
 {
   this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMapDefault>);
   themeSelect();
   brightnessSetting = brightness;
 }
 
-LEDFunctionalColor::FCPlugin::FCPlugin(LEDFunctionalColor::FCPlugin::RGBLookupException rgbLookupExc, byte brightness) {
+LEDFunctionalColor::FCPlugin::FCPlugin(LEDFunctionalColor::FCPlugin::RGBLookupException rgbLookupExc, byte brightness)
+   : exceptionsLookup(rgbLookupExc)
+{
   this->setColorLookup(&LEDFunctionalColor::groupColorLookup<LEDFunctionalColor::colorMapDefault>);
   themeSelect();
   brightnessSetting = brightness;
