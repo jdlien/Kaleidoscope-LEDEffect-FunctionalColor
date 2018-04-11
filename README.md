@@ -69,7 +69,7 @@ You can save memory by specifying "false" after your brightness setting, and no 
 kaleidoscope::LEDFunctionalColor::FCPlugin funColorSimple(FC_COLOR_LIST(customColors), 240, false);
 
 // We don't need the theme as we will apply our own later. We won't use a colorList here.
-kaleidoscope::LEDFunctionalColor::FCPlugin funColorSimple(240, false);
+kaleidoscope::LEDFunctionalColor::FCPlugin funColorCustom(240, false);
 ```
 
 
