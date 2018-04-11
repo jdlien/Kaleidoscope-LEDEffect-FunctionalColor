@@ -211,7 +211,7 @@ void setup() {
   // Next, tell Kaleidoscope which plugins you want to use.
   Kaleidoscope.use(
     // All FunctionalColor instances go here in the order you want them in
-    &funColor1,&funColor2,&funColor3,&funColor4,&funColor5,&funColor6,
+    &funColor1,&funColor2,&funColor3,&funColor4,&funColor5,&funColor6,&funColor7,&funColor8,
 
     // Useful Default Plugins
     &LEDControl,&Macros,&MouseKeys    
