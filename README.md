@@ -237,7 +237,7 @@ FC_START_COLOR_LIST(customColors)
 FC_END_COLOR_LIST
 
 
-// An example showing how to make a simple configuration with no theme and a default color of pink.
+// An example simple configuration with no theme and a default color of pink.
 // This is used in funColor7
 FC_START_COLOR_LIST(simpleColors)
  // Make homing keys yellow
