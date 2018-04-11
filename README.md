@@ -6,14 +6,15 @@ This plugin automatically colors groups of keys based on the current function of
 
 ##### Table of Contents  
 [Basic Use](#basic-use-of-functionalcolor)  
-[Advanced Usage](#advanced-usage)  
+[Easily Use Included Themes](#easily-use-included-themes)
+[Advanced Usage](#advanced-usage)
+[Using As Little Memory As Possible](#using-as-little-memory-as-possible)
 [Using Custom Themes](#using-custom-themes)  
 [Setting individual keys with FC_COLOR_LIST](#setting-individual-keys-with-fc_color_list)  
 [Brightness Control with Macros](#brightness-control-with-macros)  
 
 
 ## Basic Use of FunctionalColor
-
 To get started with FunctionalColor and use the default colors, you can just include the header,
 declare an instance using the `FCPlugin` class, and tell the firmware to use it.
 Configure your own colors for groups of keys inside setup():
@@ -28,6 +29,34 @@ void setup() {
   Kaleidoscope.use(&funColor);
 }
 ```
+
+
+## Easily Use Included Themes
+If you have extra Program memory available (about 3kB at present), you can use a shortcut to easily specify a built-in theme after the brightness.
+
+**Initializing with a theme is not recommended, as it is much less efficient**, but it makes it easy to try out and switch between included themes if you can spare the memory.
+
+To do this, specify a theme name (or an integer) after the brightness. These are within the kaleidosope::LEDFunctionalColor namespace and are
+Base, Default, Fruit, Mono, Duo, Princess, Sea, Flower, Kids, RedWhiteBlue
+```
+// Without using the LEDFunctionalColor namespace, specifying a theme looks like this
+kaleidoscope::LEDFunctionalColor::FCPlugin funColor1(240, kaleidoscope::LEDFunctionalColor::Fruit);
+
+// Add this line to make invocation much simpler since you don't need to specify the namespace
+using namespace kaleidosope::LEDFunctionalColor;
+
+FCPlugin funColor1(240, Fruit);
+FCPlugin funColor2(240, Mono);
+FCPlugin funColor3(240, Duo);
+FCPlugin funColor4(240, Princess);
+FCPlugin funColor5(240, Sea);
+
+//You can also specify a colorlist at the same time as an included theme
+FCPlugin funColor6(FC_COLOR_LIST(customColors), 240, Flower);
+FCPlugin funColor7(FC_COLOR_LIST(customColors), 240, Kids);
+FCPlugin funColor8(FC_COLOR_LIST(customColors), 240, RedWhiteBlue);
+```
+
 
 ## Advanced Usage
 FunctionalColor allows you to create completely custom themes, assigning any color
@@ -74,35 +103,7 @@ kaleidoscope::LEDFunctionalColor::FCPlugin funColorCustom(240, false);
 ```
 
 
-## Easily Initialize With Included Themes
-
-If you have extra Program memory available (about 3kB at present), you can use a shortcut to easily specify a built-in theme after the brightness.
-
-**Initializing with a theme is not recommended, as it is much less efficient**, but it makes it easy to try out and switch between included themes if you can spare the memory.
-
-To do this, specify a theme name (or an integer) after the brightness. These are within the kaleidosope::LEDFunctionalColor namespace and are
-Base, Default, Fruit, Mono, Duo, Princess, Sea, Flower, Kids, RedWhiteBlue
-```
-// Without using the LEDFunctionalColor namespace, specifying a theme looks like this
-kaleidoscope::LEDFunctionalColor::FCPlugin funColor1(240, kaleidoscope::LEDFunctionalColor::Fruit);
-
-// Add this line to make invocation much simpler since you don't need to specify the namespace
-using namespace kaleidosope::LEDFunctionalColor;
-
-FCPlugin funColor1(240, Fruit);
-FCPlugin funColor2(240, Mono);
-FCPlugin funColor3(240, Duo);
-FCPlugin funColor4(240, Princess);
-FCPlugin funColor5(240, Sea);
-
-//You can also specify a colorlist at the same time as an included theme
-FCPlugin funColor6(FC_COLOR_LIST(customColors), 240, Flower);
-FCPlugin funColor7(FC_COLOR_LIST(customColors), 240, Kids);
-FCPlugin funColor8(FC_COLOR_LIST(customColors), 240, RedWhiteBlue);
-```
-
 ## Using Custom Themes
-
 If you want to customize one of the included themes, make a subclass of colorMap or any theme struct that you want to use as a starting point. They are colorMap, colorMapDefault, colorMapFruit, colorMapMono, colorMapDuo, colorMapPrincess, colorMapSea, colorMapFlower, colorMapKids, colorMapRedWhiteBlue.
 
 Your colormap must be applied in the setup() function. (See Below).
@@ -205,7 +206,6 @@ LEDEffectNext // led key
 
 
 ## Setting individual keys with FC_COLOR_LIST
-
 If you want to set specific colors for individual keys that are not specified in the colorMap struct, you can use a set of included macros to create a custom color override function **before** you declare a FunctionalColors instance, then specify your colorList when you initialize FunctionalColor.
 
 Also, if you merely want a very simple configuration that is primarily one color with a few exceptions, you can create a colorList that ends with FC_END_COLOR_LIST_DEFAULT(color). Note that this default color will only be applied if you instantiate FCPlugin with "false" after the brightness, which prevents any theme from being applied.
@@ -261,7 +261,6 @@ Now you can add &funColorCustom to the Kaleidoscope.use() list to make it show u
 
 
 ## Brightness Control with Macros
-
 FunctionalColor supports macros that allow you to add keys to adjust the brightness of your theme while using the keyboard. To do this, first ensure that you have MACRO_FCUP and MACRO_FCDOWN in the enum near the beginning of the .ino.
 
 ```c++
@@ -303,13 +302,11 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
 
 
 ## Questions or Comments?
-
 If you have any questions or comments please let me know.
 
 I want to give my thanks to @noseglasses for being tremendously helpful to me in making this plugin as efficient and user-friendly as it is. My early attempts at this consumed almost all the memory on the keyboard and this version should take about 4KB, which is a massive improvement.
 
 
 ## Dependencies
-
 * [Kaleidoscope-LEDControl](https://github.com/keyboardio/Kaleidoscope-LEDControl)
 * [Kaleidoscope-MouseKeys](https://github.com/keyboardio/Kaleidoscope-MouseKeys)
