@@ -59,6 +59,7 @@ kaleidoscope::LEDFunctionalColor::FCPlugin funColor6(FC_COLOR_LIST(customColors)
 
 ```
 
+
 ## Using As Little Memory As Possible
 You can save memory by specifying `false` after your brightness setting, and no theme will be applied. This is useful if
 1. Your needs are simple, say, you only want to color a few keys or most keys will be the same color
