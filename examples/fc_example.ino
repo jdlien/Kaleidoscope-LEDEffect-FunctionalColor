@@ -237,6 +237,21 @@ FC_START_COLOR_LIST(customColors)
 FC_END_COLOR_LIST
 
 
+// An example showing how to make a simple configuration with no theme and a default color of pink.
+// This is used in funColor7
+FC_START_COLOR_LIST(simpleColors)
+ // Make homing keys yellow
+ FC_GROUPKEY(Key_A)
+ FC_GROUPKEY(Key_F)
+ FC_GROUPKEY(Key_J)
+ FC_KEYCOLOR(Key_Semicolon, yellow)
+ // Brightness macros
+ FC_GROUPKEY(M(MACRO_FCUP))
+ FC_KEYCOLOR(M(MACRO_FCDOWN), cyan)
+// If you want to specify a default color and you are not using a theme,
+// use FC_END_COLOR_LIST_DEFAULT and specify the default color for all keys not specified above.
+FC_END_COLOR_LIST_DEFAULT(pink)
+
 // There are several ways you can make FunctionalColor instances.
 
 // No arguments are needed to use the default theme and brightness.
@@ -256,6 +271,15 @@ FCPlugin funColor4(FC_COLOR_LIST(customColors), 255);
 FCPlugin funColor5;
 // Note that you can combine custom color overrides with a custom theme, demonstrated in funColor6
 FCPlugin funColor6(FC_COLOR_LIST(customColors));
+
+// This is how you explicitly specify NOT to use a theme
+// to save memory and make a simple configuration.
+FCPlugin funColor7(FC_COLOR_LIST(simpleColors), 220, false);
+
+// If you're making a custom theme to be applied later, you can also avoid specifying a theme
+// (to save memory) without specifying a colorList with the following:
+FCPlugin funColor8(220, false);
+
 
 //To create customize a theme, make a subclass of one of the themes in FunctionalColor.
 //They are colorMap, colorMapDefault, colorMapColorful, colorMapMono, colorMapDuo.
@@ -415,7 +439,7 @@ void setup() {
     &LEDOff,
 
     // All FunctionalColor instances go here in the order you want them in
-    &funColor1,&funColor2,&funColor3,&funColor4,&funColor5,&funColor6,
+    &funColor1,&funColor2,&funColor3,&funColor4,&funColor5,&funColor6,&funColor7,&funColor8,
 
     // The rainbow effect changes the color of all of the keyboard's keys at the same time
     // running through all the colors of the rainbow.
@@ -488,9 +512,10 @@ void setup() {
   // colorMapPrincess, colorMapSea, colorMapFlower, colorMapKids, colorMapRedWhiteBlue.
 
 
-  // This applies our custom themes to funColor5 and funColor6
+  // This applies our custom themes to funColor5, funColor6, and funColor8
   FC_SET_THEME(funColor5, myTheme);
   FC_SET_THEME(funColor6, colorMapGreen);
+  FC_SET_THEME(funColor8, colorMapGreen);
 
 
 } // end setup()

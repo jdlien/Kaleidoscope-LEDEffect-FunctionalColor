@@ -59,6 +59,20 @@ kaleidoscope::LEDFunctionalColor::FCPlugin funColor6(FC_COLOR_LIST(customColors)
 
 ```
 
+## Using As Little Memory As Possible
+You can save memory by specifying "false" after your brightness setting, and no theme will be applied. This is useful if
+1. Your needs are simple, say, you only want to color a few keys or most keys will be the same color
+2. You are creating and applying a custom theme and won't use the default theme anyways.
+
+```
+// Apply no theme to save memory. We will apply a colorList.
+kaleidoscope::LEDFunctionalColor::FCPlugin funColorSimple(FC_COLOR_LIST(customColors), 240, false);
+
+// We don't need the theme as we will apply our own later. We won't use a colorList here.
+kaleidoscope::LEDFunctionalColor::FCPlugin funColorSimple(240, false);
+```
+
+
 ## Easily Initialize With Included Themes
 
 If you have extra Program memory available (about 3kB at present), you can use a shortcut to easily specify a built-in theme after the brightness.
@@ -193,7 +207,9 @@ LEDEffectNext // led key
 
 If you want to set specific colors for individual keys that are not specified in the colorMap struct, you can use a set of included macros to create a custom color override function **before** you declare a FunctionalColors instance, then specify your colorList when you initialize FunctionalColor.
 
-The following example shows how this can be done.
+Also, if you merely want a very simple configuration that is primarily one color with a few exceptions, you can create a colorList that ends with FC_END_COLOR_LIST_DEFAULT(color). Note that this default color will only be applied if you instantiate FCPlugin with "false" after the brightness, which prevents any theme from being applied.
+
+The following examples show how these things can be done.
 Note that this example is done within the `kaleidoscope::LEDFunctionalColor` namespace -- add
 `using namespace kaleidoscope::LEDFunctionalColor;`
 to avoid needing to prefix colors and functions.
@@ -220,8 +236,24 @@ FC_START_COLOR_LIST(customColors)
  FC_KEYCOLOR(M(MACRO_FCDOWN), cyan)
 FC_END_COLOR_LIST
 
+
+// An example showing how to make a simple configuration with no theme and a default color of pink.
+// This is used in funColor7
+FC_START_COLOR_LIST(simpleColors)
+ // Make homing keys yellow
+ FC_GROUPKEY(Key_A)
+ FC_GROUPKEY(Key_F)
+ FC_GROUPKEY(Key_J)
+ FC_KEYCOLOR(Key_Semicolon, yellow)
+// If you want to specify a default color and you are not using a theme,
+// use FC_END_COLOR_LIST_DEFAULT and specify the default color for all keys not specified above.
+FC_END_COLOR_LIST_DEFAULT(pink)
+
 // Create a FunctionalColors instance using this new customColors colorList, with full brightness.
 kaleidoscope::LEDFunctionalColor::FCPlugin funColorCustom(FC_COLOR_LIST(customColors), 255);
+
+// This instance will not have a theme applied and will be pink except for the homing keys
+kaleidoscope::LEDFunctionalColor::FCPlugin funColorSimple(FC_COLOR_LIST(simpleColors), 255, false);
 ```
 
 Now you can add &funColorCustom to the Kaleidoscope.use() list to make it show up on your keyboard.
