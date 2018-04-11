@@ -408,8 +408,10 @@ template<typename ColorMap> static cRGB groupColorLookup(const Key &k, bool &ski
   if ((Key_LEDEffectNext).flags == k.flags && (Key_LEDEffectNext).keyCode == k.keyCode)
     if (!isColorMatch(ColorMap::LEDEffectNext, nocolor)) return ColorMap::LEDEffectNext;
 
-  // For these ones, I need to know what their layers are... they might change from the default. This should work for layers 1, 2 or 3
-  if ( (ShiftToLayer(2)).flags == k.flags && ( (ShiftToLayer(1)).keyCode == k.keyCode || (ShiftToLayer(2)).keyCode == k.keyCode || (ShiftToLayer(3)).keyCode == k.keyCode) )
+  // For these ones, I need to know what their layers are... they might change from the default.
+  // This should work for layers 1, 2 or 3
+  if ( (ShiftToLayer(2)).flags == k.flags && ( (ShiftToLayer(1)).keyCode == k.keyCode ||
+    (ShiftToLayer(2)).keyCode == k.keyCode || (ShiftToLayer(3)).keyCode == k.keyCode) )
     if (!isColorMatch(ColorMap::fn, nocolor)) return ColorMap::fn;
   
   // Should work for all LockLayer keys
@@ -481,7 +483,7 @@ class FCPlugin : public LEDMode {
 
   // Constructors that set no theme at all - can use this to save memory
   // if you're assigning your own theme later or only using exceptions
-  inline FCPlugin(byte brightness = 210, bool notheme){
+  inline FCPlugin(byte brightness, bool notheme){
   // Switch block to specify themeid
     brightnessSetting = brightness;
   }
