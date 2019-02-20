@@ -123,7 +123,7 @@ inline constexpr bool isLang(const Key& k) {
 inline constexpr bool isModifier(const Key& k) {
 	return ( k.flags == KEY_FLAGS &&
 		(k.keyCode == (Key_PcApplication).keyCode ||
-		(k.keyCode >= (Key_LeftControl).keyCode) && (k.keyCode <= (Key_RightGui).keyCode)) )?true:false;
+		((k.keyCode >= (Key_LeftControl).keyCode) && (k.keyCode <= (Key_RightGui).keyCode))) )?true:false;
 }
 
 //Keys that are subgroups of Modifier keys

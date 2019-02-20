@@ -247,23 +247,22 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   return MACRO_NONE;
 }
 
+KALEIDOSCOPE_INIT_PLUGINS(
+    
+    // All FunctionalColor themes you want go here in the order you want
+    funColor1,funColor2,funColor3,funColor4,funColor5,funColor6,funColor7,funColor8,
+
+    // Useful Default Plugins
+    BootGreetingEffect,LEDControl,NumPad,Macros,MouseKeys   
+);
+
 //This setup() function is where you set up any plugins.
 void setup() {
   // First, call Kaleidoscope's internal setup function
   Kaleidoscope.setup();
 
-  // Next, tell Kaleidoscope which plugins you want to use.
-  Kaleidoscope.use(
-    // All FunctionalColor themes you want go here in the order you want
-    &funColor1,&funColor2,&funColor3,&funColor4,&funColor5,&funColor6,&funColor7,&funColor8,
-
-    // Useful Default Plugins
-    &BootGreetingEffect,&LEDControl,&NumPad,&Macros,&MouseKeys    
-  );
-
   // Tell numPad plugin which keymap layer is your numpad layer
   NumPad.numPadLayer = NUMPAD;
-
 
   // Use the FC_SET_THEME() to apply colorMaps here.
   // If you aren't using namespace kaleidoscope::LEDFunctionalColor;
