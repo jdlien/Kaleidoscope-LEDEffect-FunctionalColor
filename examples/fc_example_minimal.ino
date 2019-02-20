@@ -203,20 +203,17 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   return MACRO_NONE;
 }
 
+KALEIDOSCOPE_INIT_PLUGINS(
+    funColor1,funColor2,funColor3,funColor4,funColor5,funColor6,funColor7,funColor8,
+
+    // Useful Default Plugins
+    LEDControl,Macros,MouseKeys   
+);
+
 //This setup() function is where you set up any plugins.
 void setup() {
   // First, call Kaleidoscope's internal setup function
   Kaleidoscope.setup();
-
-  // Next, tell Kaleidoscope which plugins you want to use.
-  Kaleidoscope.use(
-    // All FunctionalColor instances go here in the order you want them in
-    &funColor1,&funColor2,&funColor3,&funColor4,&funColor5,&funColor6,&funColor7,&funColor8,
-
-    // Useful Default Plugins
-    &LEDControl,&Macros,&MouseKeys    
-  );
-
 
   // Use the FC_SET_THEME() to apply colorMaps here.
   // If you aren't using namespace kaleidoscope::LEDFunctionalColor;

@@ -41,8 +41,8 @@ void LEDFunctionalColor::FCPlugin::brightnessDown(uint8_t keyState) {
   LEDFunctionalColor::FCPlugin::lastFC->thisBrightnessDown(keyState);
 }
 
-//setKeyLed accepts a Key position and sets it to the appropriate color from a lookup function
-void LEDFunctionalColor::FCPlugin::setKeyLed(uint8_t r, uint8_t c) {
+//refreshAt accepts a Key position and sets it to the appropriate color from a lookup function
+void LEDFunctionalColor::FCPlugin::refreshAt(byte r, byte c) {
   Key k = Layer.lookupOnActiveLayer(r, c);
   bool skip = false, none = false;
   auto color = exceptionsLookup(k, skip, none);
@@ -53,7 +53,7 @@ void LEDFunctionalColor::FCPlugin::setKeyLed(uint8_t r, uint8_t c) {
   }
   if (skip) return;
   ::LEDControl.setCrgbAt(r, c, dim(color, brightnessSetting));
-}// end setKeyLed()
+}// end refreshAt()
 
 LEDFunctionalColor::FCPlugin* LEDFunctionalColor::FCPlugin::lastFC;
 
@@ -63,8 +63,7 @@ void LEDFunctionalColor::FCPlugin::refresh(void) {
   // Loop through every row and column and set each LED based on its key's function
   for (uint8_t r = 0; r < ROWS; r++) {
     for (uint8_t c = 0; c < COLS; c++) {
-      Key k = Layer.lookupOnActiveLayer(r, c);
-      setKeyLed(r, c);
+      refreshAt(r, c);
     }
   }
   lastFC = this;
@@ -79,7 +78,7 @@ void LEDFunctionalColor::FCPlugin::onActivate(void) {
 
 //When the active layer is changed, update the colors.
 void LEDFunctionalColor::FCPlugin::update(void) {
-  uint8_t current_layerState = ::Layer_::getLayerState();
+  uint8_t current_layerState = Layer.getLayerState();
 
   // Only set the colors again if the active layer changed
   if (current_layerState != last_layerState) { this->refresh(); }

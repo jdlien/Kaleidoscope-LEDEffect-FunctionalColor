@@ -424,7 +424,7 @@ template<typename ColorMap> static cRGB groupColorLookup(const Key &k, bool &ski
 }
 
 
-class FCPlugin : public LEDMode {
+class FCPlugin : public kaleidoscope::plugin::LEDMode {
  public:
      
   typedef cRGB (*RGBLookup)(const Key &, bool &skip);
@@ -592,7 +592,7 @@ class FCPlugin : public LEDMode {
   static FCPlugin *lastFC;
   void onActivate(void) final;
   void update(void) final;
-  void setKeyLed(uint8_t r, uint8_t c);
+  void refreshAt(byte r, byte c) final;
 
 
 };//end class FCPlugin
