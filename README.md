@@ -24,10 +24,7 @@ Configure your own colors for groups of keys inside setup():
 #include <Kaleidoscope-LEDEffect-FunctionalColor.h>
 kaleidoscope::LEDFunctionalColor::FCPlugin funColor;
 
-void setup() {
-  Kaleidoscope.setup();
-  Kaleidoscope.use(&funColor);
-}
+KALEIDOSCOPE_INIT_PLUGINS(funColor)
 ```
 
 
@@ -130,12 +127,10 @@ struct myTheme: public colorMapMono {
 After creating your custom theme struct, apply it using FC_SET_THEME() in the setup() function near the bottom of the .ino file as shown here.
 
 ```c++
+KALEIDOSCOPE_INIT_PLUGINS(funColor1,funColor2,funColor3,funColor4,funColor5,funColor6)
+
 void setup() {
   Kaleidoscope.setup();
-  Kaleidoscope.use(
-    // All FunctionalColor instances go here in the order you want them in
-    &funColor1,&funColor2,&funColor3,&funColor4,&funColor5,&funColor6
-  );
 
   // Use the FC_SET_THEME() to apply colorMaps here.
   // If you aren't using namespace kaleidoscope::LEDFunctionalColor;
@@ -257,7 +252,7 @@ kaleidoscope::LEDFunctionalColor::FCPlugin funColorCustom(FC_COLOR_LIST(customCo
 kaleidoscope::LEDFunctionalColor::FCPlugin funColorSimple(FC_COLOR_LIST(simpleColors), 255, false);
 ```
 
-Now you can add &funColorCustom to the Kaleidoscope.use() list to make it show up on your keyboard.
+Now you can add funColorCustom to the KALEIDOSCOPE_INIT_PLUGINS() list to make it show up on your keyboard.
 
 
 ## Brightness Control with Macros
