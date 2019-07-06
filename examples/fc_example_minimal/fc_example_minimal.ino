@@ -6,8 +6,8 @@
 #include "Kaleidoscope-Macros.h"
 //Note that FunctionalColor already includes LEDControl and MouseKeys
 #include "Kaleidoscope-LEDEffect-FunctionalColor.h"
-//Add this line if you don't want to have to prefix colors and functions with kaleidoscope::LEDFunctionalColor
-using namespace kaleidoscope::LEDFunctionalColor;
+//Add this line if you don't want to have to prefix colors and functions with kaleidoscope::plugin::FunctionalColor
+
 
 // List of macros includes names for FC brightness controls
 enum { MACRO_FCUP, MACRO_FCDOWN };
@@ -83,30 +83,30 @@ FC_END_COLOR_LIST_DEFAULT(pink)
 // There are several ways you can make FunctionalColor instances.
 
 // No arguments are needed to use the default theme and brightness.
-FCPlugin funColor1;
+FunctionalColor funColor1;
 
 //You can specify an optional brightness 0-255, and an optional colorList can follow.
-FCPlugin funColor2(200);
+FunctionalColor funColor2(200);
 
 //You can specify only a color override list as shown above beginning with FC_START_COLOR_LIST(customColors)
-FCPlugin funColor3(FC_COLOR_LIST(customColors));
+FunctionalColor funColor3(FC_COLOR_LIST(customColors));
 
 //You can also specify a colorList with the brightness after.
-FCPlugin funColor4(FC_COLOR_LIST(customColors), 255);
+FunctionalColor funColor4(FC_COLOR_LIST(customColors), 255);
 
 // The last two examples will use custom themes - these are applied later in the setup() part of this .ino
 // Look near the bottom of this file to see how this is done.
-FCPlugin funColor5;
+FunctionalColor funColor5;
 // Note that you can combine custom color overrides with a custom theme, demonstrated in funColor6
-FCPlugin funColor6(FC_COLOR_LIST(customColors));
+FunctionalColor funColor6(FC_COLOR_LIST(customColors));
 
 // This is how you explicitly specify NOT to use a theme
 // to save memory and make a simple configuration.
-FCPlugin funColor7(FC_COLOR_LIST(simpleColors), 220, false);
+FunctionalColor funColor7(FC_COLOR_LIST(simpleColors), 220, false);
 
 // If you're making a custom theme to be applied later, you can also avoid specifying a theme
 // (to save memory) without specifying a colorList with the following:
-FCPlugin funColor8(220, false);
+FunctionalColor funColor8(220, false);
 
 
 //To create customize a theme, make a subclass of one of the themes in FunctionalColor.
@@ -193,11 +193,11 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   // These names must be in the macros enum near the beginning of this file.
   // Assign M(MACRO_FCUP) and M(MACRO_FCDOWN) to keys you'd like to use for this purpose.
   case MACRO_FCUP:
-    kaleidoscope::LEDFunctionalColor::FCPlugin::brightnessUp(keyState);
+    kaleidoscope::plugin::FunctionalColor::brightnessUp(keyState);
     break;
    
   case MACRO_FCDOWN:
-    kaleidoscope::LEDFunctionalColor::FCPlugin::brightnessDown(keyState);
+    kaleidoscope::plugin::FunctionalColor::brightnessDown(keyState);
     break;
   }
   return MACRO_NONE;

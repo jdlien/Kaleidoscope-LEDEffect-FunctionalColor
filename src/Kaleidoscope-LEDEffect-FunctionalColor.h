@@ -6,11 +6,9 @@
 #include "colors.h"
 #include "keygroups.h"
 
-//using namespace kaleidoscope::LEDFunctionalColor;
-
 namespace kaleidoscope {
    
-namespace LEDFunctionalColor {
+namespace plugin {
 
 // The base colormap - no colors are set, so everything falls back to the default color.
 // You can subclass this and change defaultColor to make a new colorMap that is all one color.
@@ -424,7 +422,7 @@ template<typename ColorMap> static cRGB groupColorLookup(const Key &k, bool &ski
 }
 
 
-class FCPlugin : public kaleidoscope::plugin::LEDMode {
+class FunctionalColor : public LEDMode {
  public:
      
   typedef cRGB (*RGBLookup)(const Key &, bool &skip);
@@ -437,21 +435,21 @@ class FCPlugin : public kaleidoscope::plugin::LEDMode {
       mainColorLookup = rgbLookup;
   }
   
-  inline FCPlugin(byte brightness, RGBLookupException rgbLookupExc)
+  inline FunctionalColor(byte brightness, RGBLookupException rgbLookupExc)
    : exceptionsLookup(rgbLookupExc)
   {
     themeDefault();
     brightnessSetting = brightness;
   }
 
-  inline FCPlugin(RGBLookupException rgbLookupExc, byte brightness = 210)
+  inline FunctionalColor(RGBLookupException rgbLookupExc, byte brightness = 210)
    : exceptionsLookup(rgbLookupExc)
   {
     themeDefault();
     brightnessSetting = brightness;
   }
 
-  inline FCPlugin(byte brightness, RGBLookupException rgbLookupExc, int theme)
+  inline FunctionalColor(byte brightness, RGBLookupException rgbLookupExc, int theme)
    : exceptionsLookup(rgbLookupExc)     
   {
     themeSelect(theme);
@@ -459,7 +457,7 @@ class FCPlugin : public kaleidoscope::plugin::LEDMode {
   }
 
 
-  inline FCPlugin(RGBLookupException rgbLookupExc, byte brightness, int theme)
+  inline FunctionalColor(RGBLookupException rgbLookupExc, byte brightness, int theme)
    : exceptionsLookup(rgbLookupExc)
   {
     themeSelect(theme);
@@ -468,14 +466,14 @@ class FCPlugin : public kaleidoscope::plugin::LEDMode {
 
 
   // Another constructor that uses the default theme  and allows an optional brightness.
-  inline FCPlugin(byte brightness = 210){
+  inline FunctionalColor(byte brightness = 210){
   // Switch block to specify themeid
     themeDefault();
     brightnessSetting = brightness;
   }
 
   // Another constructor that uses the default theme  and allows an optional brightness.
-  inline FCPlugin(byte brightness, int theme){
+  inline FunctionalColor(byte brightness, int theme){
   // Switch block to specify themeid
     themeSelect(theme);
     brightnessSetting = brightness;
@@ -483,18 +481,18 @@ class FCPlugin : public kaleidoscope::plugin::LEDMode {
 
   // Constructors that set no theme at all - can use this to save memory
   // if you're assigning your own theme later or only using exceptions
-  inline FCPlugin(byte brightness, bool notheme){
+  inline FunctionalColor(byte brightness, bool notheme){
   // Switch block to specify themeid
     brightnessSetting = brightness;
   }
 
-  inline FCPlugin(byte brightness, RGBLookupException rgbLookupExc, bool notheme)
+  inline FunctionalColor(byte brightness, RGBLookupException rgbLookupExc, bool notheme)
    : exceptionsLookup(rgbLookupExc)     
   {
     brightnessSetting = brightness;
   }
 
-  inline FCPlugin(RGBLookupException rgbLookupExc, byte brightness, bool notheme)
+  inline FunctionalColor(RGBLookupException rgbLookupExc, byte brightness, bool notheme)
    : exceptionsLookup(rgbLookupExc)
   {
     brightnessSetting = brightness;
@@ -589,20 +587,20 @@ class FCPlugin : public kaleidoscope::plugin::LEDMode {
   // CRGB defaultColor = black;
 
   // Pointer to the currently in-use instance of FC
-  static FCPlugin *lastFC;
+  static FunctionalColor *lastFC;
   void onActivate(void) final;
   void update(void) final;
   void refreshAt(byte r, byte c) final;
 
 
-};//end class FCPlugin
+};//end class FunctionalColor
 
 
 
 
 
 
-// These macros allow a user to create an exceptions function that they can pass to FCPlugin when initializing it
+// These macros allow a user to create an exceptions function that they can pass to FunctionalColor when initializing it
 
 #define FC_COLOR_LIST(ID) cRGBLookup_##ID
 
@@ -613,12 +611,12 @@ class FCPlugin : public kaleidoscope::plugin::LEDMode {
 #define FC_NOCOLOR(KEY) \
     case (KEY).flags << 8 | (KEY).keyCode: \
        skip = true; \
-       return kaleidoscope::LEDFunctionalColor::nocolor; // could return any color as a dummy
+       return plugin::nocolor; // could return any color as a dummy
 
 #define FC_END_COLOR_LIST \
    } \
    none = true; \
-   return kaleidoscope::LEDFunctionalColor::nocolor; \
+   return plugin::nocolor; \
 }
 
 // You can use this in lieu of FC_END_COLOR_LIST to return a default color if you're not using any colorMap
@@ -638,8 +636,8 @@ class FCPlugin : public kaleidoscope::plugin::LEDMode {
 
 
 #define FC_SET_THEME(PLUGIN, COLOR_MAP) \
-   PLUGIN.setColorLookup(&kaleidoscope::LEDFunctionalColor::groupColorLookup<COLOR_MAP>);
+   PLUGIN.setColorLookup(&plugin::groupColorLookup<COLOR_MAP>);
 
-}//namespace LEDFunctionalColor
+}//namespace plugin
 
 }//namespace kaleidoscope
