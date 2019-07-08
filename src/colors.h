@@ -2,6 +2,7 @@
 
 namespace kaleidoscope {
 namespace plugin {
+namespace FunctionalColorStuff {
 
 // A special color that serves, in some cases, as an "index color" and basically means, "skip this, return the next in line".
 // Since colors under 18 or so are equivalent to LED off, this would otherwise be equivalent to black anyways
@@ -187,5 +188,6 @@ inline constexpr bool isColorMatch(cRGB color1, cRGB color2) {
   return (color1.r == color2.r && color1.g == color2.g && color1.b == color2.b)?true:false;
 }
 
+} // namespace FunctionalColorStuff
 } // namespace plugin
 } // namespace kaleidoscope

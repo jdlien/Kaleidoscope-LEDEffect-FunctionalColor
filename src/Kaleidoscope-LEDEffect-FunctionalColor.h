@@ -9,349 +9,353 @@
 namespace kaleidoscope {
    
 namespace plugin {
+   
+namespace FunctionalColorStuff {
+
+#define FC_COLOR_FUNC __attribute__((always_inline)) static constexpr 
 
 // The base colormap - no colors are set, so everything falls back to the default color.
 // You can subclass this and change defaultColor to make a new colorMap that is all one color.
 struct colorMap {
-  static constexpr cRGB defaultColor = dim(white, 120);
-  static constexpr cRGB shift        = nocolor;
-  static constexpr cRGB control      = nocolor;
+  FC_COLOR_FUNC cRGB defaultColor()  { return dim(white, 120); }
+  FC_COLOR_FUNC cRGB shift()         { return nocolor; }
+  FC_COLOR_FUNC cRGB control()       { return nocolor; }
   //Command keys (macOS) or Windows Logo keys
-  static constexpr cRGB gui          = nocolor;//dim(pink, 190);
-  static constexpr cRGB alt          = nocolor;
+  FC_COLOR_FUNC cRGB gui()           { return nocolor; }//dim(pink, 190);
+  FC_COLOR_FUNC cRGB alt()           { return nocolor; }
   // Includes all the above modifiers
-  static constexpr cRGB modifier     = nocolor;
+  FC_COLOR_FUNC cRGB modifier()      { return nocolor; }
 
-  static constexpr cRGB alpha        = nocolor;
-  static constexpr cRGB number       = nocolor;
-  static constexpr cRGB punctuation  = nocolor;
-  static constexpr cRGB function     = nocolor;
-  static constexpr cRGB navigation   = nocolor;
-  static constexpr cRGB system       = nocolor;
-  static constexpr cRGB arrow        = nocolor;
-  static constexpr cRGB keypad       = nocolor;
-  static constexpr cRGB media        = nocolor;
+  FC_COLOR_FUNC cRGB alpha()         { return nocolor; }
+  FC_COLOR_FUNC cRGB number()        { return nocolor; }
+  FC_COLOR_FUNC cRGB punctuation()   { return nocolor; }
+  FC_COLOR_FUNC cRGB function()      { return nocolor; }
+  FC_COLOR_FUNC cRGB navigation()    { return nocolor; }
+  FC_COLOR_FUNC cRGB system()        { return nocolor; }
+  FC_COLOR_FUNC cRGB arrow()         { return nocolor; }
+  FC_COLOR_FUNC cRGB keypad()        { return nocolor; }
+  FC_COLOR_FUNC cRGB media()         { return nocolor; }
 
-  static constexpr cRGB mouseWheel   = nocolor;
-  static constexpr cRGB mouseButton  = nocolor;
-  static constexpr cRGB mouseWarp    = nocolor;
-  static constexpr cRGB mouseMove    = nocolor;
+  FC_COLOR_FUNC cRGB mouseWheel()    { return nocolor; }
+  FC_COLOR_FUNC cRGB mouseButton()   { return nocolor; }
+  FC_COLOR_FUNC cRGB mouseWarp()     { return nocolor; }
+  FC_COLOR_FUNC cRGB mouseMove()     { return nocolor; }
   // Includes all above mouse functions
-  static constexpr cRGB mouse        = nocolor;
+  FC_COLOR_FUNC cRGB mouse()         { return nocolor; }
 
   // Important single keys
-  static constexpr cRGB space        = nocolor;
-  static constexpr cRGB tab          = nocolor;
-  static constexpr cRGB enter        = nocolor;
-  static constexpr cRGB backspace    = nocolor;
-  static constexpr cRGB escape       = nocolor;
-  static constexpr cRGB del          = nocolor;
-  static constexpr cRGB fn           = nocolor;
+  FC_COLOR_FUNC cRGB space()         { return nocolor; }
+  FC_COLOR_FUNC cRGB tab()           { return nocolor; }
+  FC_COLOR_FUNC cRGB enter()         { return nocolor; }
+  FC_COLOR_FUNC cRGB backspace()     { return nocolor; }
+  FC_COLOR_FUNC cRGB escape()        { return nocolor; }
+  FC_COLOR_FUNC cRGB del()           { return nocolor; }
+  FC_COLOR_FUNC cRGB fn()            { return nocolor; }
   //Numlock or any use of lockLayer
-  static constexpr cRGB lock         = nocolor;
-  static constexpr cRGB LEDEffectNext= nocolor;
+  FC_COLOR_FUNC cRGB lock()          { return nocolor; }
+  FC_COLOR_FUNC cRGB LEDEffectNext() { return nocolor; }
   // Where's the any key?
 
 };
 
 struct colorMapDefault : public colorMap {
-  static constexpr cRGB shift = dim(darkseagreen, 190);
-  static constexpr cRGB control = dim(lightskyblue, 190);
-  static constexpr cRGB gui = dim(pink, 190);
-  static constexpr cRGB alt = dim(forestgreen, 190);
-  static constexpr cRGB alpha = dim(warmwhite, 110);
-  static constexpr cRGB number = dim(white, 190);
-  static constexpr cRGB punctuation = dim(gold, 190);
-  static constexpr cRGB function = dim(red, 190);
-  static constexpr cRGB navigation = dim(yellow, 190);
-  static constexpr cRGB system = dim(orangered, 255);
-  static constexpr cRGB arrow = dim(white, 200);
-  static constexpr cRGB keypad = dim(green, 190);
-  static constexpr cRGB mouseWheel = dim(cyan, 190);
-  static constexpr cRGB mouseButton = dim(cyan, 240);
-  static constexpr cRGB mouseWarp = dim(turquoise, 110);
-  static constexpr cRGB mouseMove = dim(turquoise, 250);
-  static constexpr cRGB media = dim(magenta, 200);
-  static constexpr cRGB space = dim(white, 140);
-  static constexpr cRGB tab = dim(white, 140);
-  static constexpr cRGB enter = dim(white, 250);
-  static constexpr cRGB backspace = dim(red, 140);
-  static constexpr cRGB escape      = dim(red, 130);
-  static constexpr cRGB del = dim(red, 255);
-  static constexpr cRGB fn = dim(white, 250);
-  static constexpr cRGB lock = dim(purple, 190);
-  static constexpr cRGB LEDEffectNext = dim(blue, 255);
+  FC_COLOR_FUNC cRGB shift()         { return dim(darkseagreen, 190); }
+  FC_COLOR_FUNC cRGB control()       { return dim(lightskyblue, 190); }
+  FC_COLOR_FUNC cRGB gui()           { return dim(pink, 190); }
+  FC_COLOR_FUNC cRGB alt()           { return dim(forestgreen, 190); }
+  FC_COLOR_FUNC cRGB alpha()         { return dim(warmwhite, 110); }
+  FC_COLOR_FUNC cRGB number()        { return dim(white, 190); }
+  FC_COLOR_FUNC cRGB punctuation()   { return dim(gold, 190); }
+  FC_COLOR_FUNC cRGB function()      { return dim(red, 190); }
+  FC_COLOR_FUNC cRGB navigation()    { return dim(yellow, 190); }
+  FC_COLOR_FUNC cRGB system()        { return dim(orangered, 255); }
+  FC_COLOR_FUNC cRGB arrow()         { return dim(white, 200); }
+  FC_COLOR_FUNC cRGB keypad()        { return dim(green, 190); }
+  FC_COLOR_FUNC cRGB mouseWheel()    { return dim(cyan, 190); }
+  FC_COLOR_FUNC cRGB mouseButton()   { return dim(cyan, 240); }
+  FC_COLOR_FUNC cRGB mouseWarp()     { return dim(turquoise, 110); }
+  FC_COLOR_FUNC cRGB mouseMove()     { return dim(turquoise, 250); }
+  FC_COLOR_FUNC cRGB media()         { return dim(magenta, 200); }
+  FC_COLOR_FUNC cRGB space()         { return dim(white, 140); }
+  FC_COLOR_FUNC cRGB tab()           { return dim(white, 140); }
+  FC_COLOR_FUNC cRGB enter()         { return dim(white, 250); }
+  FC_COLOR_FUNC cRGB backspace()     { return dim(red, 140); }
+  FC_COLOR_FUNC cRGB escape()        { return dim(red, 130); }
+  FC_COLOR_FUNC cRGB del()           { return dim(red, 255); }
+  FC_COLOR_FUNC cRGB fn()            { return dim(white, 250); }
+  FC_COLOR_FUNC cRGB lock()          { return dim(purple, 190); }
+  FC_COLOR_FUNC cRGB LEDEffectNext() { return dim(blue, 255); }
 };
 
 struct colorMapFruit : public colorMap {
-  static constexpr cRGB shift = dim(darkseagreen, 190);
-  static constexpr cRGB control = dim(purple, 255);
-  static constexpr cRGB gui = dim(pink, 190);
-  static constexpr cRGB alt = dim(forestgreen, 190);
-  static constexpr cRGB alpha = dim(orange, 190);
-  static constexpr cRGB number = dim(red, 190);
-  static constexpr cRGB punctuation = dim(yellow, 190);
-  static constexpr cRGB function = dim(white, 190);
-  static constexpr cRGB navigation = dim(yellow, 190);
-  static constexpr cRGB system = dim(orangered, 255);
-  static constexpr cRGB arrow = dim(white, 200);
-  static constexpr cRGB keypad = dim(green, 190);
-  static constexpr cRGB mouseWheel = dim(cyan, 190);
-  static constexpr cRGB mouseButton = dim(cyan, 240);
-  static constexpr cRGB mouseWarp = dim(turquoise, 110);
-  static constexpr cRGB mouseMove = dim(turquoise, 250);
-  static constexpr cRGB media = dim(magenta, 200);
-  static constexpr cRGB space = dim(white, 140);
-  static constexpr cRGB tab = dim(white, 140);
-  static constexpr cRGB enter = dim(white, 250);
-  static constexpr cRGB backspace = dim(red, 140);
-  static constexpr cRGB escape      = dim(red, 130);
-  static constexpr cRGB del = dim(red, 255);
-  static constexpr cRGB fn = dim(white, 250);
-  static constexpr cRGB lock = dim(purple, 190);
-  static constexpr cRGB LEDEffectNext = dim(blue, 255);
+  FC_COLOR_FUNC cRGB shift()         { return dim(darkseagreen, 190); }
+  FC_COLOR_FUNC cRGB control()       { return dim(purple, 255); }
+  FC_COLOR_FUNC cRGB gui()           { return dim(pink, 190); }
+  FC_COLOR_FUNC cRGB alt()           { return dim(forestgreen, 190); }
+  FC_COLOR_FUNC cRGB alpha()         { return dim(orange, 190); }
+  FC_COLOR_FUNC cRGB number()        { return dim(red, 190); }
+  FC_COLOR_FUNC cRGB punctuation()   { return dim(yellow, 190); }
+  FC_COLOR_FUNC cRGB function()      { return dim(white, 190); }
+  FC_COLOR_FUNC cRGB navigation()    { return dim(yellow, 190); }
+  FC_COLOR_FUNC cRGB system()        { return dim(orangered, 255); }
+  FC_COLOR_FUNC cRGB arrow()         { return dim(white, 200); }
+  FC_COLOR_FUNC cRGB keypad()        { return dim(green, 190); }
+  FC_COLOR_FUNC cRGB mouseWheel()    { return dim(cyan, 190); }
+  FC_COLOR_FUNC cRGB mouseButton()   { return dim(cyan, 240); }
+  FC_COLOR_FUNC cRGB mouseWarp()     { return dim(turquoise, 110); }
+  FC_COLOR_FUNC cRGB mouseMove()     { return dim(turquoise, 250); }
+  FC_COLOR_FUNC cRGB media()         { return dim(magenta, 200); }
+  FC_COLOR_FUNC cRGB space()         { return dim(white, 140); }
+  FC_COLOR_FUNC cRGB tab()           { return dim(white, 140); }
+  FC_COLOR_FUNC cRGB enter()         { return dim(white, 250); }
+  FC_COLOR_FUNC cRGB backspace()     { return dim(red, 140); }
+  FC_COLOR_FUNC cRGB escape()        { return dim(red, 130); }
+  FC_COLOR_FUNC cRGB del()           { return dim(red, 255); }
+  FC_COLOR_FUNC cRGB fn()            { return dim(white, 250); }
+  FC_COLOR_FUNC cRGB lock()          { return dim(purple, 190); }
+  FC_COLOR_FUNC cRGB LEDEffectNext() { return dim(blue, 255); }
 };
 
 // A subclass that is monochromatic... set base color and then adjust the brightness.
 struct colorMapMono: public colorMap {
   // baseColor allows you to use a base color that just changes in brightness
-  static constexpr cRGB baseColor   = white;
-  static constexpr cRGB defaultColor= dim(baseColor, 100);
-  static constexpr cRGB shift       = nocolor;
-  static constexpr cRGB control     = nocolor;
-  static constexpr cRGB gui         = nocolor;
-  static constexpr cRGB alt         = nocolor;
-  static constexpr cRGB modifier    = dim(baseColor, 130);
-  static constexpr cRGB alpha       = dim(baseColor, 80);
-  static constexpr cRGB number      = dim(baseColor, 100);
-  static constexpr cRGB punctuation = dim(baseColor, 120);
-  static constexpr cRGB function    = dim(baseColor, 150);
-  static constexpr cRGB navigation  = dim(baseColor, 180);
-  static constexpr cRGB system      = dim(baseColor, 50);
-  static constexpr cRGB arrow       = dim(baseColor, 250);
-  static constexpr cRGB keypad      = dim(baseColor, 230);
-  static constexpr cRGB media       = dim(baseColor, 250);
-  static constexpr cRGB mouseWheel  = nocolor;
-  static constexpr cRGB mouseButton = nocolor;
-  static constexpr cRGB mouseWarp   = nocolor;
-  static constexpr cRGB mouseMove   = nocolor;
-  static constexpr cRGB mouse       = dim(baseColor, 220);
-  static constexpr cRGB space       = dim(baseColor, 100);
-  static constexpr cRGB tab         = dim(baseColor, 100);
-  static constexpr cRGB enter       = dim(baseColor, 255);
-  static constexpr cRGB backspace   = dim(baseColor, 100);
-  static constexpr cRGB escape      = dim(baseColor, 100);
-  static constexpr cRGB del         = dim(baseColor, 255);
-  static constexpr cRGB fn          = dim(baseColor, 255);
-  static constexpr cRGB lock        = dim(baseColor, 255);
-  static constexpr cRGB LEDEffectNext=dim(baseColor, 255);
+  FC_COLOR_FUNC cRGB baseColor()     { return white; }
+  FC_COLOR_FUNC cRGB defaultColor()  { return dim(baseColor(), 100); }
+  FC_COLOR_FUNC cRGB shift()         { return nocolor; }
+  FC_COLOR_FUNC cRGB control()       { return nocolor; }
+  FC_COLOR_FUNC cRGB gui()           { return nocolor; }
+  FC_COLOR_FUNC cRGB alt()           { return nocolor; }
+  FC_COLOR_FUNC cRGB modifier()      { return dim(baseColor(), 130); }
+  FC_COLOR_FUNC cRGB alpha()         { return dim(baseColor(), 80); }
+  FC_COLOR_FUNC cRGB number()        { return dim(baseColor(), 100); }
+  FC_COLOR_FUNC cRGB punctuation()   { return dim(baseColor(), 120); }
+  FC_COLOR_FUNC cRGB function()      { return dim(baseColor(), 150); }
+  FC_COLOR_FUNC cRGB navigation()    { return dim(baseColor(), 180); }
+  FC_COLOR_FUNC cRGB system()        { return dim(baseColor(), 50); }
+  FC_COLOR_FUNC cRGB arrow ()        { return dim(baseColor(), 250); }
+  FC_COLOR_FUNC cRGB keypad()        { return dim(baseColor(), 230); }
+  FC_COLOR_FUNC cRGB media ()        { return dim(baseColor(), 250); }
+  FC_COLOR_FUNC cRGB mouseWheel()    { return nocolor; }
+  FC_COLOR_FUNC cRGB mouseButton()   { return nocolor; }
+  FC_COLOR_FUNC cRGB mouseWarp()     { return nocolor; }
+  FC_COLOR_FUNC cRGB mouseMove()     { return nocolor; }
+  FC_COLOR_FUNC cRGB mouse()         { return dim(baseColor(), 220); }
+  FC_COLOR_FUNC cRGB space()         { return dim(baseColor(), 100); }
+  FC_COLOR_FUNC cRGB tab()           { return dim(baseColor(), 100); }
+  FC_COLOR_FUNC cRGB enter()         { return dim(baseColor(), 255); }
+  FC_COLOR_FUNC cRGB backspace()     { return dim(baseColor(), 100); }
+  FC_COLOR_FUNC cRGB escape()        { return dim(baseColor(), 100); }
+  FC_COLOR_FUNC cRGB del()           { return dim(baseColor(), 255); }
+  FC_COLOR_FUNC cRGB fn()            { return dim(baseColor(), 255); }
+  FC_COLOR_FUNC cRGB lock()          { return dim(baseColor(), 255); }
+  FC_COLOR_FUNC cRGB LEDEffectNext() { return dim(baseColor(), 255); }
 };
 
 struct colorMapDuo: public colorMap {
   // baseColor allows you to use a base color that just changes in brightness
-  static constexpr cRGB baseColor1  = white;
-  static constexpr cRGB baseColor2  = red;
-  static constexpr cRGB defaultColor= dim(baseColor1, 100);
-  static constexpr cRGB shift       = nocolor;
-  static constexpr cRGB control     = nocolor;
-  static constexpr cRGB gui         = nocolor;
-  static constexpr cRGB alt         = nocolor;
-  static constexpr cRGB modifier    = dim(baseColor2, 130);
-  static constexpr cRGB alpha       = dim(baseColor1, 80);
-  static constexpr cRGB number      = dim(baseColor1, 100);
-  static constexpr cRGB punctuation = dim(baseColor1, 120);
-  static constexpr cRGB function    = dim(baseColor1, 150);
-  static constexpr cRGB navigation  = dim(baseColor2, 130);
-  static constexpr cRGB system      = dim(baseColor2, 50);
-  static constexpr cRGB arrow       = dim(baseColor2, 250);
-  static constexpr cRGB keypad      = dim(baseColor2, 230);
-  static constexpr cRGB media       = dim(baseColor2, 190);
-  static constexpr cRGB mouseWheel  = nocolor;
-  static constexpr cRGB mouseButton = nocolor;
-  static constexpr cRGB mouseWarp   = nocolor;
-  static constexpr cRGB mouseMove   = nocolor;
-  static constexpr cRGB mouse       = dim(baseColor2, 250);
-  static constexpr cRGB space       = dim(baseColor1, 100);
-  static constexpr cRGB tab         = dim(baseColor1, 100);
-  static constexpr cRGB enter       = dim(baseColor1, 255);
-  static constexpr cRGB backspace   = dim(baseColor2, 100);
-  static constexpr cRGB escape      = dim(baseColor2, 100);
-  static constexpr cRGB del         = dim(baseColor2, 255);
-  static constexpr cRGB fn          = dim(baseColor1, 255);
-  static constexpr cRGB lock        = dim(baseColor1, 255);
-  static constexpr cRGB LEDEffectNext=dim(baseColor2, 255);
+  FC_COLOR_FUNC cRGB baseColor1()    { return white; }
+  FC_COLOR_FUNC cRGB baseColor2()    { return red; }
+  FC_COLOR_FUNC cRGB defaultColor()  { return dim(baseColor1(), 100); }
+  FC_COLOR_FUNC cRGB shift()         { return nocolor; }
+  FC_COLOR_FUNC cRGB control()       { return nocolor; }
+  FC_COLOR_FUNC cRGB gui()           { return nocolor; }
+  FC_COLOR_FUNC cRGB alt()           { return nocolor; }
+  FC_COLOR_FUNC cRGB modifier()      { return dim(baseColor2(), 130); }
+  FC_COLOR_FUNC cRGB alpha()         { return dim(baseColor1(), 80); }
+  FC_COLOR_FUNC cRGB number()        { return dim(baseColor1(), 100); }
+  FC_COLOR_FUNC cRGB punctuation()   { return dim(baseColor1(), 120); }
+  FC_COLOR_FUNC cRGB function()      { return dim(baseColor1(), 150); }
+  FC_COLOR_FUNC cRGB navigation()    { return dim(baseColor2(), 130); }
+  FC_COLOR_FUNC cRGB system()        { return dim(baseColor2(), 50); }
+  FC_COLOR_FUNC cRGB arrow()         { return dim(baseColor2(), 250); }
+  FC_COLOR_FUNC cRGB keypad()        { return dim(baseColor2(), 230); }
+  FC_COLOR_FUNC cRGB media()         { return dim(baseColor2(), 190); }
+  FC_COLOR_FUNC cRGB mouseWheel()    { return nocolor; }
+  FC_COLOR_FUNC cRGB mouseButton()   { return nocolor; }
+  FC_COLOR_FUNC cRGB mouseWarp()     { return nocolor; }
+  FC_COLOR_FUNC cRGB mouseMove()     { return nocolor; }
+  FC_COLOR_FUNC cRGB mouse()         { return dim(baseColor2(), 250); }
+  FC_COLOR_FUNC cRGB space()         { return dim(baseColor1(), 100); }
+  FC_COLOR_FUNC cRGB tab()           { return dim(baseColor1(), 100); }
+  FC_COLOR_FUNC cRGB enter()         { return dim(baseColor1(), 255); }
+  FC_COLOR_FUNC cRGB backspace()     { return dim(baseColor2(), 100); }
+  FC_COLOR_FUNC cRGB escape()        { return dim(baseColor2(), 100); }
+  FC_COLOR_FUNC cRGB del()           { return dim(baseColor2(), 255); }
+  FC_COLOR_FUNC cRGB fn()            { return dim(baseColor1(), 255); }
+  FC_COLOR_FUNC cRGB lock()          { return dim(baseColor1(), 255); }
+  FC_COLOR_FUNC cRGB LEDEffectNext() { return dim(baseColor2(), 255); }
 };
 
 struct colorMapPrincess: public colorMap {
   // baseColor allows you to use a base color that just changes in brightness
-  static constexpr cRGB baseColor1  = hotpink;
-  static constexpr cRGB baseColor2  = magenta;
-  static constexpr cRGB defaultColor= dim(baseColor1, 100);
-  static constexpr cRGB shift       = nocolor;
-  static constexpr cRGB control     = nocolor;
-  static constexpr cRGB gui         = nocolor;
-  static constexpr cRGB alt         = nocolor;
-  static constexpr cRGB modifier    = dim(baseColor2, 130);
-  static constexpr cRGB alpha       = dim(baseColor1, 130);
-  static constexpr cRGB number      = dim(white, 150);
-  static constexpr cRGB punctuation = dim(lightpink, 200);
-  static constexpr cRGB function    = dim(crimson, 250);
-  static constexpr cRGB navigation  = dim(gold, 255);
-  static constexpr cRGB system      = dim(baseColor2, 50);
-  static constexpr cRGB arrow       = dim(yellow, 250);
-  static constexpr cRGB keypad      = dim(baseColor2, 230);
-  static constexpr cRGB media       = dim(baseColor2, 190);
-  static constexpr cRGB mouseWheel  = nocolor;
-  static constexpr cRGB mouseButton = nocolor;
-  static constexpr cRGB mouseWarp   = nocolor;
-  static constexpr cRGB mouseMove   = nocolor;
-  static constexpr cRGB mouse       = dim(baseColor2, 250);
-  static constexpr cRGB space       = dim(white, 100);
-  static constexpr cRGB tab         = dim(baseColor1, 100);
-  static constexpr cRGB enter       = dim(white, 255);
-  static constexpr cRGB backspace   = dim(yellow, 100);
-  static constexpr cRGB escape      = dim(white, 100);
-  static constexpr cRGB del         = dim(red, 255);
-  static constexpr cRGB fn          = dim(white, 255);
-  static constexpr cRGB lock        = dim(baseColor1, 255);
-  static constexpr cRGB LEDEffectNext=dim(deeppink, 255);
+  FC_COLOR_FUNC cRGB baseColor1()     { return hotpink; }
+  FC_COLOR_FUNC cRGB baseColor2()     { return magenta; }
+  FC_COLOR_FUNC cRGB defaultColor()   { return dim(baseColor1(), 100); }
+  FC_COLOR_FUNC cRGB shift()          { return nocolor; }
+  FC_COLOR_FUNC cRGB control()        { return nocolor; }
+  FC_COLOR_FUNC cRGB gui()            { return nocolor; }
+  FC_COLOR_FUNC cRGB alt()            { return nocolor; }
+  FC_COLOR_FUNC cRGB modifier()       { return dim(baseColor2(), 130); }
+  FC_COLOR_FUNC cRGB alpha()          { return dim(baseColor1(), 130); }
+  FC_COLOR_FUNC cRGB number()         { return dim(white, 150); }
+  FC_COLOR_FUNC cRGB punctuation()    { return dim(lightpink, 200); }
+  FC_COLOR_FUNC cRGB function()       { return dim(crimson, 250); }
+  FC_COLOR_FUNC cRGB navigation()     { return dim(gold, 255); }
+  FC_COLOR_FUNC cRGB system()         { return dim(baseColor2(), 50); }
+  FC_COLOR_FUNC cRGB arrow()          { return dim(yellow, 250); }
+  FC_COLOR_FUNC cRGB keypad()         { return dim(baseColor2(), 230); }
+  FC_COLOR_FUNC cRGB media()          { return dim(baseColor2(), 190); }
+  FC_COLOR_FUNC cRGB mouseWheel()     { return nocolor; }
+  FC_COLOR_FUNC cRGB mouseButton()    { return nocolor; }
+  FC_COLOR_FUNC cRGB mouseWarp()      { return nocolor; }
+  FC_COLOR_FUNC cRGB mouseMove()      { return nocolor; }
+  FC_COLOR_FUNC cRGB mouse()          { return dim(baseColor2(), 250); }
+  FC_COLOR_FUNC cRGB space()          { return dim(white, 100); }
+  FC_COLOR_FUNC cRGB tab()            { return dim(baseColor1(), 100); }
+  FC_COLOR_FUNC cRGB enter()          { return dim(white, 255); }
+  FC_COLOR_FUNC cRGB backspace()      { return dim(yellow, 100); }
+  FC_COLOR_FUNC cRGB escape()         { return dim(white, 100); }
+  FC_COLOR_FUNC cRGB del()            { return dim(red, 255); }
+  FC_COLOR_FUNC cRGB fn()             { return dim(white, 255); }
+  FC_COLOR_FUNC cRGB lock()           { return dim(baseColor1(), 255); }
+  FC_COLOR_FUNC cRGB LEDEffectNext()  { return dim(deeppink, 255); }
 };
 
 struct colorMapSea: public colorMap {
   // baseColor allows you to use a base color that just changes in brightness
-  static constexpr cRGB baseColor1  = lightseagreen;
-  static constexpr cRGB baseColor2  = aqua;
-  static constexpr cRGB defaultColor= dim(baseColor1, 100);
-  static constexpr cRGB shift       = nocolor;
-  static constexpr cRGB control     = skyblue;
-  static constexpr cRGB gui         = cadetblue;
-  static constexpr cRGB alt         = turquoise;
-  static constexpr cRGB modifier    = dim(baseColor2, 130);
-  static constexpr cRGB alpha       = dim(baseColor1, 130);
-  static constexpr cRGB number      = dim(lightcyan, 190);
-  static constexpr cRGB punctuation = dim(aquamarine, 200);
-  static constexpr cRGB function    = dim(white, 250);
-  static constexpr cRGB navigation  = dim(gold, 255);
-  static constexpr cRGB system      = dim(orange, 100);
-  static constexpr cRGB arrow       = dim(yellow, 250);
-  static constexpr cRGB keypad      = dim(baseColor2, 230);
-  static constexpr cRGB media       = dim(dodgerblue, 190);
-  static constexpr cRGB mouseWheel  = nocolor;
-  static constexpr cRGB mouseButton = dim(lightcyan, 250);
-  static constexpr cRGB mouseWarp   = nocolor;
-  static constexpr cRGB mouseMove   = nocolor;
-  static constexpr cRGB mouse       = dim(baseColor2, 250);
-  static constexpr cRGB space       = dim(white, 100);
-  static constexpr cRGB tab         = dim(baseColor1, 100);
-  static constexpr cRGB enter       = dim(white, 255);
-  static constexpr cRGB backspace   = dim(yellow, 100);
-  static constexpr cRGB escape      = dim(orange, 190);
-  static constexpr cRGB del         = dim(red, 255);
-  static constexpr cRGB fn          = dim(white, 255);
-  static constexpr cRGB lock        = dim(baseColor1, 255);
-  static constexpr cRGB LEDEffectNext=dim(blue, 255);
+  FC_COLOR_FUNC cRGB baseColor1()      { return lightseagreen; }
+  FC_COLOR_FUNC cRGB baseColor2()      { return aqua; }
+  FC_COLOR_FUNC cRGB defaultColor()    { return dim(baseColor1(), 100); }
+  FC_COLOR_FUNC cRGB shift()           { return nocolor; }
+  FC_COLOR_FUNC cRGB control()         { return skyblue; }
+  FC_COLOR_FUNC cRGB gui()             { return cadetblue; }
+  FC_COLOR_FUNC cRGB alt()             { return turquoise; }
+  FC_COLOR_FUNC cRGB modifier()        { return dim(baseColor2(), 130); }
+  FC_COLOR_FUNC cRGB alpha()           { return dim(baseColor1(), 130); }
+  FC_COLOR_FUNC cRGB number()          { return dim(lightcyan, 190); }
+  FC_COLOR_FUNC cRGB punctuation()     { return dim(aquamarine, 200); }
+  FC_COLOR_FUNC cRGB function()        { return dim(white, 250); }
+  FC_COLOR_FUNC cRGB navigation()      { return dim(gold, 255); }
+  FC_COLOR_FUNC cRGB system()          { return dim(orange, 100); }
+  FC_COLOR_FUNC cRGB arrow()           { return dim(yellow, 250); }
+  FC_COLOR_FUNC cRGB keypad()          { return dim(baseColor2(), 230); }
+  FC_COLOR_FUNC cRGB media()           { return dim(dodgerblue, 190); }
+  FC_COLOR_FUNC cRGB mouseWheel()      { return nocolor; }
+  FC_COLOR_FUNC cRGB mouseButton()     { return dim(lightcyan, 250); }
+  FC_COLOR_FUNC cRGB mouseWarp()       { return nocolor; }
+  FC_COLOR_FUNC cRGB mouseMove()       { return nocolor; }
+  FC_COLOR_FUNC cRGB mouse()           { return dim(baseColor2(), 250); }
+  FC_COLOR_FUNC cRGB space()           { return dim(white, 100); }
+  FC_COLOR_FUNC cRGB tab()             { return dim(baseColor1(), 100); }
+  FC_COLOR_FUNC cRGB enter()           { return dim(white, 255); }
+  FC_COLOR_FUNC cRGB backspace()       { return dim(yellow, 100); }
+  FC_COLOR_FUNC cRGB escape()          { return dim(orange, 190); }
+  FC_COLOR_FUNC cRGB del()             { return dim(red, 255); }
+  FC_COLOR_FUNC cRGB fn()              { return dim(white, 255); }
+  FC_COLOR_FUNC cRGB lock()            { return dim(baseColor1(), 255); }
+  FC_COLOR_FUNC cRGB LEDEffectNext()   { return dim(blue, 255); }
 };
 
 struct colorMapFlower: public colorMap {
   // baseColor allows you to use a base color that just changes in brightness
-  static constexpr cRGB baseColor1  = violet;
-  static constexpr cRGB baseColor2  = springgreen;
-  static constexpr cRGB defaultColor= dim(baseColor1, 100);
-  static constexpr cRGB shift       = lime;
-  static constexpr cRGB control     = mediumspringgreen;
-  static constexpr cRGB gui         = yellowgreen;
-  static constexpr cRGB alt         = yellowgreen;
-  static constexpr cRGB modifier    = dim(baseColor2, 130);
-  static constexpr cRGB alpha       = dim(baseColor1, 130);
-  static constexpr cRGB number      = dim(thistle, 200);
-  static constexpr cRGB punctuation = dim(plum, 210);
-  static constexpr cRGB function    = dim(white, 250);
-  static constexpr cRGB navigation  = dim(palegoldenrod, 255);
-  static constexpr cRGB system      = dim(orange, 100);
-  static constexpr cRGB arrow       = dim(lightgoldenrodyellow, 250);
-  static constexpr cRGB keypad      = dim(baseColor2, 230);
-  static constexpr cRGB media       = dim(darkorchid, 200);
-  static constexpr cRGB mouseWheel  = nocolor;
-  static constexpr cRGB mouseButton = dim(lightcyan, 250);
-  static constexpr cRGB mouseWarp   = nocolor;
-  static constexpr cRGB mouseMove   = nocolor;
-  static constexpr cRGB mouse       = dim(baseColor2, 250);
-  static constexpr cRGB space       = dim(white, 100);
-  static constexpr cRGB tab         = dim(baseColor1, 100);
-  static constexpr cRGB enter       = dim(white, 255);
-  static constexpr cRGB backspace   = dim(yellowgreen, 150);
-  static constexpr cRGB escape      = dim(palegoldenrod, 190);
-  static constexpr cRGB del         = dim(red, 255);
-  static constexpr cRGB fn          = dim(white, 255);
-  static constexpr cRGB lock        = dim(baseColor1, 255);
-  static constexpr cRGB LEDEffectNext=dim(white, 255);
+  FC_COLOR_FUNC cRGB baseColor1()      { return violet; }
+  FC_COLOR_FUNC cRGB baseColor2()      { return springgreen; }
+  FC_COLOR_FUNC cRGB defaultColor()    { return dim(baseColor1(), 100); }
+  FC_COLOR_FUNC cRGB shift()           { return lime; }
+  FC_COLOR_FUNC cRGB control()         { return mediumspringgreen; }
+  FC_COLOR_FUNC cRGB gui()             { return yellowgreen; }
+  FC_COLOR_FUNC cRGB alt()             { return yellowgreen; }
+  FC_COLOR_FUNC cRGB modifier()        { return dim(baseColor2(), 130); }
+  FC_COLOR_FUNC cRGB alpha()           { return dim(baseColor1(), 130); }
+  FC_COLOR_FUNC cRGB number()          { return dim(thistle, 200); }
+  FC_COLOR_FUNC cRGB punctuation()     { return dim(plum, 210); }
+  FC_COLOR_FUNC cRGB function()        { return dim(white, 250); }
+  FC_COLOR_FUNC cRGB navigation()      { return dim(palegoldenrod, 255); }
+  FC_COLOR_FUNC cRGB system()          { return dim(orange, 100); }
+  FC_COLOR_FUNC cRGB arrow()           { return dim(lightgoldenrodyellow, 250); }
+  FC_COLOR_FUNC cRGB keypad()          { return dim(baseColor2(), 230); }
+  FC_COLOR_FUNC cRGB media()           { return dim(darkorchid, 200); }
+  FC_COLOR_FUNC cRGB mouseWheel()      { return nocolor; }
+  FC_COLOR_FUNC cRGB mouseButton()     { return dim(lightcyan, 250); }
+  FC_COLOR_FUNC cRGB mouseWarp()       { return nocolor; }
+  FC_COLOR_FUNC cRGB mouseMove()       { return nocolor; }
+  FC_COLOR_FUNC cRGB mouse()           { return dim(baseColor2(), 250); }
+  FC_COLOR_FUNC cRGB space()           { return dim(white, 100); }
+  FC_COLOR_FUNC cRGB tab()             { return dim(baseColor1(), 100); }
+  FC_COLOR_FUNC cRGB enter()           { return dim(white, 255); }
+  FC_COLOR_FUNC cRGB backspace()       { return dim(yellowgreen, 150); }
+  FC_COLOR_FUNC cRGB escape()          { return dim(palegoldenrod, 190); }
+  FC_COLOR_FUNC cRGB del()             { return dim(red, 255); }
+  FC_COLOR_FUNC cRGB fn()              { return dim(white, 255); }
+  FC_COLOR_FUNC cRGB lock()            { return dim(baseColor1(), 255); }
+  FC_COLOR_FUNC cRGB LEDEffectNext()   { return dim(white, 255); }
 };
 
 struct colorMapKids: public colorMap {
   // baseColor allows you to use a base color that just changes in brightness
-  static constexpr cRGB defaultColor= dim(white, 160);
-  static constexpr cRGB shift       = lime;
-  static constexpr cRGB control     = dodgerblue;
-  static constexpr cRGB gui         = yellow;
-  static constexpr cRGB alt         = yellowgreen;
-  static constexpr cRGB alpha       = dim(white, 130);
-  static constexpr cRGB number      = dim(yellow, 200);
-  static constexpr cRGB punctuation = dim(dodgerblue, 210);
-  static constexpr cRGB function    = dim(red, 250);
-  static constexpr cRGB navigation  = dim(orange, 255);
-  static constexpr cRGB system      = dim(orange, 100);
-  static constexpr cRGB arrow       = dim(gold, 250);
-  static constexpr cRGB keypad      = dim(orange, 230);
-  static constexpr cRGB media       = dim(lime, 200);
-  static constexpr cRGB mouseWheel  = nocolor;
-  static constexpr cRGB mouseButton = dim(lightcyan, 250);
-  static constexpr cRGB mouseWarp   = nocolor;
-  static constexpr cRGB mouseMove   = nocolor;
-  static constexpr cRGB mouse       = dim(cyan, 250);
-  static constexpr cRGB space       = dim(white, 100);
-  static constexpr cRGB tab         = dim(white, 100);
-  static constexpr cRGB enter       = dim(white, 255);
-  static constexpr cRGB backspace   = dim(orangered, 150);
-  static constexpr cRGB escape      = dim(red, 190);
-  static constexpr cRGB del         = dim(red, 255);
-  static constexpr cRGB fn          = dim(white, 255);
-  static constexpr cRGB lock        = dim(green, 255);
-  static constexpr cRGB LEDEffectNext=dim(blue, 255);
+  FC_COLOR_FUNC cRGB defaultColor()    { return dim(white, 160); }
+  FC_COLOR_FUNC cRGB shift()           { return lime; }
+  FC_COLOR_FUNC cRGB control()         { return dodgerblue; }
+  FC_COLOR_FUNC cRGB gui()             { return yellow; }
+  FC_COLOR_FUNC cRGB alt()             { return yellowgreen; }
+  FC_COLOR_FUNC cRGB alpha()           { return dim(white, 130); }
+  FC_COLOR_FUNC cRGB number()          { return dim(yellow, 200); }
+  FC_COLOR_FUNC cRGB punctuation()     { return dim(dodgerblue, 210); }
+  FC_COLOR_FUNC cRGB function()        { return dim(red, 250); }
+  FC_COLOR_FUNC cRGB navigation()      { return dim(orange, 255); }
+  FC_COLOR_FUNC cRGB system()          { return dim(orange, 100); }
+  FC_COLOR_FUNC cRGB arrow()           { return dim(gold, 250); }
+  FC_COLOR_FUNC cRGB keypad()          { return dim(orange, 230); }
+  FC_COLOR_FUNC cRGB media()           { return dim(lime, 200); }
+  FC_COLOR_FUNC cRGB mouseWheel()      { return nocolor; }
+  FC_COLOR_FUNC cRGB mouseButton()     { return dim(lightcyan, 250); }
+  FC_COLOR_FUNC cRGB mouseWarp()       { return nocolor; }
+  FC_COLOR_FUNC cRGB mouseMove()       { return nocolor; }
+  FC_COLOR_FUNC cRGB mouse()           { return dim(cyan, 250); }
+  FC_COLOR_FUNC cRGB space()           { return dim(white, 100); }
+  FC_COLOR_FUNC cRGB tab()             { return dim(white, 100); }
+  FC_COLOR_FUNC cRGB enter()           { return dim(white, 255); }
+  FC_COLOR_FUNC cRGB backspace()       { return dim(orangered, 150); }
+  FC_COLOR_FUNC cRGB escape()          { return dim(red, 190); }
+  FC_COLOR_FUNC cRGB del()             { return dim(red, 255); }
+  FC_COLOR_FUNC cRGB fn()              { return dim(white, 255); }
+  FC_COLOR_FUNC cRGB lock()            { return dim(green, 255); }
+  FC_COLOR_FUNC cRGB LEDEffectNext()   { return dim(blue, 255); }
 };
 
 struct colorMapRedWhiteBlue: public colorMap {
   // baseColor allows you to use a base color that just changes in brightness
-  static constexpr cRGB baseColor1  = blue;
-  static constexpr cRGB baseColor2  = white;
-  static constexpr cRGB defaultColor= dim(baseColor1, 240);
-  static constexpr cRGB shift       = nocolor;
-  static constexpr cRGB control     = nocolor;
-  static constexpr cRGB gui         = nocolor;
-  static constexpr cRGB alt         = nocolor;
-  static constexpr cRGB modifier    = dim(red, 170);
-  static constexpr cRGB alpha       = dim(baseColor2, 150);
-  static constexpr cRGB number      = dim(red, 190);
-  static constexpr cRGB punctuation = dim(blue, 200);
-  static constexpr cRGB function    = dim(white, 250);
-  static constexpr cRGB navigation  = dim(white, 255);
-  static constexpr cRGB system      = dim(orangered, 100);
-  static constexpr cRGB arrow       = dim(white, 240);
-  static constexpr cRGB keypad      = dim(baseColor2, 230);
-  static constexpr cRGB media       = dim(dodgerblue, 200);
-  static constexpr cRGB mouseWheel  = nocolor;
-  static constexpr cRGB mouseButton = dim(lightcyan, 250);
-  static constexpr cRGB mouseWarp   = nocolor;
-  static constexpr cRGB mouseMove   = nocolor;
-  static constexpr cRGB mouse       = dim(dodgerblue, 190);
-  static constexpr cRGB space       = dim(white, 100);
-  static constexpr cRGB tab         = dim(baseColor1, 100);
-  static constexpr cRGB enter       = dim(white, 255);
-  static constexpr cRGB backspace   = dim(red, 150);
-  static constexpr cRGB escape      = dim(baseColor1, 190);
-  static constexpr cRGB del         = dim(red, 255);
-  static constexpr cRGB fn          = dim(white, 200);
-  static constexpr cRGB lock        = dim(baseColor1, 255);
-  static constexpr cRGB LEDEffectNext=dim(white, 255);
+  FC_COLOR_FUNC cRGB baseColor1()      { return blue; }
+  FC_COLOR_FUNC cRGB baseColor2()      { return  white; }
+  FC_COLOR_FUNC cRGB defaultColor()    { return dim(baseColor1(), 240); }
+  FC_COLOR_FUNC cRGB shift()           { return nocolor; }
+  FC_COLOR_FUNC cRGB control()         { return nocolor; }
+  FC_COLOR_FUNC cRGB gui()             { return nocolor; }
+  FC_COLOR_FUNC cRGB alt()             { return nocolor; }
+  FC_COLOR_FUNC cRGB modifier()        { return dim(red, 170); }
+  FC_COLOR_FUNC cRGB alpha()           { return dim(baseColor2(), 150); }
+  FC_COLOR_FUNC cRGB number()          { return dim(red, 190); }
+  FC_COLOR_FUNC cRGB punctuation()     { return dim(blue, 200); }
+  FC_COLOR_FUNC cRGB function()        { return dim(white, 250); }
+  FC_COLOR_FUNC cRGB navigation()      { return dim(white, 255); }
+  FC_COLOR_FUNC cRGB system()          { return dim(orangered, 100); }
+  FC_COLOR_FUNC cRGB arrow()           { return dim(white, 240); }
+  FC_COLOR_FUNC cRGB keypad()          { return dim(baseColor2(), 230); }
+  FC_COLOR_FUNC cRGB media()           { return dim(dodgerblue, 200); }
+  FC_COLOR_FUNC cRGB mouseWheel()      { return nocolor; }
+  FC_COLOR_FUNC cRGB mouseButton()     { return dim(lightcyan, 250); }
+  FC_COLOR_FUNC cRGB mouseWarp()       { return nocolor; }
+  FC_COLOR_FUNC cRGB mouseMove()       { return nocolor; }
+  FC_COLOR_FUNC cRGB mouse()           { return dim(dodgerblue, 190); }
+  FC_COLOR_FUNC cRGB space()           { return dim(white, 100); }
+  FC_COLOR_FUNC cRGB tab()             { return dim(baseColor1(), 100); }
+  FC_COLOR_FUNC cRGB enter()           { return dim(white, 255); }
+  FC_COLOR_FUNC cRGB backspace()       { return dim(red, 150); }
+  FC_COLOR_FUNC cRGB escape()          { return dim(baseColor1(), 190); }
+  FC_COLOR_FUNC cRGB del()             { return dim(red, 255); }
+  FC_COLOR_FUNC cRGB fn()              { return dim(white, 200); }
+  FC_COLOR_FUNC cRGB lock()            { return dim(baseColor1(), 255); }
+  FC_COLOR_FUNC cRGB LEDEffectNext()   { return dim(white, 255); }
 };
 
 
@@ -366,61 +370,60 @@ template<typename ColorMap> static cRGB groupColorLookup(const Key &k, bool &ski
   // If keys are a part of a larger group, they have precedence,
   // unless they are set to skip
   
-  if (isControl(k)) if (!isColorMatch(ColorMap::control, nocolor)) return ColorMap::control;
-  if (isGui(k)) if (!isColorMatch(ColorMap::gui, nocolor)) return ColorMap::gui;
-  if (isShift(k)) if (!isColorMatch(ColorMap::shift, nocolor)) return ColorMap::shift;
-  if (isAlt(k)) if (!isColorMatch(ColorMap::alt, nocolor)) return ColorMap::alt;
+  if (isControl(k)) if (!isColorMatch(ColorMap::control(), nocolor)) return ColorMap::control();
+  if (isGui(k)) if (!isColorMatch(ColorMap::gui(), nocolor)) return ColorMap::gui();
+  if (isShift(k)) if (!isColorMatch(ColorMap::shift(), nocolor)) return ColorMap::shift();
+  if (isAlt(k)) if (!isColorMatch(ColorMap::alt(), nocolor)) return ColorMap::alt();
 
-  if (isMouseWheel(k)) if (!isColorMatch(ColorMap::mouseWheel, nocolor)) return ColorMap::mouseWheel;
-  if (isMouseButton(k)) if (!isColorMatch(ColorMap::mouseButton, nocolor)) return ColorMap::mouseButton;
-  if (isMouseWarp(k)) if (!isColorMatch(ColorMap::mouseWarp, nocolor)) return ColorMap::mouseWarp;
-  if (isMouseMove(k)) if (!isColorMatch(ColorMap::mouseMove, nocolor)) return ColorMap::mouseMove;
+  if (isMouseWheel(k)) if (!isColorMatch(ColorMap::mouseWheel(), nocolor)) return ColorMap::mouseWheel();
+  if (isMouseButton(k)) if (!isColorMatch(ColorMap::mouseButton(), nocolor)) return ColorMap::mouseButton();
+  if (isMouseWarp(k)) if (!isColorMatch(ColorMap::mouseWarp(), nocolor)) return ColorMap::mouseWarp();
+  if (isMouseMove(k)) if (!isColorMatch(ColorMap::mouseMove(), nocolor)) return ColorMap::mouseMove();
   if ((Key_Escape).flags == k.flags && (Key_Escape).keyCode == k.keyCode)
-    if (!isColorMatch(ColorMap::escape, nocolor)) return ColorMap::escape;
+    if (!isColorMatch(ColorMap::escape(), nocolor)) return ColorMap::escape();
   if ((Key_Delete).flags == k.flags && (Key_Delete).keyCode == k.keyCode)
-    if (!isColorMatch(ColorMap::del, nocolor)) return ColorMap::del;
+    if (!isColorMatch(ColorMap::del(), nocolor)) return ColorMap::del();
 
 
-  if (isAlpha(k)) if (!isColorMatch(ColorMap::alpha, nocolor)) return ColorMap::alpha;
-  if (isNumber(k)) if (!isColorMatch(ColorMap::number, nocolor)) return ColorMap::number;
-  if (isPunctuation(k)) if (!isColorMatch(ColorMap::punctuation, nocolor)) return ColorMap::punctuation; 
-  if (isFunction(k)) if (!isColorMatch(ColorMap::function, nocolor)) return ColorMap::function; 
-  if (isNavigation(k)) if (!isColorMatch(ColorMap::navigation, nocolor)) return ColorMap::navigation; 
-  if (isSystem(k)) if (!isColorMatch(ColorMap::system, nocolor)) return ColorMap::system;
-  if (isArrow(k)) if (!isColorMatch(ColorMap::arrow, nocolor)) return ColorMap::arrow; 
-  if (isKeypad(k)) if (!isColorMatch(ColorMap::keypad, nocolor)) return ColorMap::keypad; 
-  if (isMedia(k)) if (!isColorMatch(ColorMap::media, nocolor)) return ColorMap::media; 
-  if (isModifier(k)) if (!isColorMatch(ColorMap::modifier, nocolor)) return ColorMap::modifier; 
-  if (isMouse(k)) if (!isColorMatch(ColorMap::mouse, nocolor)) return ColorMap::mouse; 
+  if (isAlpha(k)) if (!isColorMatch(ColorMap::alpha(), nocolor)) return ColorMap::alpha();
+  if (isNumber(k)) if (!isColorMatch(ColorMap::number(), nocolor)) return ColorMap::number();
+  if (isPunctuation(k)) if (!isColorMatch(ColorMap::punctuation(), nocolor)) return ColorMap::punctuation(); 
+  if (isFunction(k)) if (!isColorMatch(ColorMap::function(), nocolor)) return ColorMap::function(); 
+  if (isNavigation(k)) if (!isColorMatch(ColorMap::navigation(), nocolor)) return ColorMap::navigation(); 
+  if (isSystem(k)) if (!isColorMatch(ColorMap::system(), nocolor)) return ColorMap::system();
+  if (isArrow(k)) if (!isColorMatch(ColorMap::arrow(), nocolor)) return ColorMap::arrow(); 
+  if (isKeypad(k)) if (!isColorMatch(ColorMap::keypad(), nocolor)) return ColorMap::keypad(); 
+  if (isMedia(k)) if (!isColorMatch(ColorMap::media(), nocolor)) return ColorMap::media(); 
+  if (isModifier(k)) if (!isColorMatch(ColorMap::modifier(), nocolor)) return ColorMap::modifier(); 
+  if (isMouse(k)) if (!isColorMatch(ColorMap::mouse(), nocolor)) return ColorMap::mouse(); 
 
   // Individual keys that are important and unique enough to justify having their own members here.
   if ((Key_Space).flags == k.flags && (Key_Space).keyCode == k.keyCode)
-    if (!isColorMatch(ColorMap::space, nocolor)) return ColorMap::space;
+    if (!isColorMatch(ColorMap::space(), nocolor)) return ColorMap::space();
   if ((Key_Enter).flags == k.flags && (Key_Enter).keyCode == k.keyCode)
-    if (!isColorMatch(ColorMap::enter, nocolor)) return ColorMap::enter;
+    if (!isColorMatch(ColorMap::enter(), nocolor)) return ColorMap::enter();
   if ((Key_Tab).flags == k.flags && (Key_Tab).keyCode == k.keyCode)
-    if (!isColorMatch(ColorMap::tab, nocolor)) return ColorMap::tab;
+    if (!isColorMatch(ColorMap::tab(), nocolor)) return ColorMap::tab();
   if ((Key_Backspace).flags == k.flags && (Key_Backspace).keyCode == k.keyCode)
-    if (!isColorMatch(ColorMap::backspace, nocolor)) return ColorMap::backspace;
+    if (!isColorMatch(ColorMap::backspace(), nocolor)) return ColorMap::backspace();
 
   if ((Key_LEDEffectNext).flags == k.flags && (Key_LEDEffectNext).keyCode == k.keyCode)
-    if (!isColorMatch(ColorMap::LEDEffectNext, nocolor)) return ColorMap::LEDEffectNext;
+    if (!isColorMatch(ColorMap::LEDEffectNext(), nocolor)) return ColorMap::LEDEffectNext();
 
   // For these ones, I need to know what their layers are... they might change from the default.
   // This should work for layers 1, 2 or 3
   if ( (ShiftToLayer(2)).flags == k.flags && ( (ShiftToLayer(1)).keyCode == k.keyCode ||
     (ShiftToLayer(2)).keyCode == k.keyCode || (ShiftToLayer(3)).keyCode == k.keyCode) )
-    if (!isColorMatch(ColorMap::fn, nocolor)) return ColorMap::fn;
+    if (!isColorMatch(ColorMap::fn(), nocolor)) return ColorMap::fn();
   
   // Should work for all LockLayer keys
   if ( (LockLayer(1)).flags == k.flags && ( (LockLayer(1)).keyCode == k.keyCode || (LockLayer(1)).keyCode == k.keyCode) )
-    if (!isColorMatch(ColorMap::lock, nocolor)) return ColorMap::lock;
+    if (!isColorMatch(ColorMap::lock(), nocolor)) return ColorMap::lock();
 
 
-  return ColorMap::defaultColor;
+  return ColorMap::defaultColor();
 
 }
-
 
 class FunctionalColor : public LEDMode {
  public:
@@ -503,6 +506,9 @@ class FunctionalColor : public LEDMode {
 
 
   template<typename IntType> void themeSelect(IntType themeID) {
+     
+     using namespace FunctionalColorStuff;
+     
       // Switch block to specify theme
     switch(themeID) {
         case Base:
@@ -611,12 +617,12 @@ class FunctionalColor : public LEDMode {
 #define FC_NOCOLOR(KEY) \
     case (KEY).flags << 8 | (KEY).keyCode: \
        skip = true; \
-       return plugin::nocolor; // could return any color as a dummy
+       return kaleidoscope::plugin::FunctionalColorStuff::nocolor; // could return any color as a dummy
 
 #define FC_END_COLOR_LIST \
    } \
    none = true; \
-   return plugin::nocolor; \
+   return kaleidoscope::plugin::FunctionalColorStuff::nocolor; \
 }
 
 // You can use this in lieu of FC_END_COLOR_LIST to return a default color if you're not using any colorMap
@@ -636,8 +642,12 @@ class FunctionalColor : public LEDMode {
 
 
 #define FC_SET_THEME(PLUGIN, COLOR_MAP) \
-   PLUGIN.setColorLookup(&plugin::groupColorLookup<COLOR_MAP>);
+   PLUGIN.setColorLookup(&kaleidoscope::plugin::FunctionalColorStuff::groupColorLookup<COLOR_MAP>);
 
+
+}//namespace FunctionalColorStuff
 }//namespace plugin
 
 }//namespace kaleidoscope
+
+typedef kaleidoscope::plugin::FunctionalColorStuff::FunctionalColor FunctionalColor;
