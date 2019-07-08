@@ -12,350 +12,358 @@ namespace plugin {
    
 namespace FunctionalColorStuff {
 
-#define FC_COLOR_FUNC __attribute__((always_inline)) static constexpr 
+#define FC_HAVE_COLOR_FUNCTIONS
+   
+#ifdef FC_HAVE_COLOR_FUNCTIONS
+#define FC_COLOR_MAP_COLOR(NAME, ...) __attribute__((always_inline)) static constexpr cRGB NAME() { return __VA_ARGS__; }
+#define FC_REF_MAP_COLOR(NAME) NAME()
+#else
+#define FC_COLOR_MAP_COLOR(NAME, ...) static constexpr cRGB NAME = __VA_ARGS__;
+#define FC_REF_MAP_COLOR(NAME) NAME
+#endif
 
 // The base colormap - no colors are set, so everything falls back to the default color.
 // You can subclass this and change defaultColor to make a new colorMap that is all one color.
 struct colorMap {
-  FC_COLOR_FUNC cRGB defaultColor()  { return dim(white, 120); }
-  FC_COLOR_FUNC cRGB shift()         { return nocolor; }
-  FC_COLOR_FUNC cRGB control()       { return nocolor; }
+  FC_COLOR_MAP_COLOR(defaultColor, dim(white, 120))
+  FC_COLOR_MAP_COLOR(shift, nocolor)
+  FC_COLOR_MAP_COLOR(control, nocolor)
   //Command keys (macOS) or Windows Logo keys
-  FC_COLOR_FUNC cRGB gui()           { return nocolor; }//dim(pink, 190);
-  FC_COLOR_FUNC cRGB alt()           { return nocolor; }
+  FC_COLOR_MAP_COLOR(gui, nocolor)//dim(pink, 190);
+  FC_COLOR_MAP_COLOR(alt, nocolor)
   // Includes all the above modifiers
-  FC_COLOR_FUNC cRGB modifier()      { return nocolor; }
+  FC_COLOR_MAP_COLOR(modifier, nocolor)
 
-  FC_COLOR_FUNC cRGB alpha()         { return nocolor; }
-  FC_COLOR_FUNC cRGB number()        { return nocolor; }
-  FC_COLOR_FUNC cRGB punctuation()   { return nocolor; }
-  FC_COLOR_FUNC cRGB function()      { return nocolor; }
-  FC_COLOR_FUNC cRGB navigation()    { return nocolor; }
-  FC_COLOR_FUNC cRGB system()        { return nocolor; }
-  FC_COLOR_FUNC cRGB arrow()         { return nocolor; }
-  FC_COLOR_FUNC cRGB keypad()        { return nocolor; }
-  FC_COLOR_FUNC cRGB media()         { return nocolor; }
+  FC_COLOR_MAP_COLOR(alpha, nocolor)
+  FC_COLOR_MAP_COLOR(number, nocolor)
+  FC_COLOR_MAP_COLOR(punctuation, nocolor)
+  FC_COLOR_MAP_COLOR(function, nocolor)
+  FC_COLOR_MAP_COLOR(navigation, nocolor)
+  FC_COLOR_MAP_COLOR(system, nocolor)
+  FC_COLOR_MAP_COLOR(arrow, nocolor)
+  FC_COLOR_MAP_COLOR(keypad, nocolor)
+  FC_COLOR_MAP_COLOR(media, nocolor)
 
-  FC_COLOR_FUNC cRGB mouseWheel()    { return nocolor; }
-  FC_COLOR_FUNC cRGB mouseButton()   { return nocolor; }
-  FC_COLOR_FUNC cRGB mouseWarp()     { return nocolor; }
-  FC_COLOR_FUNC cRGB mouseMove()     { return nocolor; }
+  FC_COLOR_MAP_COLOR(mouseWheel, nocolor)
+  FC_COLOR_MAP_COLOR(mouseButton, nocolor)
+  FC_COLOR_MAP_COLOR(mouseWarp, nocolor)
+  FC_COLOR_MAP_COLOR(mouseMove, nocolor)
   // Includes all above mouse functions
-  FC_COLOR_FUNC cRGB mouse()         { return nocolor; }
+  FC_COLOR_MAP_COLOR(mouse, nocolor)
 
   // Important single keys
-  FC_COLOR_FUNC cRGB space()         { return nocolor; }
-  FC_COLOR_FUNC cRGB tab()           { return nocolor; }
-  FC_COLOR_FUNC cRGB enter()         { return nocolor; }
-  FC_COLOR_FUNC cRGB backspace()     { return nocolor; }
-  FC_COLOR_FUNC cRGB escape()        { return nocolor; }
-  FC_COLOR_FUNC cRGB del()           { return nocolor; }
-  FC_COLOR_FUNC cRGB fn()            { return nocolor; }
+  FC_COLOR_MAP_COLOR(space, nocolor)
+  FC_COLOR_MAP_COLOR(tab, nocolor)
+  FC_COLOR_MAP_COLOR(enter, nocolor)
+  FC_COLOR_MAP_COLOR(backspace, nocolor)
+  FC_COLOR_MAP_COLOR(escape, nocolor)
+  FC_COLOR_MAP_COLOR(del, nocolor)
+  FC_COLOR_MAP_COLOR(fn, nocolor)
   //Numlock or any use of lockLayer
-  FC_COLOR_FUNC cRGB lock()          { return nocolor; }
-  FC_COLOR_FUNC cRGB LEDEffectNext() { return nocolor; }
+  FC_COLOR_MAP_COLOR(lock, nocolor)
+  FC_COLOR_MAP_COLOR(LEDEffectNext, nocolor)
   // Where's the any key?
 
 };
 
 struct colorMapDefault : public colorMap {
-  FC_COLOR_FUNC cRGB shift()         { return dim(darkseagreen, 190); }
-  FC_COLOR_FUNC cRGB control()       { return dim(lightskyblue, 190); }
-  FC_COLOR_FUNC cRGB gui()           { return dim(pink, 190); }
-  FC_COLOR_FUNC cRGB alt()           { return dim(forestgreen, 190); }
-  FC_COLOR_FUNC cRGB alpha()         { return dim(warmwhite, 110); }
-  FC_COLOR_FUNC cRGB number()        { return dim(white, 190); }
-  FC_COLOR_FUNC cRGB punctuation()   { return dim(gold, 190); }
-  FC_COLOR_FUNC cRGB function()      { return dim(red, 190); }
-  FC_COLOR_FUNC cRGB navigation()    { return dim(yellow, 190); }
-  FC_COLOR_FUNC cRGB system()        { return dim(orangered, 255); }
-  FC_COLOR_FUNC cRGB arrow()         { return dim(white, 200); }
-  FC_COLOR_FUNC cRGB keypad()        { return dim(green, 190); }
-  FC_COLOR_FUNC cRGB mouseWheel()    { return dim(cyan, 190); }
-  FC_COLOR_FUNC cRGB mouseButton()   { return dim(cyan, 240); }
-  FC_COLOR_FUNC cRGB mouseWarp()     { return dim(turquoise, 110); }
-  FC_COLOR_FUNC cRGB mouseMove()     { return dim(turquoise, 250); }
-  FC_COLOR_FUNC cRGB media()         { return dim(magenta, 200); }
-  FC_COLOR_FUNC cRGB space()         { return dim(white, 140); }
-  FC_COLOR_FUNC cRGB tab()           { return dim(white, 140); }
-  FC_COLOR_FUNC cRGB enter()         { return dim(white, 250); }
-  FC_COLOR_FUNC cRGB backspace()     { return dim(red, 140); }
-  FC_COLOR_FUNC cRGB escape()        { return dim(red, 130); }
-  FC_COLOR_FUNC cRGB del()           { return dim(red, 255); }
-  FC_COLOR_FUNC cRGB fn()            { return dim(white, 250); }
-  FC_COLOR_FUNC cRGB lock()          { return dim(purple, 190); }
-  FC_COLOR_FUNC cRGB LEDEffectNext() { return dim(blue, 255); }
+  FC_COLOR_MAP_COLOR(shift, dim(darkseagreen, 190))
+  FC_COLOR_MAP_COLOR(control, dim(lightskyblue, 190))
+  FC_COLOR_MAP_COLOR(gui, dim(pink, 190))
+  FC_COLOR_MAP_COLOR(alt, dim(forestgreen, 190))
+  FC_COLOR_MAP_COLOR(alpha, dim(warmwhite, 110))
+  FC_COLOR_MAP_COLOR(number, dim(white, 190))
+  FC_COLOR_MAP_COLOR(punctuation, dim(gold, 190))
+  FC_COLOR_MAP_COLOR(function, dim(red, 190))
+  FC_COLOR_MAP_COLOR(navigation, dim(yellow, 190))
+  FC_COLOR_MAP_COLOR(system, dim(orangered, 255))
+  FC_COLOR_MAP_COLOR(arrow, dim(white, 200))
+  FC_COLOR_MAP_COLOR(keypad, dim(green, 190))
+  FC_COLOR_MAP_COLOR(mouseWheel, dim(cyan, 190))
+  FC_COLOR_MAP_COLOR(mouseButton, dim(cyan, 240))
+  FC_COLOR_MAP_COLOR(mouseWarp, dim(turquoise, 110))
+  FC_COLOR_MAP_COLOR(mouseMove, dim(turquoise, 250))
+  FC_COLOR_MAP_COLOR(media, dim(magenta, 200))
+  FC_COLOR_MAP_COLOR(space, dim(white, 140))
+  FC_COLOR_MAP_COLOR(tab, dim(white, 140))
+  FC_COLOR_MAP_COLOR(enter, dim(white, 250))
+  FC_COLOR_MAP_COLOR(backspace, dim(red, 140))
+  FC_COLOR_MAP_COLOR(escape, dim(red, 130))
+  FC_COLOR_MAP_COLOR(del, dim(red, 255))
+  FC_COLOR_MAP_COLOR(fn, dim(white, 250))
+  FC_COLOR_MAP_COLOR(lock, dim(purple, 190))
+  FC_COLOR_MAP_COLOR(LEDEffectNext, dim(blue, 255))
 };
 
 struct colorMapFruit : public colorMap {
-  FC_COLOR_FUNC cRGB shift()         { return dim(darkseagreen, 190); }
-  FC_COLOR_FUNC cRGB control()       { return dim(purple, 255); }
-  FC_COLOR_FUNC cRGB gui()           { return dim(pink, 190); }
-  FC_COLOR_FUNC cRGB alt()           { return dim(forestgreen, 190); }
-  FC_COLOR_FUNC cRGB alpha()         { return dim(orange, 190); }
-  FC_COLOR_FUNC cRGB number()        { return dim(red, 190); }
-  FC_COLOR_FUNC cRGB punctuation()   { return dim(yellow, 190); }
-  FC_COLOR_FUNC cRGB function()      { return dim(white, 190); }
-  FC_COLOR_FUNC cRGB navigation()    { return dim(yellow, 190); }
-  FC_COLOR_FUNC cRGB system()        { return dim(orangered, 255); }
-  FC_COLOR_FUNC cRGB arrow()         { return dim(white, 200); }
-  FC_COLOR_FUNC cRGB keypad()        { return dim(green, 190); }
-  FC_COLOR_FUNC cRGB mouseWheel()    { return dim(cyan, 190); }
-  FC_COLOR_FUNC cRGB mouseButton()   { return dim(cyan, 240); }
-  FC_COLOR_FUNC cRGB mouseWarp()     { return dim(turquoise, 110); }
-  FC_COLOR_FUNC cRGB mouseMove()     { return dim(turquoise, 250); }
-  FC_COLOR_FUNC cRGB media()         { return dim(magenta, 200); }
-  FC_COLOR_FUNC cRGB space()         { return dim(white, 140); }
-  FC_COLOR_FUNC cRGB tab()           { return dim(white, 140); }
-  FC_COLOR_FUNC cRGB enter()         { return dim(white, 250); }
-  FC_COLOR_FUNC cRGB backspace()     { return dim(red, 140); }
-  FC_COLOR_FUNC cRGB escape()        { return dim(red, 130); }
-  FC_COLOR_FUNC cRGB del()           { return dim(red, 255); }
-  FC_COLOR_FUNC cRGB fn()            { return dim(white, 250); }
-  FC_COLOR_FUNC cRGB lock()          { return dim(purple, 190); }
-  FC_COLOR_FUNC cRGB LEDEffectNext() { return dim(blue, 255); }
+  FC_COLOR_MAP_COLOR(shift, dim(darkseagreen, 190))
+  FC_COLOR_MAP_COLOR(control, dim(purple, 255))
+  FC_COLOR_MAP_COLOR(gui, dim(pink, 190))
+  FC_COLOR_MAP_COLOR(alt, dim(forestgreen, 190))
+  FC_COLOR_MAP_COLOR(alpha, dim(orange, 190))
+  FC_COLOR_MAP_COLOR(number, dim(red, 190))
+  FC_COLOR_MAP_COLOR(punctuation, dim(yellow, 190))
+  FC_COLOR_MAP_COLOR(function, dim(white, 190))
+  FC_COLOR_MAP_COLOR(navigation, dim(yellow, 190))
+  FC_COLOR_MAP_COLOR(system, dim(orangered, 255))
+  FC_COLOR_MAP_COLOR(arrow, dim(white, 200))
+  FC_COLOR_MAP_COLOR(keypad, dim(green, 190))
+  FC_COLOR_MAP_COLOR(mouseWheel, dim(cyan, 190))
+  FC_COLOR_MAP_COLOR(mouseButton, dim(cyan, 240))
+  FC_COLOR_MAP_COLOR(mouseWarp, dim(turquoise, 110))
+  FC_COLOR_MAP_COLOR(mouseMove, dim(turquoise, 250))
+  FC_COLOR_MAP_COLOR(media, dim(magenta, 200))
+  FC_COLOR_MAP_COLOR(space, dim(white, 140))
+  FC_COLOR_MAP_COLOR(tab, dim(white, 140))
+  FC_COLOR_MAP_COLOR(enter, dim(white, 250))
+  FC_COLOR_MAP_COLOR(backspace, dim(red, 140))
+  FC_COLOR_MAP_COLOR(escape, dim(red, 130))
+  FC_COLOR_MAP_COLOR(del, dim(red, 255))
+  FC_COLOR_MAP_COLOR(fn, dim(white, 250))
+  FC_COLOR_MAP_COLOR(lock, dim(purple, 190))
+  FC_COLOR_MAP_COLOR(LEDEffectNext, dim(blue, 255))
 };
 
 // A subclass that is monochromatic... set base color and then adjust the brightness.
 struct colorMapMono: public colorMap {
   // baseColor allows you to use a base color that just changes in brightness
-  FC_COLOR_FUNC cRGB baseColor()     { return white; }
-  FC_COLOR_FUNC cRGB defaultColor()  { return dim(baseColor(), 100); }
-  FC_COLOR_FUNC cRGB shift()         { return nocolor; }
-  FC_COLOR_FUNC cRGB control()       { return nocolor; }
-  FC_COLOR_FUNC cRGB gui()           { return nocolor; }
-  FC_COLOR_FUNC cRGB alt()           { return nocolor; }
-  FC_COLOR_FUNC cRGB modifier()      { return dim(baseColor(), 130); }
-  FC_COLOR_FUNC cRGB alpha()         { return dim(baseColor(), 80); }
-  FC_COLOR_FUNC cRGB number()        { return dim(baseColor(), 100); }
-  FC_COLOR_FUNC cRGB punctuation()   { return dim(baseColor(), 120); }
-  FC_COLOR_FUNC cRGB function()      { return dim(baseColor(), 150); }
-  FC_COLOR_FUNC cRGB navigation()    { return dim(baseColor(), 180); }
-  FC_COLOR_FUNC cRGB system()        { return dim(baseColor(), 50); }
-  FC_COLOR_FUNC cRGB arrow ()        { return dim(baseColor(), 250); }
-  FC_COLOR_FUNC cRGB keypad()        { return dim(baseColor(), 230); }
-  FC_COLOR_FUNC cRGB media ()        { return dim(baseColor(), 250); }
-  FC_COLOR_FUNC cRGB mouseWheel()    { return nocolor; }
-  FC_COLOR_FUNC cRGB mouseButton()   { return nocolor; }
-  FC_COLOR_FUNC cRGB mouseWarp()     { return nocolor; }
-  FC_COLOR_FUNC cRGB mouseMove()     { return nocolor; }
-  FC_COLOR_FUNC cRGB mouse()         { return dim(baseColor(), 220); }
-  FC_COLOR_FUNC cRGB space()         { return dim(baseColor(), 100); }
-  FC_COLOR_FUNC cRGB tab()           { return dim(baseColor(), 100); }
-  FC_COLOR_FUNC cRGB enter()         { return dim(baseColor(), 255); }
-  FC_COLOR_FUNC cRGB backspace()     { return dim(baseColor(), 100); }
-  FC_COLOR_FUNC cRGB escape()        { return dim(baseColor(), 100); }
-  FC_COLOR_FUNC cRGB del()           { return dim(baseColor(), 255); }
-  FC_COLOR_FUNC cRGB fn()            { return dim(baseColor(), 255); }
-  FC_COLOR_FUNC cRGB lock()          { return dim(baseColor(), 255); }
-  FC_COLOR_FUNC cRGB LEDEffectNext() { return dim(baseColor(), 255); }
+  FC_COLOR_MAP_COLOR(baseColor, white)
+  FC_COLOR_MAP_COLOR(defaultColor, dim(FC_REF_MAP_COLOR(baseColor), 100))
+  FC_COLOR_MAP_COLOR(shift, nocolor)
+  FC_COLOR_MAP_COLOR(control, nocolor)
+  FC_COLOR_MAP_COLOR(gui, nocolor)
+  FC_COLOR_MAP_COLOR(alt, nocolor)
+  FC_COLOR_MAP_COLOR(modifier, dim(FC_REF_MAP_COLOR(baseColor), 130))
+  FC_COLOR_MAP_COLOR(alpha, dim(FC_REF_MAP_COLOR(baseColor), 80))
+  FC_COLOR_MAP_COLOR(number, dim(FC_REF_MAP_COLOR(baseColor), 100))
+  FC_COLOR_MAP_COLOR(punctuation, dim(FC_REF_MAP_COLOR(baseColor), 120))
+  FC_COLOR_MAP_COLOR(function, dim(FC_REF_MAP_COLOR(baseColor), 150))
+  FC_COLOR_MAP_COLOR(navigation, dim(FC_REF_MAP_COLOR(baseColor), 180))
+  FC_COLOR_MAP_COLOR(system, dim(FC_REF_MAP_COLOR(baseColor), 50))
+  FC_COLOR_MAP_COLOR(arrow, dim(FC_REF_MAP_COLOR(baseColor), 250))
+  FC_COLOR_MAP_COLOR(keypad, dim(FC_REF_MAP_COLOR(baseColor), 230))
+  FC_COLOR_MAP_COLOR(media, dim(FC_REF_MAP_COLOR(baseColor), 250))
+  FC_COLOR_MAP_COLOR(mouseWheel, nocolor)
+  FC_COLOR_MAP_COLOR(mouseButton, nocolor)
+  FC_COLOR_MAP_COLOR(mouseWarp, nocolor)
+  FC_COLOR_MAP_COLOR(mouseMove, nocolor)
+  FC_COLOR_MAP_COLOR(mouse, dim(FC_REF_MAP_COLOR(baseColor), 220))
+  FC_COLOR_MAP_COLOR(space, dim(FC_REF_MAP_COLOR(baseColor), 100))
+  FC_COLOR_MAP_COLOR(tab, dim(FC_REF_MAP_COLOR(baseColor), 100))
+  FC_COLOR_MAP_COLOR(enter, dim(FC_REF_MAP_COLOR(baseColor), 255))
+  FC_COLOR_MAP_COLOR(backspace, dim(FC_REF_MAP_COLOR(baseColor), 100))
+  FC_COLOR_MAP_COLOR(escape, dim(FC_REF_MAP_COLOR(baseColor), 100))
+  FC_COLOR_MAP_COLOR(del, dim(FC_REF_MAP_COLOR(baseColor), 255))
+  FC_COLOR_MAP_COLOR(fn, dim(FC_REF_MAP_COLOR(baseColor), 255))
+  FC_COLOR_MAP_COLOR(lock, dim(FC_REF_MAP_COLOR(baseColor), 255))
+  FC_COLOR_MAP_COLOR(LEDEffectNext, dim(FC_REF_MAP_COLOR(baseColor), 255))
 };
 
 struct colorMapDuo: public colorMap {
   // baseColor allows you to use a base color that just changes in brightness
-  FC_COLOR_FUNC cRGB baseColor1()    { return white; }
-  FC_COLOR_FUNC cRGB baseColor2()    { return red; }
-  FC_COLOR_FUNC cRGB defaultColor()  { return dim(baseColor1(), 100); }
-  FC_COLOR_FUNC cRGB shift()         { return nocolor; }
-  FC_COLOR_FUNC cRGB control()       { return nocolor; }
-  FC_COLOR_FUNC cRGB gui()           { return nocolor; }
-  FC_COLOR_FUNC cRGB alt()           { return nocolor; }
-  FC_COLOR_FUNC cRGB modifier()      { return dim(baseColor2(), 130); }
-  FC_COLOR_FUNC cRGB alpha()         { return dim(baseColor1(), 80); }
-  FC_COLOR_FUNC cRGB number()        { return dim(baseColor1(), 100); }
-  FC_COLOR_FUNC cRGB punctuation()   { return dim(baseColor1(), 120); }
-  FC_COLOR_FUNC cRGB function()      { return dim(baseColor1(), 150); }
-  FC_COLOR_FUNC cRGB navigation()    { return dim(baseColor2(), 130); }
-  FC_COLOR_FUNC cRGB system()        { return dim(baseColor2(), 50); }
-  FC_COLOR_FUNC cRGB arrow()         { return dim(baseColor2(), 250); }
-  FC_COLOR_FUNC cRGB keypad()        { return dim(baseColor2(), 230); }
-  FC_COLOR_FUNC cRGB media()         { return dim(baseColor2(), 190); }
-  FC_COLOR_FUNC cRGB mouseWheel()    { return nocolor; }
-  FC_COLOR_FUNC cRGB mouseButton()   { return nocolor; }
-  FC_COLOR_FUNC cRGB mouseWarp()     { return nocolor; }
-  FC_COLOR_FUNC cRGB mouseMove()     { return nocolor; }
-  FC_COLOR_FUNC cRGB mouse()         { return dim(baseColor2(), 250); }
-  FC_COLOR_FUNC cRGB space()         { return dim(baseColor1(), 100); }
-  FC_COLOR_FUNC cRGB tab()           { return dim(baseColor1(), 100); }
-  FC_COLOR_FUNC cRGB enter()         { return dim(baseColor1(), 255); }
-  FC_COLOR_FUNC cRGB backspace()     { return dim(baseColor2(), 100); }
-  FC_COLOR_FUNC cRGB escape()        { return dim(baseColor2(), 100); }
-  FC_COLOR_FUNC cRGB del()           { return dim(baseColor2(), 255); }
-  FC_COLOR_FUNC cRGB fn()            { return dim(baseColor1(), 255); }
-  FC_COLOR_FUNC cRGB lock()          { return dim(baseColor1(), 255); }
-  FC_COLOR_FUNC cRGB LEDEffectNext() { return dim(baseColor2(), 255); }
+  FC_COLOR_MAP_COLOR(baseColor1, white)
+  FC_COLOR_MAP_COLOR(baseColor2, red)
+  FC_COLOR_MAP_COLOR(defaultColor, dim(FC_REF_MAP_COLOR(baseColor1), 100))
+  FC_COLOR_MAP_COLOR(shift, nocolor)
+  FC_COLOR_MAP_COLOR(control, nocolor)
+  FC_COLOR_MAP_COLOR(gui, nocolor)
+  FC_COLOR_MAP_COLOR(alt, nocolor)
+  FC_COLOR_MAP_COLOR(modifier, dim(FC_REF_MAP_COLOR(baseColor2), 130))
+  FC_COLOR_MAP_COLOR(alpha, dim(FC_REF_MAP_COLOR(baseColor1), 80))
+  FC_COLOR_MAP_COLOR(number, dim(FC_REF_MAP_COLOR(baseColor1), 100))
+  FC_COLOR_MAP_COLOR(punctuation, dim(FC_REF_MAP_COLOR(baseColor1), 120))
+  FC_COLOR_MAP_COLOR(function, dim(FC_REF_MAP_COLOR(baseColor1), 150))
+  FC_COLOR_MAP_COLOR(navigation, dim(FC_REF_MAP_COLOR(baseColor2), 130))
+  FC_COLOR_MAP_COLOR(system, dim(FC_REF_MAP_COLOR(baseColor2), 50))
+  FC_COLOR_MAP_COLOR(arrow, dim(FC_REF_MAP_COLOR(baseColor2), 250))
+  FC_COLOR_MAP_COLOR(keypad, dim(FC_REF_MAP_COLOR(baseColor2), 230))
+  FC_COLOR_MAP_COLOR(media, dim(FC_REF_MAP_COLOR(baseColor2), 190))
+  FC_COLOR_MAP_COLOR(mouseWheel, nocolor)
+  FC_COLOR_MAP_COLOR(mouseButton, nocolor)
+  FC_COLOR_MAP_COLOR(mouseWarp, nocolor)
+  FC_COLOR_MAP_COLOR(mouseMove, nocolor)
+  FC_COLOR_MAP_COLOR(mouse, dim(FC_REF_MAP_COLOR(baseColor2), 250))
+  FC_COLOR_MAP_COLOR(space, dim(FC_REF_MAP_COLOR(baseColor1), 100))
+  FC_COLOR_MAP_COLOR(tab, dim(FC_REF_MAP_COLOR(baseColor1), 100))
+  FC_COLOR_MAP_COLOR(enter, dim(FC_REF_MAP_COLOR(baseColor1), 255))
+  FC_COLOR_MAP_COLOR(backspace, dim(FC_REF_MAP_COLOR(baseColor2), 100))
+  FC_COLOR_MAP_COLOR(escape, dim(FC_REF_MAP_COLOR(baseColor2), 100))
+  FC_COLOR_MAP_COLOR(del, dim(FC_REF_MAP_COLOR(baseColor2), 255))
+  FC_COLOR_MAP_COLOR(fn, dim(FC_REF_MAP_COLOR(baseColor1), 255))
+  FC_COLOR_MAP_COLOR(lock, dim(FC_REF_MAP_COLOR(baseColor1), 255))
+  FC_COLOR_MAP_COLOR(LEDEffectNext, dim(FC_REF_MAP_COLOR(baseColor2), 255))
 };
 
 struct colorMapPrincess: public colorMap {
   // baseColor allows you to use a base color that just changes in brightness
-  FC_COLOR_FUNC cRGB baseColor1()     { return hotpink; }
-  FC_COLOR_FUNC cRGB baseColor2()     { return magenta; }
-  FC_COLOR_FUNC cRGB defaultColor()   { return dim(baseColor1(), 100); }
-  FC_COLOR_FUNC cRGB shift()          { return nocolor; }
-  FC_COLOR_FUNC cRGB control()        { return nocolor; }
-  FC_COLOR_FUNC cRGB gui()            { return nocolor; }
-  FC_COLOR_FUNC cRGB alt()            { return nocolor; }
-  FC_COLOR_FUNC cRGB modifier()       { return dim(baseColor2(), 130); }
-  FC_COLOR_FUNC cRGB alpha()          { return dim(baseColor1(), 130); }
-  FC_COLOR_FUNC cRGB number()         { return dim(white, 150); }
-  FC_COLOR_FUNC cRGB punctuation()    { return dim(lightpink, 200); }
-  FC_COLOR_FUNC cRGB function()       { return dim(crimson, 250); }
-  FC_COLOR_FUNC cRGB navigation()     { return dim(gold, 255); }
-  FC_COLOR_FUNC cRGB system()         { return dim(baseColor2(), 50); }
-  FC_COLOR_FUNC cRGB arrow()          { return dim(yellow, 250); }
-  FC_COLOR_FUNC cRGB keypad()         { return dim(baseColor2(), 230); }
-  FC_COLOR_FUNC cRGB media()          { return dim(baseColor2(), 190); }
-  FC_COLOR_FUNC cRGB mouseWheel()     { return nocolor; }
-  FC_COLOR_FUNC cRGB mouseButton()    { return nocolor; }
-  FC_COLOR_FUNC cRGB mouseWarp()      { return nocolor; }
-  FC_COLOR_FUNC cRGB mouseMove()      { return nocolor; }
-  FC_COLOR_FUNC cRGB mouse()          { return dim(baseColor2(), 250); }
-  FC_COLOR_FUNC cRGB space()          { return dim(white, 100); }
-  FC_COLOR_FUNC cRGB tab()            { return dim(baseColor1(), 100); }
-  FC_COLOR_FUNC cRGB enter()          { return dim(white, 255); }
-  FC_COLOR_FUNC cRGB backspace()      { return dim(yellow, 100); }
-  FC_COLOR_FUNC cRGB escape()         { return dim(white, 100); }
-  FC_COLOR_FUNC cRGB del()            { return dim(red, 255); }
-  FC_COLOR_FUNC cRGB fn()             { return dim(white, 255); }
-  FC_COLOR_FUNC cRGB lock()           { return dim(baseColor1(), 255); }
-  FC_COLOR_FUNC cRGB LEDEffectNext()  { return dim(deeppink, 255); }
+  FC_COLOR_MAP_COLOR(baseColor1, hotpink)
+  FC_COLOR_MAP_COLOR(baseColor2, magenta)
+  FC_COLOR_MAP_COLOR(defaultColor, dim(FC_REF_MAP_COLOR(baseColor1), 100))
+  FC_COLOR_MAP_COLOR(shift, nocolor)
+  FC_COLOR_MAP_COLOR(control, nocolor)
+  FC_COLOR_MAP_COLOR(gui, nocolor)
+  FC_COLOR_MAP_COLOR(alt, nocolor)
+  FC_COLOR_MAP_COLOR(modifier, dim(FC_REF_MAP_COLOR(baseColor2), 130))
+  FC_COLOR_MAP_COLOR(alpha, dim(FC_REF_MAP_COLOR(baseColor1), 130))
+  FC_COLOR_MAP_COLOR(number, dim(white, 150))
+  FC_COLOR_MAP_COLOR(punctuation, dim(lightpink, 200))
+  FC_COLOR_MAP_COLOR(function, dim(crimson, 250))
+  FC_COLOR_MAP_COLOR(navigation, dim(gold, 255))
+  FC_COLOR_MAP_COLOR(system, dim(FC_REF_MAP_COLOR(baseColor2), 50))
+  FC_COLOR_MAP_COLOR(arrow, dim(yellow, 250))
+  FC_COLOR_MAP_COLOR(keypad, dim(FC_REF_MAP_COLOR(baseColor2), 230))
+  FC_COLOR_MAP_COLOR(media, dim(FC_REF_MAP_COLOR(baseColor2), 190))
+  FC_COLOR_MAP_COLOR(mouseWheel, nocolor)
+  FC_COLOR_MAP_COLOR(mouseButton, nocolor)
+  FC_COLOR_MAP_COLOR(mouseWarp, nocolor)
+  FC_COLOR_MAP_COLOR(mouseMove, nocolor)
+  FC_COLOR_MAP_COLOR(mouse, dim(FC_REF_MAP_COLOR(baseColor2), 250))
+  FC_COLOR_MAP_COLOR(space, dim(white, 100))
+  FC_COLOR_MAP_COLOR(tab, dim(FC_REF_MAP_COLOR(baseColor1), 100))
+  FC_COLOR_MAP_COLOR(enter, dim(white, 255))
+  FC_COLOR_MAP_COLOR(backspace, dim(yellow, 100))
+  FC_COLOR_MAP_COLOR(escape, dim(white, 100))
+  FC_COLOR_MAP_COLOR(del, dim(red, 255))
+  FC_COLOR_MAP_COLOR(fn, dim(white, 255))
+  FC_COLOR_MAP_COLOR(lock, dim(FC_REF_MAP_COLOR(baseColor1), 255))
+  FC_COLOR_MAP_COLOR(LEDEffectNext, dim(deeppink, 255))
 };
 
 struct colorMapSea: public colorMap {
   // baseColor allows you to use a base color that just changes in brightness
-  FC_COLOR_FUNC cRGB baseColor1()      { return lightseagreen; }
-  FC_COLOR_FUNC cRGB baseColor2()      { return aqua; }
-  FC_COLOR_FUNC cRGB defaultColor()    { return dim(baseColor1(), 100); }
-  FC_COLOR_FUNC cRGB shift()           { return nocolor; }
-  FC_COLOR_FUNC cRGB control()         { return skyblue; }
-  FC_COLOR_FUNC cRGB gui()             { return cadetblue; }
-  FC_COLOR_FUNC cRGB alt()             { return turquoise; }
-  FC_COLOR_FUNC cRGB modifier()        { return dim(baseColor2(), 130); }
-  FC_COLOR_FUNC cRGB alpha()           { return dim(baseColor1(), 130); }
-  FC_COLOR_FUNC cRGB number()          { return dim(lightcyan, 190); }
-  FC_COLOR_FUNC cRGB punctuation()     { return dim(aquamarine, 200); }
-  FC_COLOR_FUNC cRGB function()        { return dim(white, 250); }
-  FC_COLOR_FUNC cRGB navigation()      { return dim(gold, 255); }
-  FC_COLOR_FUNC cRGB system()          { return dim(orange, 100); }
-  FC_COLOR_FUNC cRGB arrow()           { return dim(yellow, 250); }
-  FC_COLOR_FUNC cRGB keypad()          { return dim(baseColor2(), 230); }
-  FC_COLOR_FUNC cRGB media()           { return dim(dodgerblue, 190); }
-  FC_COLOR_FUNC cRGB mouseWheel()      { return nocolor; }
-  FC_COLOR_FUNC cRGB mouseButton()     { return dim(lightcyan, 250); }
-  FC_COLOR_FUNC cRGB mouseWarp()       { return nocolor; }
-  FC_COLOR_FUNC cRGB mouseMove()       { return nocolor; }
-  FC_COLOR_FUNC cRGB mouse()           { return dim(baseColor2(), 250); }
-  FC_COLOR_FUNC cRGB space()           { return dim(white, 100); }
-  FC_COLOR_FUNC cRGB tab()             { return dim(baseColor1(), 100); }
-  FC_COLOR_FUNC cRGB enter()           { return dim(white, 255); }
-  FC_COLOR_FUNC cRGB backspace()       { return dim(yellow, 100); }
-  FC_COLOR_FUNC cRGB escape()          { return dim(orange, 190); }
-  FC_COLOR_FUNC cRGB del()             { return dim(red, 255); }
-  FC_COLOR_FUNC cRGB fn()              { return dim(white, 255); }
-  FC_COLOR_FUNC cRGB lock()            { return dim(baseColor1(), 255); }
-  FC_COLOR_FUNC cRGB LEDEffectNext()   { return dim(blue, 255); }
+  FC_COLOR_MAP_COLOR(baseColor1, lightseagreen)
+  FC_COLOR_MAP_COLOR(baseColor2, aqua)
+  FC_COLOR_MAP_COLOR(defaultColor, dim(FC_REF_MAP_COLOR(baseColor1), 100))
+  FC_COLOR_MAP_COLOR(shift, nocolor)
+  FC_COLOR_MAP_COLOR(control, skyblue)
+  FC_COLOR_MAP_COLOR(gui, cadetblue)
+  FC_COLOR_MAP_COLOR(alt, turquoise)
+  FC_COLOR_MAP_COLOR(modifier, dim(FC_REF_MAP_COLOR(baseColor2), 130))
+  FC_COLOR_MAP_COLOR(alpha, dim(FC_REF_MAP_COLOR(baseColor1), 130))
+  FC_COLOR_MAP_COLOR(number, dim(lightcyan, 190))
+  FC_COLOR_MAP_COLOR(punctuation, dim(aquamarine, 200))
+  FC_COLOR_MAP_COLOR(function, dim(white, 250))
+  FC_COLOR_MAP_COLOR(navigation, dim(gold, 255))
+  FC_COLOR_MAP_COLOR(system, dim(orange, 100))
+  FC_COLOR_MAP_COLOR(arrow, dim(yellow, 250))
+  FC_COLOR_MAP_COLOR(keypad, dim(FC_REF_MAP_COLOR(baseColor2), 230))
+  FC_COLOR_MAP_COLOR(media, dim(dodgerblue, 190))
+  FC_COLOR_MAP_COLOR(mouseWheel, nocolor)
+  FC_COLOR_MAP_COLOR(mouseButton, dim(lightcyan, 250))
+  FC_COLOR_MAP_COLOR(mouseWarp, nocolor)
+  FC_COLOR_MAP_COLOR(mouseMove, nocolor)
+  FC_COLOR_MAP_COLOR(mouse, dim(FC_REF_MAP_COLOR(baseColor2), 250))
+  FC_COLOR_MAP_COLOR(space, dim(white, 100))
+  FC_COLOR_MAP_COLOR(tab, dim(FC_REF_MAP_COLOR(baseColor1), 100))
+  FC_COLOR_MAP_COLOR(enter, dim(white, 255))
+  FC_COLOR_MAP_COLOR(backspace, dim(yellow, 100))
+  FC_COLOR_MAP_COLOR(escape, dim(orange, 190))
+  FC_COLOR_MAP_COLOR(del, dim(red, 255))
+  FC_COLOR_MAP_COLOR(fn, dim(white, 255))
+  FC_COLOR_MAP_COLOR(lock, dim(FC_REF_MAP_COLOR(baseColor1), 255))
+  FC_COLOR_MAP_COLOR(LEDEffectNext, dim(blue, 255))
 };
 
 struct colorMapFlower: public colorMap {
   // baseColor allows you to use a base color that just changes in brightness
-  FC_COLOR_FUNC cRGB baseColor1()      { return violet; }
-  FC_COLOR_FUNC cRGB baseColor2()      { return springgreen; }
-  FC_COLOR_FUNC cRGB defaultColor()    { return dim(baseColor1(), 100); }
-  FC_COLOR_FUNC cRGB shift()           { return lime; }
-  FC_COLOR_FUNC cRGB control()         { return mediumspringgreen; }
-  FC_COLOR_FUNC cRGB gui()             { return yellowgreen; }
-  FC_COLOR_FUNC cRGB alt()             { return yellowgreen; }
-  FC_COLOR_FUNC cRGB modifier()        { return dim(baseColor2(), 130); }
-  FC_COLOR_FUNC cRGB alpha()           { return dim(baseColor1(), 130); }
-  FC_COLOR_FUNC cRGB number()          { return dim(thistle, 200); }
-  FC_COLOR_FUNC cRGB punctuation()     { return dim(plum, 210); }
-  FC_COLOR_FUNC cRGB function()        { return dim(white, 250); }
-  FC_COLOR_FUNC cRGB navigation()      { return dim(palegoldenrod, 255); }
-  FC_COLOR_FUNC cRGB system()          { return dim(orange, 100); }
-  FC_COLOR_FUNC cRGB arrow()           { return dim(lightgoldenrodyellow, 250); }
-  FC_COLOR_FUNC cRGB keypad()          { return dim(baseColor2(), 230); }
-  FC_COLOR_FUNC cRGB media()           { return dim(darkorchid, 200); }
-  FC_COLOR_FUNC cRGB mouseWheel()      { return nocolor; }
-  FC_COLOR_FUNC cRGB mouseButton()     { return dim(lightcyan, 250); }
-  FC_COLOR_FUNC cRGB mouseWarp()       { return nocolor; }
-  FC_COLOR_FUNC cRGB mouseMove()       { return nocolor; }
-  FC_COLOR_FUNC cRGB mouse()           { return dim(baseColor2(), 250); }
-  FC_COLOR_FUNC cRGB space()           { return dim(white, 100); }
-  FC_COLOR_FUNC cRGB tab()             { return dim(baseColor1(), 100); }
-  FC_COLOR_FUNC cRGB enter()           { return dim(white, 255); }
-  FC_COLOR_FUNC cRGB backspace()       { return dim(yellowgreen, 150); }
-  FC_COLOR_FUNC cRGB escape()          { return dim(palegoldenrod, 190); }
-  FC_COLOR_FUNC cRGB del()             { return dim(red, 255); }
-  FC_COLOR_FUNC cRGB fn()              { return dim(white, 255); }
-  FC_COLOR_FUNC cRGB lock()            { return dim(baseColor1(), 255); }
-  FC_COLOR_FUNC cRGB LEDEffectNext()   { return dim(white, 255); }
+  FC_COLOR_MAP_COLOR(baseColor1, violet)
+  FC_COLOR_MAP_COLOR(baseColor2, springgreen)
+  FC_COLOR_MAP_COLOR(defaultColor, dim(FC_REF_MAP_COLOR(baseColor1), 100))
+  FC_COLOR_MAP_COLOR(shift, lime)
+  FC_COLOR_MAP_COLOR(control, mediumspringgreen)
+  FC_COLOR_MAP_COLOR(gui, yellowgreen)
+  FC_COLOR_MAP_COLOR(alt, yellowgreen)
+  FC_COLOR_MAP_COLOR(modifier, dim(FC_REF_MAP_COLOR(baseColor2), 130))
+  FC_COLOR_MAP_COLOR(alpha, dim(FC_REF_MAP_COLOR(baseColor1), 130))
+  FC_COLOR_MAP_COLOR(number, dim(thistle, 200))
+  FC_COLOR_MAP_COLOR(punctuation, dim(plum, 210))
+  FC_COLOR_MAP_COLOR(function, dim(white, 250))
+  FC_COLOR_MAP_COLOR(navigation, dim(palegoldenrod, 255))
+  FC_COLOR_MAP_COLOR(system, dim(orange, 100))
+  FC_COLOR_MAP_COLOR(arrow, dim(lightgoldenrodyellow, 250))
+  FC_COLOR_MAP_COLOR(keypad, dim(FC_REF_MAP_COLOR(baseColor2), 230))
+  FC_COLOR_MAP_COLOR(media, dim(darkorchid, 200))
+  FC_COLOR_MAP_COLOR(mouseWheel, nocolor)
+  FC_COLOR_MAP_COLOR(mouseButton, dim(lightcyan, 250))
+  FC_COLOR_MAP_COLOR(mouseWarp, nocolor)
+  FC_COLOR_MAP_COLOR(mouseMove, nocolor)
+  FC_COLOR_MAP_COLOR(mouse, dim(FC_REF_MAP_COLOR(baseColor2), 250))
+  FC_COLOR_MAP_COLOR(space, dim(white, 100))
+  FC_COLOR_MAP_COLOR(tab, dim(FC_REF_MAP_COLOR(baseColor1), 100))
+  FC_COLOR_MAP_COLOR(enter, dim(white, 255))
+  FC_COLOR_MAP_COLOR(backspace, dim(yellowgreen, 150))
+  FC_COLOR_MAP_COLOR(escape, dim(palegoldenrod, 190))
+  FC_COLOR_MAP_COLOR(del, dim(red, 255))
+  FC_COLOR_MAP_COLOR(fn, dim(white, 255))
+  FC_COLOR_MAP_COLOR(lock, dim(FC_REF_MAP_COLOR(baseColor1), 255))
+  FC_COLOR_MAP_COLOR(LEDEffectNext, dim(white, 255))
 };
 
 struct colorMapKids: public colorMap {
   // baseColor allows you to use a base color that just changes in brightness
-  FC_COLOR_FUNC cRGB defaultColor()    { return dim(white, 160); }
-  FC_COLOR_FUNC cRGB shift()           { return lime; }
-  FC_COLOR_FUNC cRGB control()         { return dodgerblue; }
-  FC_COLOR_FUNC cRGB gui()             { return yellow; }
-  FC_COLOR_FUNC cRGB alt()             { return yellowgreen; }
-  FC_COLOR_FUNC cRGB alpha()           { return dim(white, 130); }
-  FC_COLOR_FUNC cRGB number()          { return dim(yellow, 200); }
-  FC_COLOR_FUNC cRGB punctuation()     { return dim(dodgerblue, 210); }
-  FC_COLOR_FUNC cRGB function()        { return dim(red, 250); }
-  FC_COLOR_FUNC cRGB navigation()      { return dim(orange, 255); }
-  FC_COLOR_FUNC cRGB system()          { return dim(orange, 100); }
-  FC_COLOR_FUNC cRGB arrow()           { return dim(gold, 250); }
-  FC_COLOR_FUNC cRGB keypad()          { return dim(orange, 230); }
-  FC_COLOR_FUNC cRGB media()           { return dim(lime, 200); }
-  FC_COLOR_FUNC cRGB mouseWheel()      { return nocolor; }
-  FC_COLOR_FUNC cRGB mouseButton()     { return dim(lightcyan, 250); }
-  FC_COLOR_FUNC cRGB mouseWarp()       { return nocolor; }
-  FC_COLOR_FUNC cRGB mouseMove()       { return nocolor; }
-  FC_COLOR_FUNC cRGB mouse()           { return dim(cyan, 250); }
-  FC_COLOR_FUNC cRGB space()           { return dim(white, 100); }
-  FC_COLOR_FUNC cRGB tab()             { return dim(white, 100); }
-  FC_COLOR_FUNC cRGB enter()           { return dim(white, 255); }
-  FC_COLOR_FUNC cRGB backspace()       { return dim(orangered, 150); }
-  FC_COLOR_FUNC cRGB escape()          { return dim(red, 190); }
-  FC_COLOR_FUNC cRGB del()             { return dim(red, 255); }
-  FC_COLOR_FUNC cRGB fn()              { return dim(white, 255); }
-  FC_COLOR_FUNC cRGB lock()            { return dim(green, 255); }
-  FC_COLOR_FUNC cRGB LEDEffectNext()   { return dim(blue, 255); }
+  FC_COLOR_MAP_COLOR(defaultColor, dim(white, 160))
+  FC_COLOR_MAP_COLOR(shift, lime)
+  FC_COLOR_MAP_COLOR(control, dodgerblue)
+  FC_COLOR_MAP_COLOR(gui, yellow)
+  FC_COLOR_MAP_COLOR(alt, yellowgreen)
+  FC_COLOR_MAP_COLOR(alpha, dim(white, 130))
+  FC_COLOR_MAP_COLOR(number, dim(yellow, 200))
+  FC_COLOR_MAP_COLOR(punctuation, dim(dodgerblue, 210))
+  FC_COLOR_MAP_COLOR(function, dim(red, 250))
+  FC_COLOR_MAP_COLOR(navigation, dim(orange, 255))
+  FC_COLOR_MAP_COLOR(system, dim(orange, 100))
+  FC_COLOR_MAP_COLOR(arrow, dim(gold, 250))
+  FC_COLOR_MAP_COLOR(keypad, dim(orange, 230))
+  FC_COLOR_MAP_COLOR(media, dim(lime, 200))
+  FC_COLOR_MAP_COLOR(mouseWheel, nocolor)
+  FC_COLOR_MAP_COLOR(mouseButton, dim(lightcyan, 250))
+  FC_COLOR_MAP_COLOR(mouseWarp, nocolor)
+  FC_COLOR_MAP_COLOR(mouseMove, nocolor)
+  FC_COLOR_MAP_COLOR(mouse, dim(cyan, 250))
+  FC_COLOR_MAP_COLOR(space, dim(white, 100))
+  FC_COLOR_MAP_COLOR(tab, dim(white, 100))
+  FC_COLOR_MAP_COLOR(enter, dim(white, 255))
+  FC_COLOR_MAP_COLOR(backspace, dim(orangered, 150))
+  FC_COLOR_MAP_COLOR(escape, dim(red, 190))
+  FC_COLOR_MAP_COLOR(del, dim(red, 255))
+  FC_COLOR_MAP_COLOR(fn, dim(white, 255))
+  FC_COLOR_MAP_COLOR(lock, dim(green, 255))
+  FC_COLOR_MAP_COLOR(LEDEffectNext, dim(blue, 255))
 };
 
 struct colorMapRedWhiteBlue: public colorMap {
   // baseColor allows you to use a base color that just changes in brightness
-  FC_COLOR_FUNC cRGB baseColor1()      { return blue; }
-  FC_COLOR_FUNC cRGB baseColor2()      { return  white; }
-  FC_COLOR_FUNC cRGB defaultColor()    { return dim(baseColor1(), 240); }
-  FC_COLOR_FUNC cRGB shift()           { return nocolor; }
-  FC_COLOR_FUNC cRGB control()         { return nocolor; }
-  FC_COLOR_FUNC cRGB gui()             { return nocolor; }
-  FC_COLOR_FUNC cRGB alt()             { return nocolor; }
-  FC_COLOR_FUNC cRGB modifier()        { return dim(red, 170); }
-  FC_COLOR_FUNC cRGB alpha()           { return dim(baseColor2(), 150); }
-  FC_COLOR_FUNC cRGB number()          { return dim(red, 190); }
-  FC_COLOR_FUNC cRGB punctuation()     { return dim(blue, 200); }
-  FC_COLOR_FUNC cRGB function()        { return dim(white, 250); }
-  FC_COLOR_FUNC cRGB navigation()      { return dim(white, 255); }
-  FC_COLOR_FUNC cRGB system()          { return dim(orangered, 100); }
-  FC_COLOR_FUNC cRGB arrow()           { return dim(white, 240); }
-  FC_COLOR_FUNC cRGB keypad()          { return dim(baseColor2(), 230); }
-  FC_COLOR_FUNC cRGB media()           { return dim(dodgerblue, 200); }
-  FC_COLOR_FUNC cRGB mouseWheel()      { return nocolor; }
-  FC_COLOR_FUNC cRGB mouseButton()     { return dim(lightcyan, 250); }
-  FC_COLOR_FUNC cRGB mouseWarp()       { return nocolor; }
-  FC_COLOR_FUNC cRGB mouseMove()       { return nocolor; }
-  FC_COLOR_FUNC cRGB mouse()           { return dim(dodgerblue, 190); }
-  FC_COLOR_FUNC cRGB space()           { return dim(white, 100); }
-  FC_COLOR_FUNC cRGB tab()             { return dim(baseColor1(), 100); }
-  FC_COLOR_FUNC cRGB enter()           { return dim(white, 255); }
-  FC_COLOR_FUNC cRGB backspace()       { return dim(red, 150); }
-  FC_COLOR_FUNC cRGB escape()          { return dim(baseColor1(), 190); }
-  FC_COLOR_FUNC cRGB del()             { return dim(red, 255); }
-  FC_COLOR_FUNC cRGB fn()              { return dim(white, 200); }
-  FC_COLOR_FUNC cRGB lock()            { return dim(baseColor1(), 255); }
-  FC_COLOR_FUNC cRGB LEDEffectNext()   { return dim(white, 255); }
+  FC_COLOR_MAP_COLOR(baseColor1, blue)
+  FC_COLOR_MAP_COLOR(baseColor2,  white)
+  FC_COLOR_MAP_COLOR(defaultColor, dim(FC_REF_MAP_COLOR(baseColor1), 240))
+  FC_COLOR_MAP_COLOR(shift, nocolor)
+  FC_COLOR_MAP_COLOR(control, nocolor)
+  FC_COLOR_MAP_COLOR(gui, nocolor)
+  FC_COLOR_MAP_COLOR(alt, nocolor)
+  FC_COLOR_MAP_COLOR(modifier, dim(red, 170))
+  FC_COLOR_MAP_COLOR(alpha, dim(FC_REF_MAP_COLOR(baseColor2), 150))
+  FC_COLOR_MAP_COLOR(number, dim(red, 190))
+  FC_COLOR_MAP_COLOR(punctuation, dim(blue, 200))
+  FC_COLOR_MAP_COLOR(function, dim(white, 250))
+  FC_COLOR_MAP_COLOR(navigation, dim(white, 255))
+  FC_COLOR_MAP_COLOR(system, dim(orangered, 100))
+  FC_COLOR_MAP_COLOR(arrow, dim(white, 240))
+  FC_COLOR_MAP_COLOR(keypad, dim(FC_REF_MAP_COLOR(baseColor2), 230))
+  FC_COLOR_MAP_COLOR(media, dim(dodgerblue, 200))
+  FC_COLOR_MAP_COLOR(mouseWheel, nocolor)
+  FC_COLOR_MAP_COLOR(mouseButton, dim(lightcyan, 250))
+  FC_COLOR_MAP_COLOR(mouseWarp, nocolor)
+  FC_COLOR_MAP_COLOR(mouseMove, nocolor)
+  FC_COLOR_MAP_COLOR(mouse, dim(dodgerblue, 190))
+  FC_COLOR_MAP_COLOR(space, dim(white, 100))
+  FC_COLOR_MAP_COLOR(tab, dim(FC_REF_MAP_COLOR(baseColor1), 100))
+  FC_COLOR_MAP_COLOR(enter, dim(white, 255))
+  FC_COLOR_MAP_COLOR(backspace, dim(red, 150))
+  FC_COLOR_MAP_COLOR(escape, dim(FC_REF_MAP_COLOR(baseColor1), 190))
+  FC_COLOR_MAP_COLOR(del, dim(red, 255))
+  FC_COLOR_MAP_COLOR(fn, dim(white, 200))
+  FC_COLOR_MAP_COLOR(lock, dim(FC_REF_MAP_COLOR(baseColor1), 255))
+  FC_COLOR_MAP_COLOR(LEDEffectNext, dim(white, 255))
 };
 
 
@@ -370,58 +378,58 @@ template<typename ColorMap> static cRGB groupColorLookup(const Key &k, bool &ski
   // If keys are a part of a larger group, they have precedence,
   // unless they are set to skip
   
-  if (isControl(k)) if (!isColorMatch(ColorMap::control(), nocolor)) return ColorMap::control();
-  if (isGui(k)) if (!isColorMatch(ColorMap::gui(), nocolor)) return ColorMap::gui();
-  if (isShift(k)) if (!isColorMatch(ColorMap::shift(), nocolor)) return ColorMap::shift();
-  if (isAlt(k)) if (!isColorMatch(ColorMap::alt(), nocolor)) return ColorMap::alt();
+  if (isControl(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(control), nocolor)) return ColorMap::FC_REF_MAP_COLOR(control);
+  if (isGui(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(gui), nocolor)) return ColorMap::FC_REF_MAP_COLOR(gui);
+  if (isShift(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(shift), nocolor)) return ColorMap::FC_REF_MAP_COLOR(shift);
+  if (isAlt(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(alt), nocolor)) return ColorMap::FC_REF_MAP_COLOR(alt);
 
-  if (isMouseWheel(k)) if (!isColorMatch(ColorMap::mouseWheel(), nocolor)) return ColorMap::mouseWheel();
-  if (isMouseButton(k)) if (!isColorMatch(ColorMap::mouseButton(), nocolor)) return ColorMap::mouseButton();
-  if (isMouseWarp(k)) if (!isColorMatch(ColorMap::mouseWarp(), nocolor)) return ColorMap::mouseWarp();
-  if (isMouseMove(k)) if (!isColorMatch(ColorMap::mouseMove(), nocolor)) return ColorMap::mouseMove();
+  if (isMouseWheel(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(mouseWheel), nocolor)) return ColorMap::FC_REF_MAP_COLOR(mouseWheel);
+  if (isMouseButton(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(mouseButton), nocolor)) return ColorMap::FC_REF_MAP_COLOR(mouseButton);
+  if (isMouseWarp(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(mouseWarp), nocolor)) return ColorMap::FC_REF_MAP_COLOR(mouseWarp);
+  if (isMouseMove(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(mouseMove), nocolor)) return ColorMap::FC_REF_MAP_COLOR(mouseMove);
   if ((Key_Escape).flags == k.flags && (Key_Escape).keyCode == k.keyCode)
-    if (!isColorMatch(ColorMap::escape(), nocolor)) return ColorMap::escape();
+    if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(escape), nocolor)) return ColorMap::FC_REF_MAP_COLOR(escape);
   if ((Key_Delete).flags == k.flags && (Key_Delete).keyCode == k.keyCode)
-    if (!isColorMatch(ColorMap::del(), nocolor)) return ColorMap::del();
+    if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(del), nocolor)) return ColorMap::FC_REF_MAP_COLOR(del);
 
 
-  if (isAlpha(k)) if (!isColorMatch(ColorMap::alpha(), nocolor)) return ColorMap::alpha();
-  if (isNumber(k)) if (!isColorMatch(ColorMap::number(), nocolor)) return ColorMap::number();
-  if (isPunctuation(k)) if (!isColorMatch(ColorMap::punctuation(), nocolor)) return ColorMap::punctuation(); 
-  if (isFunction(k)) if (!isColorMatch(ColorMap::function(), nocolor)) return ColorMap::function(); 
-  if (isNavigation(k)) if (!isColorMatch(ColorMap::navigation(), nocolor)) return ColorMap::navigation(); 
-  if (isSystem(k)) if (!isColorMatch(ColorMap::system(), nocolor)) return ColorMap::system();
-  if (isArrow(k)) if (!isColorMatch(ColorMap::arrow(), nocolor)) return ColorMap::arrow(); 
-  if (isKeypad(k)) if (!isColorMatch(ColorMap::keypad(), nocolor)) return ColorMap::keypad(); 
-  if (isMedia(k)) if (!isColorMatch(ColorMap::media(), nocolor)) return ColorMap::media(); 
-  if (isModifier(k)) if (!isColorMatch(ColorMap::modifier(), nocolor)) return ColorMap::modifier(); 
-  if (isMouse(k)) if (!isColorMatch(ColorMap::mouse(), nocolor)) return ColorMap::mouse(); 
+  if (isAlpha(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(alpha), nocolor)) return ColorMap::FC_REF_MAP_COLOR(alpha);
+  if (isNumber(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(number), nocolor)) return ColorMap::FC_REF_MAP_COLOR(number);
+  if (isPunctuation(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(punctuation), nocolor)) return ColorMap::FC_REF_MAP_COLOR(punctuation); 
+  if (isFunction(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(function), nocolor)) return ColorMap::FC_REF_MAP_COLOR(function); 
+  if (isNavigation(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(navigation), nocolor)) return ColorMap::FC_REF_MAP_COLOR(navigation); 
+  if (isSystem(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(system), nocolor)) return ColorMap::FC_REF_MAP_COLOR(system);
+  if (isArrow(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(arrow), nocolor)) return ColorMap::FC_REF_MAP_COLOR(arrow); 
+  if (isKeypad(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(keypad), nocolor)) return ColorMap::FC_REF_MAP_COLOR(keypad); 
+  if (isMedia(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(media), nocolor)) return ColorMap::FC_REF_MAP_COLOR(media); 
+  if (isModifier(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(modifier), nocolor)) return ColorMap::FC_REF_MAP_COLOR(modifier); 
+  if (isMouse(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(mouse), nocolor)) return ColorMap::FC_REF_MAP_COLOR(mouse); 
 
   // Individual keys that are important and unique enough to justify having their own members here.
   if ((Key_Space).flags == k.flags && (Key_Space).keyCode == k.keyCode)
-    if (!isColorMatch(ColorMap::space(), nocolor)) return ColorMap::space();
+    if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(space), nocolor)) return ColorMap::FC_REF_MAP_COLOR(space);
   if ((Key_Enter).flags == k.flags && (Key_Enter).keyCode == k.keyCode)
-    if (!isColorMatch(ColorMap::enter(), nocolor)) return ColorMap::enter();
+    if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(enter), nocolor)) return ColorMap::FC_REF_MAP_COLOR(enter);
   if ((Key_Tab).flags == k.flags && (Key_Tab).keyCode == k.keyCode)
-    if (!isColorMatch(ColorMap::tab(), nocolor)) return ColorMap::tab();
+    if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(tab), nocolor)) return ColorMap::FC_REF_MAP_COLOR(tab);
   if ((Key_Backspace).flags == k.flags && (Key_Backspace).keyCode == k.keyCode)
-    if (!isColorMatch(ColorMap::backspace(), nocolor)) return ColorMap::backspace();
+    if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(backspace), nocolor)) return ColorMap::FC_REF_MAP_COLOR(backspace);
 
   if ((Key_LEDEffectNext).flags == k.flags && (Key_LEDEffectNext).keyCode == k.keyCode)
-    if (!isColorMatch(ColorMap::LEDEffectNext(), nocolor)) return ColorMap::LEDEffectNext();
+    if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(LEDEffectNext), nocolor)) return ColorMap::FC_REF_MAP_COLOR(LEDEffectNext);
 
   // For these ones, I need to know what their layers are... they might change from the default.
   // This should work for layers 1, 2 or 3
   if ( (ShiftToLayer(2)).flags == k.flags && ( (ShiftToLayer(1)).keyCode == k.keyCode ||
     (ShiftToLayer(2)).keyCode == k.keyCode || (ShiftToLayer(3)).keyCode == k.keyCode) )
-    if (!isColorMatch(ColorMap::fn(), nocolor)) return ColorMap::fn();
+    if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(fn), nocolor)) return ColorMap::FC_REF_MAP_COLOR(fn);
   
   // Should work for all LockLayer keys
   if ( (LockLayer(1)).flags == k.flags && ( (LockLayer(1)).keyCode == k.keyCode || (LockLayer(1)).keyCode == k.keyCode) )
-    if (!isColorMatch(ColorMap::lock(), nocolor)) return ColorMap::lock();
+    if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(lock), nocolor)) return ColorMap::FC_REF_MAP_COLOR(lock);
 
 
-  return ColorMap::defaultColor();
+  return ColorMap::FC_REF_MAP_COLOR(defaultColor);
 
 }
 

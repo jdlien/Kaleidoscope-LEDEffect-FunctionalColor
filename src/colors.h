@@ -178,6 +178,7 @@ inline constexpr byte dimLimit(byte brightness, byte rgbByte, byte range=255) {
 }
 
 //Note that in practice, on the model01, 28 is the lowest value that actually lights up at all
+__attribute__((always_inline))
 inline constexpr cRGB dim(const cRGB &color, byte brightness, byte range=255) {
   return CRGB(uint8_t(dimLimit(brightness, color.r, range)), 
               uint8_t(dimLimit(brightness, color.g, range)), 
