@@ -1,7 +1,8 @@
 #pragma once
 
 namespace kaleidoscope {
-namespace LEDFunctionalColor {
+namespace plugin {
+namespace FunctionalColorStuff {
 
 // A special color that serves, in some cases, as an "index color" and basically means, "skip this, return the next in line".
 // Since colors under 18 or so are equivalent to LED off, this would otherwise be equivalent to black anyways
@@ -177,6 +178,7 @@ inline constexpr byte dimLimit(byte brightness, byte rgbByte, byte range=255) {
 }
 
 //Note that in practice, on the model01, 28 is the lowest value that actually lights up at all
+__attribute__((always_inline))
 inline constexpr cRGB dim(const cRGB &color, byte brightness, byte range=255) {
   return CRGB(uint8_t(dimLimit(brightness, color.r, range)), 
               uint8_t(dimLimit(brightness, color.g, range)), 
@@ -187,5 +189,6 @@ inline constexpr bool isColorMatch(cRGB color1, cRGB color2) {
   return (color1.r == color2.r && color1.g == color2.g && color1.b == color2.b)?true:false;
 }
 
-} // namespace LEDFunctionalColor
+} // namespace FunctionalColorStuff
+} // namespace plugin
 } // namespace kaleidoscope

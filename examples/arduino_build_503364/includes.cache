@@ -1,0 +1,487 @@
+[
+  {
+    "Sourcefile": "",
+    "Include": "",
+    "Includepath": "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/cores/arduino"
+  },
+  {
+    "Sourcefile": "",
+    "Include": "",
+    "Includepath": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/variants/model01"
+  },
+  {
+    "Sourcefile": "/var/folders/p0/cqqhkldn7316rdcz9yglqrw80000gn/T/arduino_build_503364/sketch/fc_test_minimal.ino.cpp",
+    "Include": "Kaleidoscope.h",
+    "Includepath": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src"
+  },
+  {
+    "Sourcefile": "/var/folders/p0/cqqhkldn7316rdcz9yglqrw80000gn/T/arduino_build_503364/sketch/fc_test_minimal.ino.cpp",
+    "Include": "Kaleidoscope-HIDAdaptor-KeyboardioHID.h",
+    "Includepath": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope-HIDAdaptor-KeyboardioHID/src"
+  },
+  {
+    "Sourcefile": "/var/folders/p0/cqqhkldn7316rdcz9yglqrw80000gn/T/arduino_build_503364/sketch/fc_test_minimal.ino.cpp",
+    "Include": "KeyboardioScanner.h",
+    "Includepath": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/KeyboardioScanner"
+  },
+  {
+    "Sourcefile": "/var/folders/p0/cqqhkldn7316rdcz9yglqrw80000gn/T/arduino_build_503364/sketch/fc_test_minimal.ino.cpp",
+    "Include": "KeyboardioHID.h",
+    "Includepath": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/KeyboardioHID/src"
+  },
+  {
+    "Sourcefile": "/var/folders/p0/cqqhkldn7316rdcz9yglqrw80000gn/T/arduino_build_503364/sketch/fc_test_minimal.ino.cpp",
+    "Include": "Kaleidoscope-LEDEffect-FunctionalColor.h",
+    "Includepath": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope-LEDEffect-FunctionalColor/src"
+  },
+  {
+    "Sourcefile": "/var/folders/p0/cqqhkldn7316rdcz9yglqrw80000gn/T/arduino_build_503364/sketch/fc_test_minimal.ino.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/Kaleidoscope.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/bitfields.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/hardware/ATMegaKeyboard.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/hardware/ez/ErgoDox/ErgoDoxScanner.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/hardware/ez/ErgoDox/i2cmaster.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/hardware/ez/ErgoDox.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/hardware/kbdfans/KBD4x.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/hardware/keyboardio/Model01.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/hardware/olkb/Planck.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/hardware/softhruf/Splitography.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/hardware/technomancy/Atreus.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/hardware/technomancy/Atreus2.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/hooks.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/key_events.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/layers.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/Colormap.cpp",
+    "Include": "EEPROM.h",
+    "Includepath": "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/libraries/EEPROM/src"
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/Colormap.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/Cycle.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/CycleTimeReport.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/EEPROM-Keymap-Programmer.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/EEPROM-Keymap.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/EEPROM-Settings/crc.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/EEPROM-Settings.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/Escape-OneShot.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/FingerPainter.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/FirmwareDump.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/FocusSerial.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/GeminiPR.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/GhostInTheFirmware.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/HardwareTestMode.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/Heatmap.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/HostOS-Focus.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/HostOS.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/HostPowerManagement.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/IdleLEDs.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/Jukebox.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/LED-ActiveLayerColor.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/LED-ActiveModColor.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/LED-AlphaSquare/Effect.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/LED-AlphaSquare.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/LED-Palette-Theme.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/LED-Stalker.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/LED-Wavepool.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/LEDControl/LED-Off.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/LEDControl/LEDUtils.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/LEDControl.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/LEDEffect-BootAnimation.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/LEDEffect-BootGreeting.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/LEDEffect-Breathe.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/LEDEffect-Chase.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/LEDEffect-Rainbow.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/LEDEffect-SolidColor.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/LEDModeInterface.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/Leader.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/Macros.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/MagicCombo.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/Miami.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/Model01-TestMode.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/MouseKeys/MouseWrapper.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/MouseKeys.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/NumPad.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/OneShot.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/Qukeys.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/Redial.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/ShapeShifter.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/SpaceCadet.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/Syster.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/TapDance.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/TopsyTurvy.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/TriColor.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/TypingBreaks.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/USB-Quirks.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/Unicode.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope/plugin/WinKeyToggle.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope/src/kaleidoscope_internal/LEDModeManager.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope-HIDAdaptor-KeyboardioHID/src/kaleidoscope/hid.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/KeyboardioScanner/KeyboardioScanner.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/KeyboardioScanner/twi.c",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/KeyboardioHID/src/BootKeyboard/BootKeyboard.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/KeyboardioHID/src/HID.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/KeyboardioHID/src/MultiReport/AbsoluteMouse.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/KeyboardioHID/src/MultiReport/ConsumerControl.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/KeyboardioHID/src/MultiReport/Gamepad.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/KeyboardioHID/src/MultiReport/Keyboard.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/KeyboardioHID/src/MultiReport/Mouse.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/KeyboardioHID/src/MultiReport/SystemControl.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/KeyboardioHID/src/SingleReport/SingleAbsoluteMouse.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/KeyboardioHID/src/arch/samd.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "/Users/jdlien/Documents/Arduino/hardware/keyboardio/avr/libraries/Kaleidoscope-LEDEffect-FunctionalColor/src/Kaleidoscope-LEDEffect-FunctionalColor.cpp",
+    "Include": "",
+    "Includepath": ""
+  }
+]
