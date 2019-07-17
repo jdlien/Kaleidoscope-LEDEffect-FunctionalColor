@@ -5,7 +5,7 @@ namespace kaleidoscope {
 
 
 namespace plugin {
-namespace FunctionalColorStuff {
+namespace LEDFunctionalColor {
    
 #ifndef FC_HAVE_COLOR_FUNCTIONS
 // Redefine all colorMap members to work around "undefined reference" issue on macOS.
@@ -401,6 +401,6 @@ void FunctionalColor::update(void) {
 
 }// end update()
 
-} // namespace FunctionalColorStuff
+} // namespace LEDFunctionalColor
 }// namespace plugin
 }//namespace kaleidoscope
