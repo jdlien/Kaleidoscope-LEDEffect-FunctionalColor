@@ -401,6 +401,12 @@ struct myTheme: public colorMapMono {
   // FC_MAP_COLOR(shift, nocolor);
 };
 
+#ifndef FC_HAVE_COLOR_FUNCTIONS
+constexpr cRGB myTheme::shift;
+constexpr cRGB myTheme::control;
+constexpr cRGB myTheme::alt;
+constexpr cRGB myTheme::gui;
+#endif
 
 // For reference, this example theme struct shows the full list of properties you can set
 // in case you want to define a completely custom theme. In practice you can
@@ -409,11 +415,12 @@ struct myTheme: public colorMapMono {
 struct colorMapGreen: public colorMap {
   // baseColor is used with just changes in brightness for a largely monochromatic theme.
   // You can change baseColor from green to change all these colors at once.
-  // When referring to a placeholder, you must use the FC_REF_MAP_COLOR() function.
-  FC_MAP_COLOR(FC_REF_MAP_COLOR(baseColor), green)
+  FC_MAP_COLOR(baseColor, green)
 
   // defaultColor is used when there is no color defined for a key.
   // This is the only way to color "prog" if you don't assign a function to it.
+  // When referring to a previously defined color that was defined with FC_MAP_COLOR
+  // (including in base color map classes), you must use the FC_REF_MAP_COLOR() function.
   FC_MAP_COLOR(defaultColor, dim(FC_REF_MAP_COLOR(baseColor), 100))
 
   // shift, control, gui, and alt can all be colored by "modifier" if nocolor is set here.

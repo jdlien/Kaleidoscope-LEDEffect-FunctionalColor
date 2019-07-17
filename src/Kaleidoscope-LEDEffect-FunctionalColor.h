@@ -604,7 +604,8 @@ class FunctionalColor : public LEDMode {
   static FunctionalColor *lastFC;
   void onActivate(void) final;
   void update(void) final;
-  void refreshAt(byte r, byte c) final;
+  using LEDMode::refreshAt;
+  void refreshAt(KeyAddr key_addr) final;
 
 
 };//end class FunctionalColor
