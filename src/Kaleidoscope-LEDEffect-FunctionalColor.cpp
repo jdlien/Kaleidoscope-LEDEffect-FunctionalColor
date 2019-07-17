@@ -356,8 +356,8 @@ void FunctionalColor::brightnessDown(uint8_t keyState) {
 }
 
 //refreshAt accepts a Key position and sets it to the appropriate color from a lookup function
-void FunctionalColor::refreshAt(byte r, byte c) {
-  Key k = Layer.lookupOnActiveLayer(r, c);
+void FunctionalColor::refreshAt(KeyAddr key_addr) {
+  Key k = Layer.lookupOnActiveLayer(key_addr);
   bool skip = false, none = false;
   auto color = exceptionsLookup(k, skip, none);
   // if there was no match, we continue to mainColorLookup
@@ -366,7 +366,7 @@ void FunctionalColor::refreshAt(byte r, byte c) {
     // Otherwise we return the defaultColor from exceptions (nocolor if no custom function is defined)  
   }
   if (skip) return;
-  ::LEDControl.setCrgbAt(r, c, dim(color, brightnessSetting));
+  ::LEDControl.setCrgbAt(key_addr, dim(color, brightnessSetting));
 }// end refreshAt()
 
 FunctionalColor* FunctionalColor::lastFC;
@@ -375,10 +375,8 @@ FunctionalColor* FunctionalColor::lastFC;
 //Forces an update of the LEDs
 void FunctionalColor::refresh(void) {
   // Loop through every row and column and set each LED based on its key's function
-  for (uint8_t r = 0; r < ROWS; r++) {
-    for (uint8_t c = 0; c < COLS; c++) {
-      refreshAt(r, c);
-    }
+   for(auto key_addr: KeyAddr::all()) {
+      refreshAt(key_addr);
   }
   lastFC = this;
 }
