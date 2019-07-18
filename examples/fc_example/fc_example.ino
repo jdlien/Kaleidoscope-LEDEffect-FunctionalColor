@@ -344,7 +344,7 @@ FC_END_COLOR_LIST
 
 
 // An example showing how to make a simple configuration with no theme and a default color of pink.
-// This is used in funColor7
+// This is used in funColorSimpleColors
 FC_START_COLOR_LIST(simpleColors)
  // Make homing keys yellow
  FC_GROUPKEY(Key_A)
@@ -359,35 +359,37 @@ FC_START_COLOR_LIST(simpleColors)
 FC_END_COLOR_LIST_DEFAULT(pink)
 
 // There are several ways you can make FunctionalColor instances.
+// Some are commented out to save a few bytes of memory in the default jam-packed configuration.
 
 // No arguments are needed to use the default theme and brightness.
-FunctionalColor funColor1;
+FunctionalColor funColorDefault;
 
 //You can specify an optional brightness 0-255, and an optional colorList can follow.
-FunctionalColor funColor2(200);
+FunctionalColor funColorMono(200);
 
 //You can specify only a color override list as shown above beginning with FC_START_COLOR_LIST(customColors)
-FunctionalColor funColor3(FC_COLOR_LIST(customColors));
+FunctionalColor funColorCustomColors(FC_COLOR_LIST(customColors));
 
 //You can also specify a colorList with the brightness after.
-FunctionalColor funColor4(FC_COLOR_LIST(customColors), 255);
+FunctionalColor funCustomColorsBright(FC_COLOR_LIST(customColors), 255);
 
 // The last two examples will use custom themes - these are applied later in the setup() part of this .ino
 // Look near the bottom of this file to see how this is done.
-FunctionalColor funColor5;
-// Note that you can combine custom color overrides with a custom theme, demonstrated in funColor6
-FunctionalColor funColor6(FC_COLOR_LIST(customColors));
+FunctionalColor funColorMyTheme;
+// Note that you can combine custom color overrides with a custom theme, demonstrated in funColorGreen.
+// adding ", 220, false" after the FC_COLOR_LIST saves about 32 bytes here but it's not necessary.
+FunctionalColor funColorGreen(FC_COLOR_LIST(customColors));
 
-// This is how you explicitly specify NOT to use a theme
+// This is how you explicitly specify NOT to use a theme - add "false" after the brightness
 // to save memory and make a simple configuration.
-FunctionalColor funColor7(FC_COLOR_LIST(simpleColors), 220, false);
+FunctionalColor funColorSimpleColors(FC_COLOR_LIST(simpleColors), 220, false);
 
 // If you're making a custom theme to be applied later, you can also avoid specifying a theme
 // (to save memory) without specifying a colorList with the following:
-FunctionalColor funColor8(220, false);
+FunctionalColor funColorNoTheme(220, false);
 
 
-//To create customize a theme, make a subclass of one of the themes in FunctionalColor.
+//To create a theme, make a subclass of one of the themes in FunctionalColor.
 //They are colorMap, colorMapDefault, colorMapMono, colorMapDuo, colorMapFruit, etc.
 //This example makes a few tweaks to colorMapMono that customize specific modifier keys
 struct myTheme: public colorMapMono {
@@ -401,12 +403,6 @@ struct myTheme: public colorMapMono {
   // FC_MAP_COLOR(shift, nocolor);
 };
 
-#ifndef FC_HAVE_COLOR_FUNCTIONS
-constexpr cRGB myTheme::shift;
-constexpr cRGB myTheme::control;
-constexpr cRGB myTheme::alt;
-constexpr cRGB myTheme::gui;
-#endif
 
 // For reference, this example theme struct shows the full list of properties you can set
 // in case you want to define a completely custom theme. In practice you can
@@ -527,6 +523,7 @@ static kaleidoscope::plugin::LEDSolidColor solidBlue(0, 70, 130);
 static kaleidoscope::plugin::LEDSolidColor solidIndigo(0, 0, 170);
 static kaleidoscope::plugin::LEDSolidColor solidViolet(130, 0, 120);
 
+
 /** toggleLedsOnSuspendResume toggles the LEDs off when the host goes to sleep,
  * and turns them back on when it wakes up.
  */
@@ -608,7 +605,14 @@ KALEIDOSCOPE_INIT_PLUGINS(
 
   /********************** FUNCTIONALCOLOR EFFECTS INITIALIZED HERE **********************/
   // All FunctionalColor instances go here in the order you want them in
-  funColor1,funColor2,funColor3,funColor4,funColor5,funColor6,funColor7,funColor8,
+  funColorDefault,
+  funColorMono,
+  funColorCustomColors,
+  funCustomColorsBright,
+  funColorMyTheme,
+  funColorGreen,
+  funColorSimpleColors,
+  funColorNoTheme,
 
   // The rainbow effect changes the color of all of the keyboard's keys at the same time
   // running through all the colors of the rainbow.
@@ -623,7 +627,8 @@ KALEIDOSCOPE_INIT_PLUGINS(
   LEDChaseEffect,
 
   // These static effects turn your keyboard's LEDs a variety of colors
-  solidRed, solidOrange, solidYellow, solidGreen, solidBlue, solidIndigo, solidViolet,
+  // These are commented out to save some memory (186 bytes) to fit all FunctionalColors examples
+  // solidRed, solidOrange, solidYellow, solidGreen, solidBlue, solidIndigo, solidViolet,
 
   // The breathe effect slowly pulses all of the LEDs on your keyboard
   LEDBreatheEffect,
@@ -700,16 +705,17 @@ void setup() {
   // prefix built-in themes with that namespace
   // Here are all the defaults available:
 
-  // The default is already used without specifying it anyways, but it's here for completeness
-  FC_SET_THEME(funColor1, kaleidoscope::plugin::LEDFunctionalColor::colorMapDefault);
-  FC_SET_THEME(funColor2, kaleidoscope::plugin::LEDFunctionalColor::colorMapMono);
+  // The default is already used without specifying it so specifying it wastes ~556 bytes of memory
+  //FC_SET_THEME(funColorDefault, kaleidoscope::plugin::LEDFunctionalColor::colorMapDefault);
+  FC_SET_THEME(funColorMono, kaleidoscope::plugin::LEDFunctionalColor::colorMapMono);
   // The themes are: colorMap, colorMapDefault, colorMapFruit, colorMapMono, colorMapDuo,
   // colorMapPrincess, colorMapSea, colorMapFlower, colorMapKids, colorMapRedWhiteBlue.
 
-  // This applies our custom themes to funColor5, funColor6, and funColor8
-  FC_SET_THEME(funColor5, myTheme);
-  FC_SET_THEME(funColor6, colorMapGreen);
-  FC_SET_THEME(funColor8, colorMapGreen);
+  // This applies our custom themes to funColorMyTheme, funColorGreen, and funcolorNoTheme
+  FC_SET_THEME(funColorMyTheme, myTheme);
+  FC_SET_THEME(funColorGreen, colorMapGreen);
+  // When a FunctionalColors instance is instantiated with no theme, one can be added later
+  FC_SET_THEME(funColorNoTheme, colorMapGreen);
 
 
   // To make the keymap editable without flashing new firmware, we store
