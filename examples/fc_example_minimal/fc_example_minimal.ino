@@ -1,23 +1,33 @@
 // -*- mode: c++ -*-
-// Minimalist FunctionalColor example by JD Lien
+// FunctionalColor examples with only essential keyboard components. QWERTY only.
+// This is useful if you just want to see examples of FunctionalColor with as little clutter as possible.
 
-// Includes required/useful for FunctionalColors
+#ifndef BUILD_INFORMATION
+#define BUILD_INFORMATION "locally built"
+#endif
+
+// Kaleidoscope firmware core and plugins used in Model 01's firmware
 #include "Kaleidoscope.h"
+#include "Kaleidoscope-HostPowerManagement.h"
+#include "Kaleidoscope-LEDControl.h"
+
+// Support for keys that move the mouse (required for FunctionalColor)
+#include "Kaleidoscope-MouseKeys.h"
+
+// Support for macros (useful in FunctionalColor if you want brightness control)
 #include "Kaleidoscope-Macros.h"
-//Note that FunctionalColor already includes LEDControl and MouseKeys
-#include "Kaleidoscope-LEDEffect-FunctionalColor.h"
-//Add this line if you don't want to have to prefix colors and functions with kaleidoscope::plugin::FunctionalColor
 
-
-// List of macros includes names for FC brightness controls
+// Macros for FunctionalColor brightness control have been added to this enum
 enum { MACRO_FCUP, MACRO_FCDOWN };
 
-// Keymaps. This is the default with brightness controls added and version_info removed
-// to fn+; and fn+'
-enum { QWERTY, FUNCTION };
-const Key keymaps[][ROWS][COLS] PROGMEM = {
+enum { PRIMARY, NUMPAD, FUNCTION }; // layers
 
-  [QWERTY] = KEYMAP_STACKED
+#define PRIMARY_KEYMAP_QWERTY
+
+KEYMAPS(
+
+#if defined (PRIMARY_KEYMAP_QWERTY)
+  [PRIMARY] = KEYMAP_STACKED
   (___,          Key_1, Key_2, Key_3, Key_4, Key_5, Key_LEDEffectNext,
    Key_Backtick, Key_Q, Key_W, Key_E, Key_R, Key_T, Key_Tab,
    Key_PageUp,   Key_A, Key_S, Key_D, Key_F, Key_G,
@@ -25,48 +35,84 @@ const Key keymaps[][ROWS][COLS] PROGMEM = {
    Key_LeftControl, Key_Backspace, Key_LeftGui, Key_LeftShift,
    ShiftToLayer(FUNCTION),
 
-   ___,  Key_6, Key_7, Key_8,     Key_9,         Key_0,         ___,
+   ___,           Key_6, Key_7, Key_8,     Key_9,         Key_0,         LockLayer(NUMPAD),
    Key_Enter,     Key_Y, Key_U, Key_I,     Key_O,         Key_P,         Key_Equals,
                   Key_H, Key_J, Key_K,     Key_L,         Key_Semicolon, Key_Quote,
    Key_RightAlt,  Key_N, Key_M, Key_Comma, Key_Period,    Key_Slash,     Key_Minus,
    Key_RightShift, Key_LeftAlt, Key_Spacebar, Key_RightControl,
    ShiftToLayer(FUNCTION)),
 
+#else
+
+#error "No default keymap defined. You should make sure that you have a line like '#define PRIMARY_KEYMAP_QWERTY' in your sketch"
+
+#endif
+
+  [NUMPAD] =  KEYMAP_STACKED
+  (___, ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___,
+   ___,
+
+   ___,                    ___, Key_7, Key_8,      Key_9,              Key_KeypadSubtract, ___,
+   ___,                    ___, Key_4, Key_5,      Key_6,              Key_KeypadAdd,      ___,
+                           ___, Key_1, Key_2,      Key_3,              Key_Equals,         ___,
+   ___,                    ___, Key_0, Key_Period, Key_KeypadMultiply, Key_KeypadDivide,   Key_Enter,
+   ___, ___, ___, ___,
+   ___),
+
   [FUNCTION] =  KEYMAP_STACKED
-  (___,      Key_F1,           Key_F2,      Key_F3,     Key_F4,        Key_F5,           XXX,
+  (___,      Key_F1,           Key_F2,      Key_F3,     Key_F4,        Key_F5,           Key_CapsLock,
    Key_Tab,  ___,              Key_mouseUp, ___,        Key_mouseBtnR, Key_mouseWarpEnd, Key_mouseWarpNE,
    Key_Home, Key_mouseL,       Key_mouseDn, Key_mouseR, Key_mouseBtnL, Key_mouseWarpNW,
-   Key_End,  Key_PrintScreen,  Key_Insert,  Key_Pause,        Key_mouseBtnM, Key_mouseWarpSW,  Key_mouseWarpSE,
+   Key_End,  Key_PrintScreen,  Key_Insert,  ___,        Key_mouseBtnM, Key_mouseWarpSW,  Key_mouseWarpSE,
    ___, Key_Delete, ___, ___,
    ___,
 
    Consumer_ScanPreviousTrack, Key_F6,                 Key_F7,                   Key_F8,                   Key_F9,          Key_F10,          Key_F11,
    Consumer_PlaySlashPause,    Consumer_ScanNextTrack, Key_LeftCurlyBracket,     Key_RightCurlyBracket,    Key_LeftBracket, Key_RightBracket, Key_F12,
-                               Key_LeftArrow,          Key_DownArrow,            Key_UpArrow,              Key_RightArrow,  M(MACRO_FCDOWN),    M(MACRO_FCUP),
+                               Key_LeftArrow,          Key_DownArrow,            Key_UpArrow,              Key_RightArrow,  ___,              ___,
    Key_PcApplication,          Consumer_Mute,          Consumer_VolumeDecrement, Consumer_VolumeIncrement, ___,             Key_Backslash,    Key_Pipe,
    ___, ___, Key_Enter, ___,
    ___)
+) // KEYMAPS(
 
-};
+
+/******************** ADD FUNCTIONALCOLOR CONFIGURATION HERE ********************/
+//Include FunctionalColor before creating your color override list and creating FC instances
+#include "Kaleidoscope-LEDEffect-FunctionalColor.h"
+//Add this line if you don't want to have to prefix colors and functions with kaleidoscope::LEDFunctionalColor
+using namespace kaleidoscope::plugin::LEDFunctionalColor;
 
 
-// A sample color override
-// Note: FunctionalColors allows you to use CSS color names (in lowercase)
+// Note: FunctionalColor allows you to use CSS color names (in lowercase)
 // You can also control the brightness from 0-255 by using a dim() function on the color.
+
+// Use color override Macros to set the color of specific keys--even those not customizable in a ColorMap struct
 FC_START_COLOR_LIST(customColors)
- // Set the color of keys with brightness macros
  // Use any number of FCGROUPKEYs above a FC_KEYCOLOR to set several keys to the same color
- FC_GROUPKEY(M(MACRO_FCUP))
- FC_KEYCOLOR(M(MACRO_FCDOWN), dim(cyan, 240))
- 
- //FC_NOCOLOR() makes a key not change color, as if "transparent".
- // In this example The key with uparrow won't change color, when uprrow appears on the active layer.
+ FC_GROUPKEY(Key_A)
+ FC_KEYCOLOR(Key_Semicolon, orange)
+ FC_GROUPKEY(Key_S)
+ FC_KEYCOLOR(Key_L, yellow)
+ FC_GROUPKEY(Key_D)
+ FC_KEYCOLOR(Key_K, lime)
+ FC_GROUPKEY(Key_F)
+ FC_KEYCOLOR(Key_J, aqua)
+ //FC_NOCOLOR makes a key not change color, as if "transparent".
+ // In this example The uparrow key will not change the key color, even when on the active layer.
  FC_NOCOLOR(Key_UpArrow)
+
+ // This shows how you can set the color of custom macros
+ FC_GROUPKEY(M(MACRO_FCUP))
+ FC_KEYCOLOR(M(MACRO_FCDOWN), cyan)
 FC_END_COLOR_LIST
 
 
 // An example showing how to make a simple configuration with no theme and a default color of pink.
-// This is used in funColor7
+// This is used in funColorSimpleColors
 FC_START_COLOR_LIST(simpleColors)
  // Make homing keys yellow
  FC_GROUPKEY(Key_A)
@@ -81,158 +127,209 @@ FC_START_COLOR_LIST(simpleColors)
 FC_END_COLOR_LIST_DEFAULT(pink)
 
 // There are several ways you can make FunctionalColor instances.
+// Some are commented out to save a few bytes of memory in the default jam-packed configuration.
 
 // No arguments are needed to use the default theme and brightness.
-FunctionalColor funColor1;
+FunctionalColor funColorDefault;
 
 //You can specify an optional brightness 0-255, and an optional colorList can follow.
-FunctionalColor funColor2(200);
+FunctionalColor funColorMono(200);
 
 //You can specify only a color override list as shown above beginning with FC_START_COLOR_LIST(customColors)
-FunctionalColor funColor3(FC_COLOR_LIST(customColors));
+FunctionalColor funColorCustomColors(FC_COLOR_LIST(customColors));
 
 //You can also specify a colorList with the brightness after.
-FunctionalColor funColor4(FC_COLOR_LIST(customColors), 255);
+FunctionalColor funCustomColorsBright(FC_COLOR_LIST(customColors), 255);
 
 // The last two examples will use custom themes - these are applied later in the setup() part of this .ino
 // Look near the bottom of this file to see how this is done.
-FunctionalColor funColor5;
-// Note that you can combine custom color overrides with a custom theme, demonstrated in funColor6
-FunctionalColor funColor6(FC_COLOR_LIST(customColors));
+FunctionalColor funColorMyTheme;
+// Note that you can combine custom color overrides with a custom theme, demonstrated in funColorGreen.
+// adding ", 220, false" after the FC_COLOR_LIST saves about 32 bytes here but it's not necessary.
+FunctionalColor funColorGreen(FC_COLOR_LIST(customColors));
 
-// This is how you explicitly specify NOT to use a theme
+// This is how you explicitly specify NOT to use a theme - add "false" after the brightness
 // to save memory and make a simple configuration.
-FunctionalColor funColor7(FC_COLOR_LIST(simpleColors), 220, false);
+FunctionalColor funColorSimpleColors(FC_COLOR_LIST(simpleColors), 220, false);
 
 // If you're making a custom theme to be applied later, you can also avoid specifying a theme
 // (to save memory) without specifying a colorList with the following:
-FunctionalColor funColor8(220, false);
+FunctionalColor funColorNoTheme(220, false);
 
 
-//To create customize a theme, make a subclass of one of the themes in FunctionalColor.
-//They are colorMap, colorMapDefault, colorMapColorful, colorMapMono, colorMapDuo.
+//To create a theme, make a subclass of one of the themes in FunctionalColor.
+//They are colorMap, colorMapDefault, colorMapMono, colorMapDuo, colorMapFruit, etc.
 //This example makes a few tweaks to colorMapMono that customize specific modifier keys
 struct myTheme: public colorMapMono {
-  static constexpr cRGB shift = darkseagreen;
-  static constexpr cRGB control = skyblue;
-  static constexpr cRGB alt = forestgreen;
-  static constexpr cRGB gui = pink; 
+  FC_MAP_COLOR(shift, darkseagreen)
+  FC_MAP_COLOR(control, skyblue)
+  FC_MAP_COLOR(alt, forestgreen)
+  FC_MAP_COLOR(gui, pink)
   //You can also set something to "nocolor" which will avoid coloring a set of keys
   // if they already are part of another larger group - ie set shift to nocolor and
   // shiftkeys will inherit the color assigned to modifier
-  // static constexpr cRGB shift = nocolor;
+  // FC_MAP_COLOR(shift, nocolor);
 };
 
 
 // For reference, this example theme struct shows the full list of properties you can set
 // in case you want to define a completely custom theme. In practice you can
 // just subclass one you like and change only the elements you want to modify
+// with the FC_MAP_COLOR() function.
 struct colorMapGreen: public colorMap {
   // baseColor is used with just changes in brightness for a largely monochromatic theme.
-  // You can change baseColor from green to change all these colors at once
-  static constexpr cRGB baseColor   = green;
+  // You can change baseColor from green to change all these colors at once.
+  FC_MAP_COLOR(baseColor, green)
 
   // defaultColor is used when there is no color defined for a key.
   // This is the only way to color "prog" if you don't assign a function to it.
-  static constexpr cRGB defaultColor= dim(baseColor, 100);
+  // When referring to a previously defined color that was defined with FC_MAP_COLOR
+  // (including in base color map classes), you must use the FC_REF_MAP_COLOR() function.
+  FC_MAP_COLOR(defaultColor, dim(FC_REF_MAP_COLOR(baseColor), 100))
 
   // shift, control, gui, and alt can all be colored by "modifier" if nocolor is set here.
-  static constexpr cRGB shift       = nocolor;
-  static constexpr cRGB control     = nocolor;
+  FC_MAP_COLOR(shift, nocolor)
+  FC_MAP_COLOR(control, nocolor)
   // Windows Logo or, on macOS, command keys 
-  static constexpr cRGB gui         = nocolor;
-  static constexpr cRGB alt         = nocolor;
+  FC_MAP_COLOR(gui, nocolor)
+  FC_MAP_COLOR(alt, nocolor)
   
-  static constexpr cRGB modifier    = dim(baseColor, 130);
-  static constexpr cRGB alpha       = dim(baseColor, 80);
-  static constexpr cRGB number      = dim(baseColor, 100);
-  static constexpr cRGB punctuation = dim(baseColor, 120);
+  FC_MAP_COLOR(modifier, dim(FC_REF_MAP_COLOR(baseColor), 130))
+  FC_MAP_COLOR(alpha, dim(FC_REF_MAP_COLOR(baseColor), 80))
+  FC_MAP_COLOR(number, dim(FC_REF_MAP_COLOR(baseColor), 100))
+  FC_MAP_COLOR(punctuation, dim(FC_REF_MAP_COLOR(baseColor), 120))
 
   // F1-F12 and F13-F24
-  static constexpr cRGB function    = dim(baseColor, 150);
+  FC_MAP_COLOR(function, dim(FC_REF_MAP_COLOR(baseColor), 150))
   
   // Page Up, Page Down, Home, End, Insert, and Delete (if del has nocolor)
-  static constexpr cRGB navigation  = dim(baseColor, 180);
+  FC_MAP_COLOR(navigation, dim(FC_REF_MAP_COLOR(baseColor), 180))
   
   // Print Screen, Pause/Break, and Scroll Lock keys (brightness on Macs)
-  static constexpr cRGB system      = dim(baseColor, 50);
+  FC_MAP_COLOR(system, dim(FC_REF_MAP_COLOR(baseColor), 50))
   
-  static constexpr cRGB arrow       = dim(baseColor, 250);
-  static constexpr cRGB keypad      = dim(baseColor, 230);
+  FC_MAP_COLOR(arrow, dim(FC_REF_MAP_COLOR(baseColor), 250))
+  FC_MAP_COLOR(keypad, dim(FC_REF_MAP_COLOR(baseColor), 230))
 
   // Includes play/pause, next/prev, volume control, mute, etc.
-  static constexpr cRGB media       = dim(baseColor, 250);
+  FC_MAP_COLOR(media, dim(FC_REF_MAP_COLOR(baseColor), 250))
   
-  static constexpr cRGB mouseWheel  = nocolor;
-  static constexpr cRGB mouseButton = nocolor;
-  static constexpr cRGB mouseWarp   = nocolor;
-  static constexpr cRGB mouseMove   = nocolor;
+  FC_MAP_COLOR(mouseWheel, nocolor)
+  FC_MAP_COLOR(mouseButton,nocolor)
+  FC_MAP_COLOR(mouseWarp, nocolor)
+  FC_MAP_COLOR(mouseMove, nocolor)
   // mouse includes the four above groups if nocolor is set for those
-  static constexpr cRGB mouse       = dim(baseColor, 220);
-  static constexpr cRGB space       = dim(baseColor, 100);
-  static constexpr cRGB tab         = dim(baseColor, 100);
-  static constexpr cRGB enter       = dim(baseColor, 255);
-  static constexpr cRGB backspace   = dim(baseColor, 100);
-  static constexpr cRGB escape      = dim(baseColor, 100);
-  static constexpr cRGB del         = dim(baseColor, 255);
+  FC_MAP_COLOR(mouse, dim(FC_REF_MAP_COLOR(baseColor), 220))
+  FC_MAP_COLOR(space, dim(FC_REF_MAP_COLOR(baseColor), 100))
+  FC_MAP_COLOR(tab, dim(FC_REF_MAP_COLOR(baseColor), 100))
+  FC_MAP_COLOR(enter, dim(FC_REF_MAP_COLOR(baseColor), 255))
+  FC_MAP_COLOR(backspace, dim(FC_REF_MAP_COLOR(baseColor), 100))
+  FC_MAP_COLOR(escape, dim(FC_REF_MAP_COLOR(baseColor), 100))
+  FC_MAP_COLOR(del, dim(FC_REF_MAP_COLOR(baseColor), 255))
 
   //fn will work properly if your FUNCTION layer is between layers 1-3
-  static constexpr cRGB fn          = dim(baseColor, 255);
+  FC_MAP_COLOR(fn, dim(FC_REF_MAP_COLOR(baseColor), 255))
   
   //NumLock and other layer locks
-  static constexpr cRGB lock        = dim(baseColor, 255);
-  static constexpr cRGB LEDEffectNext=dim(baseColor, 255);
+  FC_MAP_COLOR(lock, dim(FC_REF_MAP_COLOR(baseColor), 255))
+  FC_MAP_COLOR(LEDEffectNext, dim(FC_REF_MAP_COLOR(baseColor), 255))
 };
 
 
-// This example shows FunctionalColors brightness controls used with macros
+// macroAction dispatches keymap events that are tied to a macro to that macro.
 const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   switch (macroIndex) {
-
+  /******************** FUNCTIONALCOLOR MACROS GO HERE ********************/
   // Here are macros that control the brightness of the active FunctionalColor instance.
   // These names must be in the macros enum near the beginning of this file.
   // Assign M(MACRO_FCUP) and M(MACRO_FCDOWN) to keys you'd like to use for this purpose.
+  // In this example they have been assigned to the semicolon and comma keys on the fn layer.
   case MACRO_FCUP:
-    kaleidoscope::plugin::FunctionalColor::brightnessUp(keyState);
+    FunctionalColor::brightnessUp(keyState);
     break;
    
   case MACRO_FCDOWN:
-    kaleidoscope::plugin::FunctionalColor::brightnessDown(keyState);
+    FunctionalColor::brightnessDown(keyState);
     break;
   }
+  
   return MACRO_NONE;
 }
 
-KALEIDOSCOPE_INIT_PLUGINS(
-    funColor1,funColor2,funColor3,funColor4,funColor5,funColor6,funColor7,funColor8,
+// toggleLedsOnSuspendResume toggles the LEDs off when the host goes to sleep.
+void toggleLedsOnSuspendResume(kaleidoscope::plugin::HostPowerManagement::Event event) {
+  switch (event) {
+  case kaleidoscope::plugin::HostPowerManagement::Suspend:
+    LEDControl.set_all_leds_to({0, 0, 0});
+    LEDControl.syncLeds();
+    LEDControl.paused = true;
+    break;
+  case kaleidoscope::plugin::HostPowerManagement::Resume:
+    LEDControl.paused = false;
+    LEDControl.refreshAll();
+    break;
+  case kaleidoscope::plugin::HostPowerManagement::Sleep:
+    break;
+  }
+}
 
-    // Useful Default Plugins
-    LEDControl,Macros,MouseKeys   
+// hostPowerManagementEventHandler dispatches power management events
+void hostPowerManagementEventHandler(kaleidoscope::plugin::HostPowerManagement::Event event) {
+  toggleLedsOnSuspendResume(event);
+}
+
+// First, tell Kaleidoscope which plugins you want to use, in order.
+KALEIDOSCOPE_INIT_PLUGINS(
+  LEDControl,
+  HostPowerManagement,
+
+  // The macros plugin adds support for macros
+  Macros,
+
+
+
+  /********************** FUNCTIONALCOLOR EFFECTS INITIALIZED HERE **********************/
+  // All FunctionalColor instances go here in the order you want them in
+  funColorDefault,
+  funColorMono,
+  funColorCustomColors,
+  funCustomColorsBright,
+  funColorMyTheme,
+  funColorGreen,
+  funColorSimpleColors,
+  funColorNoTheme,
+
+  // The MouseKeys plugin lets you add keys to your keymap which move the mouse.
+  MouseKeys  
 );
 
-//This setup() function is where you set up any plugins.
+/** The 'setup' function is one of the two standard Arduino sketch functions.
+ * It's called when your keyboard first powers up. This is where you set up
+ * Kaleidoscope and any plugins.
+ */
 void setup() {
   // First, call Kaleidoscope's internal setup function
   Kaleidoscope.setup();
 
+  /********************** FUNCTIONALCOLOR CUSTOM THEMES APPLIED HERE **********************/
   // Use the FC_SET_THEME() to apply colorMaps here.
-  // If you aren't using namespace kaleidoscope::LEDFunctionalColor;
+  // If you aren't using namespace kaleidoscope::plugin::LEDFunctionalColor;
   // prefix built-in themes with that namespace
   // Here are all the defaults available:
 
-  // The default is already used without specifying it anyways, but it's here for completeness
-  FC_SET_THEME(funColor1, kaleidoscope::LEDFunctionalColor::colorMapDefault);
-  FC_SET_THEME(funColor2, kaleidoscope::LEDFunctionalColor::colorMapMono);
+  // The default is already used without specifying it so specifying it wastes ~556 bytes of memory
+  //FC_SET_THEME(funColorDefault, kaleidoscope::plugin::LEDFunctionalColor::colorMapDefault);
+  FC_SET_THEME(funColorMono, kaleidoscope::plugin::LEDFunctionalColor::colorMapMono);
   // The themes are: colorMap, colorMapDefault, colorMapFruit, colorMapMono, colorMapDuo,
   // colorMapPrincess, colorMapSea, colorMapFlower, colorMapKids, colorMapRedWhiteBlue.
 
-  // This applies our custom themes to funColor5, funColor6, and funColor8
-  FC_SET_THEME(funColor5, myTheme);
-  FC_SET_THEME(funColor6, colorMapGreen);
-  FC_SET_THEME(funColor8, colorMapGreen);
+  // This applies our custom themes to funColorMyTheme, funColorGreen, and funcolorNoTheme
+  FC_SET_THEME(funColorMyTheme, myTheme);
+  FC_SET_THEME(funColorGreen, colorMapGreen);
+  // When a FunctionalColors instance is instantiated with no theme, one can be added later
+  FC_SET_THEME(funColorNoTheme, colorMapGreen);
 
-} // end setup()
-
+}
 
 void loop() {
   Kaleidoscope.loop();
