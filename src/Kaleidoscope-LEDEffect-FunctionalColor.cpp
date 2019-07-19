@@ -390,7 +390,7 @@ void FunctionalColor::onActivate(void) {
 
 //When the active layer is changed, update the colors.
 void FunctionalColor::update(void) {
-  uint8_t current_layerState = Layer.getLayerState();
+  uint32_t current_layerState = Layer.getLayerState();
 
   // Only set the colors again if the active layer changed
   if (current_layerState != last_layerState) { this->refresh(); }
