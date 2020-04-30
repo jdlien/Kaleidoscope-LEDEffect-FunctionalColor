@@ -2,6 +2,8 @@
 
 #include "Kaleidoscope-LEDControl.h"
 #include "Kaleidoscope-MouseKeys.h"
+#include "kaleidoscope/layers.h"
+#include "kaleidoscope/keyswitch_state.h"
 
 #include "colors.h"
 #include "keygroups.h"
@@ -621,7 +623,7 @@ class FunctionalColor : public LEDMode {
 
 #define FC_START_COLOR_LIST(NAME) \
    cRGB FC_COLOR_LIST(NAME)(const Key &k, bool &skip, bool &none) { \
-      switch(k.raw) {
+      switch(k.getRaw()) {
 
 #define FC_NOCOLOR(KEY) \
     case (KEY).flags << 8 | (KEY).keyCode: \
