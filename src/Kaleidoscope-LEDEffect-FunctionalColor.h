@@ -564,6 +564,8 @@ class FunctionalColor : public LEDMode {
     }
   }
 
+  EventHandlerResult onLayerChange();
+
   void refresh(void);
 
   // set brightness between 0-255
@@ -583,8 +585,6 @@ class FunctionalColor : public LEDMode {
 
 
   private:
-  uint32_t last_layerState = 0;
-
   RGBLookup mainColorLookup = nullptr;
 
   static cRGB keyExceptionsLookup(const Key &k, bool &skip, bool &none) {
@@ -596,6 +596,7 @@ class FunctionalColor : public LEDMode {
 
   RGBLookupException exceptionsLookup = keyExceptionsLookup;
 
+  uint8_t led_mode_id_ = -1;
 
   protected:
   // Default to 200 to hopefully avoid overloading people's USB ports.
@@ -606,7 +607,6 @@ class FunctionalColor : public LEDMode {
   // Pointer to the currently in-use instance of FC
   static FunctionalColor *lastFC;
   void onActivate(void) final;
-  void update(void) final;
   using LEDMode::refreshAt;
   void refreshAt(KeyAddr key_addr) final;
 

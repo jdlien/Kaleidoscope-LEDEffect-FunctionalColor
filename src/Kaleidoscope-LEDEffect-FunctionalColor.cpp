@@ -383,21 +383,18 @@ void FunctionalColor::refresh(void) {
 
 
 void FunctionalColor::onActivate(void) {
+  led_mode_id_ = ::LEDControl.get_mode_index();
   this->refresh();
   lastFC = this;
 }
 
 
 //When the active layer is changed, update the colors.
-void FunctionalColor::update(void) {
-  uint32_t current_layerState = Layer.getLayerState();
-
-  // Only set the colors again if the active layer changed
-  if (current_layerState != last_layerState) { this->refresh(); }
-
-  last_layerState = current_layerState;
-
-}// end update()
+EventHandlerResult FunctionalColor::onLayerChange() {
+  if (::LEDControl.get_mode_index() == led_mode_id_)
+    this->refresh();
+  return EventHandlerResult::OK;
+}
 
 } // namespace LEDFunctionalColor
 }// namespace plugin
