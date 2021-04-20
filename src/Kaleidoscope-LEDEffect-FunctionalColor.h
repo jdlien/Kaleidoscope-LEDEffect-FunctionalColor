@@ -4,6 +4,7 @@
 #include "Kaleidoscope-MouseKeys.h"
 #include "kaleidoscope/layers.h"
 #include "kaleidoscope/keyswitch_state.h"
+#include "kaleidoscope/event_handler_result.h"
 
 #include "colors.h"
 #include "keygroups.h"
@@ -389,9 +390,9 @@ template<typename ColorMap> static cRGB groupColorLookup(const Key &k, bool &ski
   if (isMouseButton(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(mouseButton), nocolor)) return ColorMap::FC_REF_MAP_COLOR(mouseButton);
   if (isMouseWarp(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(mouseWarp), nocolor)) return ColorMap::FC_REF_MAP_COLOR(mouseWarp);
   if (isMouseMove(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(mouseMove), nocolor)) return ColorMap::FC_REF_MAP_COLOR(mouseMove);
-  if ((Key_Escape).flags == k.flags && (Key_Escape).keyCode == k.keyCode)
+  if ((Key_Escape).getFlags() == k.getFlags() && (Key_Escape).getKeyCode() == k.getKeyCode())
     if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(escape), nocolor)) return ColorMap::FC_REF_MAP_COLOR(escape);
-  if ((Key_Delete).flags == k.flags && (Key_Delete).keyCode == k.keyCode)
+  if ((Key_Delete).getFlags() == k.getFlags() && (Key_Delete).getKeyCode() == k.getKeyCode())
     if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(del), nocolor)) return ColorMap::FC_REF_MAP_COLOR(del);
 
 
@@ -408,26 +409,26 @@ template<typename ColorMap> static cRGB groupColorLookup(const Key &k, bool &ski
   if (isMouse(k)) if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(mouse), nocolor)) return ColorMap::FC_REF_MAP_COLOR(mouse); 
 
   // Individual keys that are important and unique enough to justify having their own members here.
-  if ((Key_Space).flags == k.flags && (Key_Space).keyCode == k.keyCode)
+  if ((Key_Space).getFlags() == k.getFlags() && (Key_Space).getKeyCode() == k.getKeyCode())
     if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(space), nocolor)) return ColorMap::FC_REF_MAP_COLOR(space);
-  if ((Key_Enter).flags == k.flags && (Key_Enter).keyCode == k.keyCode)
+  if ((Key_Enter).getFlags() == k.getFlags() && (Key_Enter).getKeyCode() == k.getKeyCode())
     if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(enter), nocolor)) return ColorMap::FC_REF_MAP_COLOR(enter);
-  if ((Key_Tab).flags == k.flags && (Key_Tab).keyCode == k.keyCode)
+  if ((Key_Tab).getFlags() == k.getFlags() && (Key_Tab).getKeyCode() == k.getKeyCode())
     if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(tab), nocolor)) return ColorMap::FC_REF_MAP_COLOR(tab);
-  if ((Key_Backspace).flags == k.flags && (Key_Backspace).keyCode == k.keyCode)
+  if ((Key_Backspace).getFlags() == k.getFlags() && (Key_Backspace).getKeyCode() == k.getKeyCode())
     if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(backspace), nocolor)) return ColorMap::FC_REF_MAP_COLOR(backspace);
 
-  if ((Key_LEDEffectNext).flags == k.flags && (Key_LEDEffectNext).keyCode == k.keyCode)
+  if ((Key_LEDEffectNext).getFlags() == k.getFlags() && (Key_LEDEffectNext).getKeyCode() == k.getKeyCode())
     if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(LEDEffectNext), nocolor)) return ColorMap::FC_REF_MAP_COLOR(LEDEffectNext);
 
   // For these ones, I need to know what their layers are... they might change from the default.
   // This should work for layers 1, 2 or 3
-  if ( (ShiftToLayer(2)).flags == k.flags && ( (ShiftToLayer(1)).keyCode == k.keyCode ||
-    (ShiftToLayer(2)).keyCode == k.keyCode || (ShiftToLayer(3)).keyCode == k.keyCode) )
+  if ( (ShiftToLayer(2)).getFlags() == k.getFlags() && ( (ShiftToLayer(1)).getKeyCode() == k.getKeyCode() ||
+    (ShiftToLayer(2)).getKeyCode() == k.getKeyCode() || (ShiftToLayer(3)).getKeyCode() == k.getKeyCode()) )
     if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(fn), nocolor)) return ColorMap::FC_REF_MAP_COLOR(fn);
   
   // Should work for all LockLayer keys
-  if ( (LockLayer(1)).flags == k.flags && ( (LockLayer(1)).keyCode == k.keyCode || (LockLayer(1)).keyCode == k.keyCode) )
+  if ( (LockLayer(1)).getFlags() == k.getFlags() && ( (LockLayer(1)).getKeyCode() == k.getKeyCode() || (LockLayer(1)).getKeyCode() == k.getKeyCode()) )
     if (!isColorMatch(ColorMap::FC_REF_MAP_COLOR(lock), nocolor)) return ColorMap::FC_REF_MAP_COLOR(lock);
 
 
@@ -587,7 +588,7 @@ class FunctionalColor : public LEDMode {
   RGBLookup mainColorLookup = nullptr;
 
   static cRGB keyExceptionsLookup(const Key &k, bool &skip, bool &none) {
-    //if (k.keyCode == (Key_A).keyCode && k.flags == (Key_A).flags) return cyan;
+    //if (k.getKeyCode() == (Key_A).getKeyCode() && k.getFlags() == (Key_A).getFlags()) return cyan;
     none = true;
     //this shouldn't do anything, but I have to return something... some default, I guess.
     return nocolor;
@@ -626,7 +627,7 @@ class FunctionalColor : public LEDMode {
       switch(k.getRaw()) {
 
 #define FC_NOCOLOR(KEY) \
-    case (KEY).flags << 8 | (KEY).keyCode: \
+    case (KEY).getFlags() << 8 | (KEY).getKeyCode(): \
        skip = true; \
        return kaleidoscope::plugin::LEDFunctionalColor::nocolor; // could return any color as a dummy
 
@@ -645,11 +646,11 @@ class FunctionalColor : public LEDMode {
 
 
 #define FC_KEYCOLOR(KEY, COLOR) \
-    case (KEY).flags << 8 | (KEY).keyCode: \
+    case (KEY).getFlags() << 8 | (KEY).getKeyCode(): \
        { static cRGB color = COLOR; return color; }
 
 #define FC_GROUPKEY(KEY) \
-   case (KEY).flags << 8 | (KEY).keyCode:
+   case (KEY).getFlags() << 8 | (KEY).getKeyCode():
 
 
 #define FC_SET_THEME(PLUGIN, COLOR_MAP) \

@@ -7,36 +7,36 @@
 
 //Alphabetical keys A-Z
 inline constexpr bool isAlpha(const Key& k) {
-  return ( k.flags == KEY_FLAGS && (k.keyCode >= (Key_A).keyCode) && (k.keyCode <= (Key_Z).keyCode) )?true:false;
+  return ( k.getFlags() == KEY_FLAGS && (k.getKeyCode() >= (Key_A).getKeyCode()) && (k.getKeyCode() <= (Key_Z).getKeyCode()) )?true:false;
 }
 
 //Number keys 1-9, 0
 inline constexpr bool isNumber(const Key& k) {
-  return ( k.flags == KEY_FLAGS && (k.keyCode >= (Key_1).keyCode) && (k.keyCode <= (Key_0).keyCode) )?true:false;
+  return ( k.getFlags() == KEY_FLAGS && (k.getKeyCode() >= (Key_1).getKeyCode()) && (k.getKeyCode() <= (Key_0).getKeyCode()) )?true:false;
 }
 
 // enter, escape, delete, tab, spacebar, all have no group
 
 //minus, equals, brackets, backslash, pound, semicolon, quote, grave accent, comma, period, slash
 inline constexpr bool isPunctuation(const Key& k) {
-  return ( (k.keyCode == (Key_LeftCurlyBracket).keyCode && k.flags == (Key_LeftCurlyBracket).flags) ||
-  	(k.keyCode == (Key_RightCurlyBracket).keyCode && k.flags == (Key_RightCurlyBracket).flags) ||
-  	(k.keyCode == (Key_LeftParen).keyCode && k.flags == (Key_LeftParen).flags) ||
-  	(k.keyCode == (Key_RightParen).keyCode && k.flags == (Key_RightParen).flags) ||
-  	(k.keyCode == (Key_Pipe).keyCode && k.flags == (Key_Pipe).flags) ||
-  	(k.flags == KEY_FLAGS &&
-  	(k.keyCode == (Key_International1).keyCode || //Brazilian forward-slash (/) and question-mark (?) key
-  	k.keyCode == (Key_NonUsBackslashAndPipe).keyCode ||
-  	((k.keyCode >= (Key_Minus).keyCode) && (k.keyCode <= (Key_Slash).keyCode))) )
+  return ( (k.getKeyCode() == (Key_LeftCurlyBracket).getKeyCode() && k.getFlags() == (Key_LeftCurlyBracket).getFlags()) ||
+  	(k.getKeyCode() == (Key_RightCurlyBracket).getKeyCode() && k.getFlags() == (Key_RightCurlyBracket).getFlags()) ||
+  	(k.getKeyCode() == (Key_LeftParen).getKeyCode() && k.getFlags() == (Key_LeftParen).getFlags()) ||
+  	(k.getKeyCode() == (Key_RightParen).getKeyCode() && k.getFlags() == (Key_RightParen).getFlags()) ||
+  	(k.getKeyCode() == (Key_Pipe).getKeyCode() && k.getFlags() == (Key_Pipe).getFlags()) ||
+  	(k.getFlags() == KEY_FLAGS &&
+  	(k.getKeyCode() == (Key_International1).getKeyCode() || //Brazilian forward-slash (/) and question-mark (?) key
+  	k.getKeyCode() == (Key_NonUsBackslashAndPipe).getKeyCode() ||
+  	((k.getKeyCode() >= (Key_Minus).getKeyCode()) && (k.getKeyCode() <= (Key_Slash).getKeyCode()))) )
   	)?true:false;
 }
 
 // capslock has no group
 //F1 through F24, which are split into two groups
 inline constexpr bool isFunction(const Key& k) {
-	return ( k.flags == KEY_FLAGS &&
-	  (((k.keyCode >= (Key_F1).keyCode) && (k.keyCode <= (Key_F12).keyCode)) ||
-	  ((k.keyCode >= (Key_F13).keyCode) && (k.keyCode <= (Key_F24).keyCode)))
+	return ( k.getFlags() == KEY_FLAGS &&
+	  (((k.getKeyCode() >= (Key_F1).getKeyCode()) && (k.getKeyCode() <= (Key_F12).getKeyCode())) ||
+	  ((k.getKeyCode() >= (Key_F13).getKeyCode()) && (k.getKeyCode() <= (Key_F24).getKeyCode())))
 	  )?true:false;
 }
 
@@ -45,34 +45,34 @@ inline constexpr bool isFunction(const Key& k) {
 //nav cluster: insert, home, end, delete_forward, pageup, pagedown
 // I don't know if insert and delete "fit" here, but they do get clustered together on traditional keyboards
 inline constexpr bool isNavigation(const Key& k) {
-	return (k.flags == KEY_FLAGS && (k.keyCode >= (Key_Insert).keyCode) && (k.keyCode <= (Key_PageDown).keyCode))?true:false;
+	return (k.getFlags() == KEY_FLAGS && (k.getKeyCode() >= (Key_Insert).getKeyCode()) && (k.getKeyCode() <= (Key_PageDown).getKeyCode()))?true:false;
 }
 
 //right, left, down, up
 inline constexpr bool isArrow(const Key& k) {
-  return (k.flags == KEY_FLAGS && (k.keyCode >= (Key_RightArrow).keyCode) && (k.keyCode <= (Key_UpArrow).keyCode))?true:false;
+  return (k.getFlags() == KEY_FLAGS && (k.getKeyCode() >= (Key_RightArrow).getKeyCode()) && (k.getKeyCode() <= (Key_UpArrow).getKeyCode()))?true:false;
 }
 
 //All keypad keys including numbers, and mathemetical operators.
 //There's another group of more obscure keypad keys that are unused so they don't interfere with consumer keys
-// ((k.keyCode >= (Key_Keypad00).keyCode) && (k.keyCode <= (Key_KeypadHexadecimal).keyCode))
+// ((k.getKeyCode() >= (Key_Keypad00).getKeyCode()) && (k.getKeyCode() <= (Key_KeypadHexadecimal).getKeyCode()))
 inline constexpr bool isKeypad(const Key& k) {
-  return ( k.flags == KEY_FLAGS && (
-  	k.keyCode == (Key_KeypadEquals).keyCode ||
-  	k.keyCode == (Key_KeypadComma).keyCode ||
-  	k.keyCode == (Key_KeypadEqualSign).keyCode ||
-  	((k.keyCode >= (Key_KeypadNumLock).keyCode) && (k.keyCode <= (Key_KeypadDot).keyCode)) ||
-  	((k.keyCode >= (Key_Keypad00).keyCode) && (k.keyCode <= (Key_KeypadHexadecimal).keyCode))
+  return ( k.getFlags() == KEY_FLAGS && (
+  	k.getKeyCode() == (Key_KeypadEquals).getKeyCode() ||
+  	k.getKeyCode() == (Key_KeypadComma).getKeyCode() ||
+  	k.getKeyCode() == (Key_KeypadEqualSign).getKeyCode() ||
+  	((k.getKeyCode() >= (Key_KeypadNumLock).getKeyCode()) && (k.getKeyCode() <= (Key_KeypadDot).getKeyCode())) ||
+  	((k.getKeyCode() >= (Key_Keypad00).getKeyCode()) && (k.getKeyCode() <= (Key_KeypadHexadecimal).getKeyCode()))
   	)
   	)?true:false;
 }
 
 // System keys like Pause/Break, Print Screen, and scroll lock
 inline constexpr bool isSystem(const Key& k) {
-  return ( k.flags == KEY_FLAGS && (
-  	k.keyCode == (Key_PrintScreen).keyCode ||
-  	k.keyCode == (Key_ScrollLock).keyCode ||
-  	k.keyCode == (Key_Pause).keyCode
+  return ( k.getFlags() == KEY_FLAGS && (
+  	k.getKeyCode() == (Key_PrintScreen).getKeyCode() ||
+  	k.getKeyCode() == (Key_ScrollLock).getKeyCode() ||
+  	k.getKeyCode() == (Key_Pause).getKeyCode()
   	)
   	)?true:false;
 }
@@ -99,90 +99,90 @@ inline constexpr bool isSystem(const Key& k) {
 // #define HID_CONSUMER_VOLUME_DECREMENT	0xEA	// HID type RTC
 inline constexpr bool isMedia(const Key& k) {
   return (
-  	(k.flags == KEY_FLAGS && (k.keyCode >= (Key_Execute).keyCode) && (k.keyCode <= (Key_VolumeDown).keyCode)) ||
-	(k.keyCode == (Consumer_ScanPreviousTrack).keyCode && k.flags == (Consumer_ScanPreviousTrack).flags)||
-	(k.keyCode == (Consumer_ScanNextTrack).keyCode && k.flags == (Consumer_ScanNextTrack).flags)||
-	(k.keyCode == (Consumer_PlaySlashPause).keyCode && k.flags == (Consumer_PlaySlashPause).flags)||
-	(k.keyCode == (Consumer_Play).keyCode && k.flags == (Consumer_Play).flags)||
-	(k.keyCode == (Consumer_Pause).keyCode && k.flags == (Consumer_Pause).flags)||
-	(k.keyCode == (Consumer_Stop).keyCode && k.flags == (Consumer_Stop).flags)||
-	(k.flags == (Consumer_VolumeIncrement).flags && k.keyCode == (Consumer_VolumeIncrement).keyCode) ||
-	(k.flags == (Consumer_VolumeDecrement).flags && k.keyCode == (Consumer_VolumeDecrement).keyCode) ||
-	(k.keyCode == (Consumer_Mute).keyCode && k.flags == (Consumer_Mute).flags)
+      (k.getFlags() == KEY_FLAGS && (k.getKeyCode() >= (Key_Execute).getKeyCode()) && (k.getKeyCode() <= (Key_VolumeDown).getKeyCode())) ||
+	(k.getKeyCode() == (Consumer_ScanPreviousTrack).getKeyCode() && k.getFlags() == (Consumer_ScanPreviousTrack).getFlags())||
+	(k.getKeyCode() == (Consumer_ScanNextTrack).getKeyCode() && k.getFlags() == (Consumer_ScanNextTrack).getFlags())||
+	(k.getKeyCode() == (Consumer_PlaySlashPause).getKeyCode() && k.getFlags() == (Consumer_PlaySlashPause).getFlags())||
+	(k.getKeyCode() == (Consumer_Play).getKeyCode() && k.getFlags() == (Consumer_Play).getFlags())||
+	(k.getKeyCode() == (Consumer_Pause).getKeyCode() && k.getFlags() == (Consumer_Pause).getFlags())||
+	(k.getKeyCode() == (Consumer_Stop).getKeyCode() && k.getFlags() == (Consumer_Stop).getFlags())||
+	(k.getFlags() == (Consumer_VolumeIncrement).getFlags() && k.getKeyCode() == (Consumer_VolumeIncrement).getKeyCode()) ||
+	(k.getFlags() == (Consumer_VolumeDecrement).getFlags() && k.getKeyCode() == (Consumer_VolumeDecrement).getKeyCode()) ||
+	(k.getKeyCode() == (Consumer_Mute).getKeyCode() && k.getFlags() == (Consumer_Mute).getFlags())
   	)?true:false;
 }
 
 // Lang keys used primarily for Asian language character set switching
 inline constexpr bool isLang(const Key& k) {
-	return (k.flags == KEY_FLAGS &&
-		(k.keyCode >= (Key_Lang1).keyCode) && (k.keyCode <= (Key_Lang9).keyCode) )?true:false;
+	return (k.getFlags() == KEY_FLAGS &&
+		(k.getKeyCode() >= (Key_Lang1).getKeyCode()) && (k.getKeyCode() <= (Key_Lang9).getKeyCode()) )?true:false;
 }
 
 //Here I will have some groups that have subgroups...
 //Control, shift, alt, gui (windows/command), and application (menu) key
 inline constexpr bool isModifier(const Key& k) {
-	return ( k.flags == KEY_FLAGS &&
-		(k.keyCode == (Key_PcApplication).keyCode ||
-		((k.keyCode >= (Key_LeftControl).keyCode) && (k.keyCode <= (Key_RightGui).keyCode))) )?true:false;
+	return ( k.getFlags() == KEY_FLAGS &&
+		(k.getKeyCode() == (Key_PcApplication).getKeyCode() ||
+		((k.getKeyCode() >= (Key_LeftControl).getKeyCode()) && (k.getKeyCode() <= (Key_RightGui).getKeyCode()))) )?true:false;
 }
 
 //Keys that are subgroups of Modifier keys
 inline constexpr bool isShift(const Key& k) {
-	return ( k.flags == KEY_FLAGS &&
-		(k.keyCode == (Key_LeftShift).keyCode || (k.keyCode == (Key_RightShift).keyCode) ) )?true:false;
+	return ( k.getFlags() == KEY_FLAGS &&
+		(k.getKeyCode() == (Key_LeftShift).getKeyCode() || (k.getKeyCode() == (Key_RightShift).getKeyCode()) ) )?true:false;
 }
 
 inline constexpr bool isControl(const Key& k) {
-	return ( k.flags == KEY_FLAGS &&
-		(k.keyCode == (Key_LeftControl).keyCode || (k.keyCode == (Key_RightControl).keyCode) ) )?true:false;
+	return ( k.getFlags() == KEY_FLAGS &&
+		(k.getKeyCode() == (Key_LeftControl).getKeyCode() || (k.getKeyCode() == (Key_RightControl).getKeyCode()) ) )?true:false;
 }
 
 inline constexpr bool isGui(const Key& k) {
-	return ( k.flags == KEY_FLAGS &&
-		(k.keyCode == (Key_LeftGui).keyCode || (k.keyCode == (Key_RightGui).keyCode) ) )?true:false;
+	return ( k.getFlags() == KEY_FLAGS &&
+		(k.getKeyCode() == (Key_LeftGui).getKeyCode() || (k.getKeyCode() == (Key_RightGui).getKeyCode()) ) )?true:false;
 }
 
 inline constexpr bool isAlt(const Key& k) {
-	return ( k.flags == KEY_FLAGS &&
-		(k.keyCode == (Key_LeftAlt).keyCode || (k.keyCode == (Key_RightAlt).keyCode) ) )?true:false;
+	return ( k.getFlags() == KEY_FLAGS &&
+		(k.getKeyCode() == (Key_LeftAlt).getKeyCode() || (k.getKeyCode() == (Key_RightAlt).getKeyCode()) ) )?true:false;
 }
 
 
 // All mouse keys. This technique seems to get some false positives (prog & led keys)
 inline constexpr bool isMouseMove(const Key& k) {
-	return ( ((Key_mouseUpL).flags == k.flags && (Key_mouseUpL).keyCode == k.keyCode) ||
-		 ((Key_mouseUp).flags == k.flags && (Key_mouseUp).keyCode == k.keyCode) ||
-		 ((Key_mouseUpR).flags == k.flags && (Key_mouseUpR).keyCode == k.keyCode) ||
-		 ((Key_mouseL).flags == k.flags && (Key_mouseL).keyCode == k.keyCode) ||
-		 ((Key_mouseR).flags == k.flags && (Key_mouseR).keyCode == k.keyCode) ||
-		 ((Key_mouseDnL).flags == k.flags && (Key_mouseDnL).keyCode == k.keyCode) ||
-		 ((Key_mouseDn).flags == k.flags && (Key_mouseDn).keyCode == k.keyCode) ||
-		 ((Key_mouseDnR).flags == k.flags && (Key_mouseDnR).keyCode == k.keyCode)
+	return ( ((Key_mouseUpL).getFlags() == k.getFlags() && (Key_mouseUpL).getKeyCode() == k.getKeyCode()) ||
+		 ((Key_mouseUp).getFlags() == k.getFlags() && (Key_mouseUp).getKeyCode() == k.getKeyCode()) ||
+		 ((Key_mouseUpR).getFlags() == k.getFlags() && (Key_mouseUpR).getKeyCode() == k.getKeyCode()) ||
+		 ((Key_mouseL).getFlags() == k.getFlags() && (Key_mouseL).getKeyCode() == k.getKeyCode()) ||
+		 ((Key_mouseR).getFlags() == k.getFlags() && (Key_mouseR).getKeyCode() == k.getKeyCode()) ||
+		 ((Key_mouseDnL).getFlags() == k.getFlags() && (Key_mouseDnL).getKeyCode() == k.getKeyCode()) ||
+		 ((Key_mouseDn).getFlags() == k.getFlags() && (Key_mouseDn).getKeyCode() == k.getKeyCode()) ||
+		 ((Key_mouseDnR).getFlags() == k.getFlags() && (Key_mouseDnR).getKeyCode() == k.getKeyCode())
 		)?true:false;
 }
 
 // Mouse keys that are for the mouse wheel. L & R scroll wheel don't seem to work.
 inline constexpr bool isMouseWheel(const Key& k) {
-	return ( ((Key_mouseScrollUp).flags == k.flags && (Key_mouseScrollUp).keyCode == k.keyCode) ||
-		 ((Key_mouseScrollDn).flags == k.flags && (Key_mouseScrollDn).keyCode == k.keyCode)
+	return ( ((Key_mouseScrollUp).getFlags() == k.getFlags() && (Key_mouseScrollUp).getKeyCode() == k.getKeyCode()) ||
+		 ((Key_mouseScrollDn).getFlags() == k.getFlags() && (Key_mouseScrollDn).getKeyCode() == k.getKeyCode())
 		)?true:false;
 }
 
 // Mouse keys that are for the mouse buttons
 inline constexpr bool isMouseButton(const Key& k) {
-	return ( ((Key_mouseBtnL).flags == k.flags && (Key_mouseBtnL).keyCode == k.keyCode) ||
-		 ((Key_mouseBtnM).flags == k.flags && (Key_mouseBtnM).keyCode == k.keyCode) ||
-		 ((Key_mouseBtnR).flags == k.flags && (Key_mouseBtnR).keyCode == k.keyCode)
+	return ( ((Key_mouseBtnL).getFlags() == k.getFlags() && (Key_mouseBtnL).getKeyCode() == k.getKeyCode()) ||
+		 ((Key_mouseBtnM).getFlags() == k.getFlags() && (Key_mouseBtnM).getKeyCode() == k.getKeyCode()) ||
+		 ((Key_mouseBtnR).getFlags() == k.getFlags() && (Key_mouseBtnR).getKeyCode() == k.getKeyCode())
 		)?true:false;
 }
 
 // Mouse keys that warp the mouse pointer
 inline constexpr bool isMouseWarp(const Key& k) {
-	return ( ((Key_mouseWarpNW).flags == k.flags && (Key_mouseWarpNW).keyCode == k.keyCode) ||
-		 ((Key_mouseWarpNE).flags == k.flags && (Key_mouseWarpNE).keyCode == k.keyCode) ||
-		 ((Key_mouseWarpSW).flags == k.flags && (Key_mouseWarpSW).keyCode == k.keyCode) ||
-		 ((Key_mouseWarpSE).flags == k.flags && (Key_mouseWarpSE).keyCode == k.keyCode) ||
-		 ((Key_mouseWarpEnd).flags == k.flags && (Key_mouseWarpEnd).keyCode == k.keyCode)
+	return ( ((Key_mouseWarpNW).getFlags() == k.getFlags() && (Key_mouseWarpNW).getKeyCode() == k.getKeyCode()) ||
+		 ((Key_mouseWarpNE).getFlags() == k.getFlags() && (Key_mouseWarpNE).getKeyCode() == k.getKeyCode()) ||
+		 ((Key_mouseWarpSW).getFlags() == k.getFlags() && (Key_mouseWarpSW).getKeyCode() == k.getKeyCode()) ||
+		 ((Key_mouseWarpSE).getFlags() == k.getFlags() && (Key_mouseWarpSE).getKeyCode() == k.getKeyCode()) ||
+		 ((Key_mouseWarpEnd).getFlags() == k.getFlags() && (Key_mouseWarpEnd).getKeyCode() == k.getKeyCode())
 		)?true:false;
 }
 
