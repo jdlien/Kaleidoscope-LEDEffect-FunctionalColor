@@ -39,25 +39,25 @@
 #include "Kaleidoscope-LEDEffect-BootGreeting.h"
 
 // Support for LED modes that set all LEDs to a single color
-#include "Kaleidoscope-LEDEffect-SolidColor.h"
+//#include "Kaleidoscope-LEDEffect-SolidColor.h"
 
 // Support for an LED mode that makes all the LEDs 'breathe'
 #include "Kaleidoscope-LEDEffect-Breathe.h"
 
 // Support for an LED mode that makes a red pixel chase a blue pixel across the keyboard
-#include "Kaleidoscope-LEDEffect-Chase.h"
+//#include "Kaleidoscope-LEDEffect-Chase.h"
 
 // Support for LED modes that pulse the keyboard's LED in a rainbow pattern
-#include "Kaleidoscope-LEDEffect-Rainbow.h"
+//#include "Kaleidoscope-LEDEffect-Rainbow.h"
 
 // Support for an LED mode that lights up the keys as you press them
 #include "Kaleidoscope-LED-Stalker.h"
 
 // Support for an LED mode that prints the keys you press in letters 4px high
-#include "Kaleidoscope-LED-AlphaSquare.h"
+//#include "Kaleidoscope-LED-AlphaSquare.h"
 
 // Support for an LED mode that lets one configure per-layer color maps
-#include "Kaleidoscope-Colormap.h"
+//#include "Kaleidoscope-Colormap.h"
 
 // Support for Keyboardio's internal keyboard testing mode
 #include "Kaleidoscope-HardwareTestMode.h"
@@ -179,7 +179,7 @@ KEYMAPS(
    Key_LeftControl, Key_Backspace, Key_LeftGui, Key_LeftShift,
    ShiftToLayer(FUNCTION),
 
-   M(MACRO_ANY),  Key_6, Key_7, Key_8,     Key_9,         Key_0,         LockLayer(NUMPAD),
+   M(MACRO_FCUP),  M(MACRO_FCDOWN), Key_7, Key_8,     Key_9,         Key_0,         LockLayer(NUMPAD),
    Key_Enter,     Key_Y, Key_U, Key_I,     Key_O,         Key_P,         Key_Equals,
                   Key_H, Key_J, Key_K,     Key_L,         Key_Semicolon, Key_Quote,
    Key_RightAlt,  Key_N, Key_M, Key_Comma, Key_Period,    Key_Slash,     Key_Minus,
@@ -303,12 +303,12 @@ static void anyKeyMacro(uint8_t keyState) {
   static Key lastKey;
   bool toggledOn = false;
   if (keyToggledOn(keyState)) {
-    lastKey.keyCode = Key_A.keyCode + (uint8_t)(millis() % 36);
+    lastKey.setKeyCode(Key_A.getKeyCode() + (uint8_t)(millis() % 36));
     toggledOn = true;
   }
 
   if (keyIsPressed(keyState))
-    kaleidoscope::hid::pressKey(lastKey, toggledOn);
+    Kaleidoscope.hid().keyboard().pressKey(lastKey, toggledOn);
 }
 
 
@@ -515,13 +515,13 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
 // Keyboardio Model 01.
 
 
-static kaleidoscope::plugin::LEDSolidColor solidRed(160, 0, 0);
-static kaleidoscope::plugin::LEDSolidColor solidOrange(140, 70, 0);
-static kaleidoscope::plugin::LEDSolidColor solidYellow(130, 100, 0);
-static kaleidoscope::plugin::LEDSolidColor solidGreen(0, 160, 0);
-static kaleidoscope::plugin::LEDSolidColor solidBlue(0, 70, 130);
-static kaleidoscope::plugin::LEDSolidColor solidIndigo(0, 0, 170);
-static kaleidoscope::plugin::LEDSolidColor solidViolet(130, 0, 120);
+// static kaleidoscope::plugin::LEDSolidColor solidRed(160, 0, 0);
+// static kaleidoscope::plugin::LEDSolidColor solidOrange(140, 70, 0);
+// static kaleidoscope::plugin::LEDSolidColor solidYellow(130, 100, 0);
+// static kaleidoscope::plugin::LEDSolidColor solidGreen(0, 160, 0);
+// static kaleidoscope::plugin::LEDSolidColor solidBlue(0, 70, 130);
+// static kaleidoscope::plugin::LEDSolidColor solidIndigo(0, 0, 170);
+// static kaleidoscope::plugin::LEDSolidColor solidViolet(130, 0, 120);
 
 
 /** toggleLedsOnSuspendResume toggles the LEDs off when the host goes to sleep,
@@ -532,10 +532,10 @@ void toggleLedsOnSuspendResume(kaleidoscope::plugin::HostPowerManagement::Event 
   case kaleidoscope::plugin::HostPowerManagement::Suspend:
     LEDControl.set_all_leds_to({0, 0, 0});
     LEDControl.syncLeds();
-    LEDControl.paused = true;
+    LEDControl.disable();
     break;
   case kaleidoscope::plugin::HostPowerManagement::Resume:
-    LEDControl.paused = false;
+    LEDControl.enable();
     LEDControl.refreshAll();
     break;
   case kaleidoscope::plugin::HostPowerManagement::Sleep:
@@ -601,12 +601,12 @@ KALEIDOSCOPE_INIT_PLUGINS(
   LEDControl,
 
   // We start with the LED effect that turns off all the LEDs.
-  //LEDOff,
+  LEDOff,
 
   /********************** FUNCTIONALCOLOR EFFECTS INITIALIZED HERE **********************/
   // All FunctionalColor instances go here in the order you want them in
-  funColorDefault,
   funColorMono,
+  funColorDefault,
   funColorCustomColors,
   funCustomColorsBright,
   funColorMyTheme,
@@ -616,15 +616,15 @@ KALEIDOSCOPE_INIT_PLUGINS(
 
   // The rainbow effect changes the color of all of the keyboard's keys at the same time
   // running through all the colors of the rainbow.
-  LEDRainbowEffect,
+  //LEDRainbowEffect,
 
   // The rainbow wave effect lights up your keyboard with all the colors of a rainbow
   // and slowly moves the rainbow across your keyboard
-  LEDRainbowWaveEffect,
+  //LEDRainbowWaveEffect,
 
   // The chase effect follows the adventure of a blue pixel which chases a red pixel across
   // your keyboard. Spoiler: the blue pixel never catches the red pixel
-  LEDChaseEffect,
+  //LEDChaseEffect,
 
   // These static effects turn your keyboard's LEDs a variety of colors
   // These are commented out to save some memory (186 bytes) to fit all FunctionalColors examples
@@ -635,13 +635,13 @@ KALEIDOSCOPE_INIT_PLUGINS(
 
   // The AlphaSquare effect prints each character you type, using your
   // keyboard's LEDs as a display
-  AlphaSquareEffect,
+  //AlphaSquareEffect,
 
   // The stalker effect lights up the keys you've pressed recently
   StalkerEffect,
 
   // The Colormap effect makes it possible to set up per-layer colormaps
-  ColormapEffect,
+  //ColormapEffect,
 
   // NumPad is probably not desired as it's somewhat redundant alongside FunctionalColors
   //NumPad,
@@ -681,12 +681,12 @@ void setup() {
   //NumPad.numPadLayer = NUMPAD;
 
   // We configure the AlphaSquare effect to use RED letters
-  AlphaSquare.color = CRGB(255, 0, 0);
+  //AlphaSquare.color = CRGB(255, 0, 0);
 
   // We set the brightness of the rainbow effects to 150 (on a scale of 0-255)
   // This draws more than 500mA, but looks much nicer than a dimmer effect
-  LEDRainbowEffect.brightness(150);
-  LEDRainbowWaveEffect.brightness(150);
+  //LEDRainbowEffect.brightness(150);
+  //LEDRainbowWaveEffect.brightness(150);
 
   // The LED Stalker mode has a few effects. The one we like is called
   // 'BlazingTrail'. For details on other options, see
@@ -727,7 +727,7 @@ void setup() {
   // We need to tell the Colormap plugin how many layers we want to have custom
   // maps for. To make things simple, we set it to five layers, which is how
   // many editable layers we have (see above).
-  ColormapEffect.max_layers(5);
+  //ColormapEffect.max_layers(5);
 }
 
 /** loop is the second of the standard Arduino sketch functions.
