@@ -32,7 +32,7 @@ If you have a little extra Program memory available (about 1kB - 2kB), you can u
 
 To do this, specify a theme name (or an integer) after the brightness. These are within the kaleidosope::LEDFunctionalColor namespace and are
 Base, Default, Fruit, Mono, Duo, Princess, Sea, Flower, Kids, RedWhiteBlue
-```
+```c++
 // Without using the LEDFunctionalColor namespace, specifying a theme looks like this
 kaleidoscope::plugin::LEDFunctionalColor::FunctionalColor funColor1(200, kaleidoscope::plugin::LEDFunctionalColor::Fruit);
 
